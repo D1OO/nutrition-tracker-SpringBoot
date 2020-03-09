@@ -19,6 +19,7 @@
 </head>
 <body>
 <div class="col-md-8 col-md-offset-2">
+    <h1><span th:text="#{logged-as}"></span><span th:text="${#request.userPrincipal.name}"></span></h1>
     <h1 th:text="#{greeting}"></h1>
     <h3 th:text="#{greeting}"></h3>
     <h3 th:text="#{greeting}"></h3>
