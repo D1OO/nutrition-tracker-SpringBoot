@@ -13,12 +13,11 @@ package net.shvdy.sbproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.shvdy.sbproject.dto.UserDTO;
 import net.shvdy.sbproject.dto.UsersDTO;
-import net.shvdy.sbproject.entity.RoleType;
-import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 
 @Slf4j
 @RestController
@@ -33,17 +32,20 @@ public class TestPageController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    //@RequestMapping(value = "login", method = RequestMethod.POST)
-    @PostMapping(value = "login")
+    @PostMapping(value = "login22")
     public void loginFormController(UserDTO user) {
         log.info("{}", userService.findByUserLogin(user));
         log.info("{}", user);
-        userService.saveNewUser(User.builder()
-                .firstName("Ann")
-                .lastName("Reizer")
-                .email("AnnReizer@testing.ua")
-                .role(RoleType.ROLE_USER)
-                .build());
+//        userService.saveNewUser(User.builder()
+//                .firstName("Ann")
+//                .lastName("Reizer")
+//                .username("AnnReizer@testing.ua")
+//                .authorities(Collections.singleton(RoleType.ROLE_USER))
+//                .accountNonExpired(true)
+//                .accountNonLocked(true)
+//                .credentialsNonExpired(true)
+//                .enabled(true)
+//                .build());
     }
 
     @RequestMapping(value = "user", method = RequestMethod.GET)

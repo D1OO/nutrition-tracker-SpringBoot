@@ -10,19 +10,24 @@
 
 package net.shvdy.sbproject.service;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.shvdy.sbproject.dto.UserDTO;
 import net.shvdy.sbproject.dto.UsersDTO;
 import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Autowired
@@ -37,7 +42,7 @@ public class UserService {
 
     public Optional<User> findByUserLogin(UserDTO userDTO) {
         //TODO check for user availability. password check
-        return userRepository.findByEmail(userDTO.getEmail());
+        return userRepository.findByUsername(userDTO.getEmail());
     }
 
     public void saveNewUser(User user) {
@@ -49,5 +54,11 @@ public class UserService {
             log.info("{Почтовый адрес уже существует}");
         }
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
+        return userRepository.findByUsername(email).orElseThrow(() ->
+                new UsernameNotFoundException("user " + email + " was not found!"));
     }
 }

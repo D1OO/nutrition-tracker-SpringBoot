@@ -11,8 +11,10 @@
 package net.shvdy.sbproject.entity;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +25,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
-public class User {
+public class User implements UserDetails {
+    @Column(name = "email", nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -34,17 +40,18 @@ public class User {
     private String firstNameUa;
     @Column(name = "last_name", nullable = false)
     private String lastName;
-    @Column(nullable = false)
-    private String email;
-    @Column(name = "role")
+
+    @Column(name = "role", nullable = false)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
-    private RoleType role;
+    private Set<RoleType> authorities;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
+    @Column(nullable = false)
+    private boolean accountNonExpired;
+    @Column(nullable = false)
+    private boolean accountNonLocked;
+    @Column(nullable = false)
+    private boolean credentialsNonExpired;
+    @Column(nullable = false)
+    private boolean enabled;
 }
