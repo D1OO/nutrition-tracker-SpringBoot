@@ -1,4 +1,4 @@
-# sbproject
+# Spring Boot Project
 --------------9.03-----------------------------------  
 Changelist:  
 Authorisation with redirect based on principal's role;  
