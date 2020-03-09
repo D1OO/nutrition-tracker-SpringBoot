@@ -40,7 +40,7 @@ public class PageController {
                            Model model) {
         model.addAttribute("error", error != null);
         model.addAttribute("logout", logout != null);
-        return "contact";
+        return "login";
     }
 
     @RequestMapping("/admin")
