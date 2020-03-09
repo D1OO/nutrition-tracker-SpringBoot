@@ -26,30 +26,30 @@
         <button style="margin-top:30px" value="ua">ua</button>
         <button style="margin-top:30px" value="eng">en</button>
     </div>
-    <table>
-        <tr>
-            <th th:text="#{index.id}">Id</th>
-            <th th:text="#{index.name}">First Name</th>
-            <th th:text="#{index.last_name}">Last Name</th>
-            <th th:text="#{index.email}">Email</th>
-            <th th:text="#{index.role}">Role</th>
-        </tr>
-        <tr th:each="user: ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.username}"></td>
-            <td>
-                <table>
-                    <tbody>
-                    <tr th:each="authority : ${user.authorities}">
-                        <td th:text="${authority.name()}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </table>
+    <!--    <table>-->
+    <!--        <tr>-->
+    <!--            <th th:text="#{index.id}">Id</th>-->
+    <!--            <th th:text="#{index.name}">First Name</th>-->
+    <!--            <th th:text="#{index.last_name}">Last Name</th>-->
+    <!--            <th th:text="#{index.email}">Email</th>-->
+    <!--            <th th:text="#{index.role}">Role</th>-->
+    <!--        </tr>-->
+    <!--        <tr th:each="user: ${users}">-->
+    <!--            <td th:text="${user.id}"></td>-->
+    <!--            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>-->
+    <!--            <td th:text="${user.lastName}"></td>-->
+    <!--            <td th:text="${user.username}"></td>-->
+    <!--            <td>-->
+    <!--                <table>-->
+    <!--                    <tbody>-->
+    <!--                    <tr th:each="authority : ${user.authorities}">-->
+    <!--                        <td th:text="${authority.name()}"></td>-->
+    <!--                    </tr>-->
+    <!--                    </tbody>-->
+    <!--                </table>-->
+    <!--            </td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
 </div>
 </body>
 </html>
