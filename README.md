@@ -17,6 +17,7 @@ New user registration
 Validation script with regular expressions for every field   
   
 Next:    
-Heroku    
+Heroku  
+Tests
 
   
