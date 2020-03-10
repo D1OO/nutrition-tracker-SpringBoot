@@ -12,10 +12,11 @@ Heroku
 
 --------------10.03-----------------------------------  
 Changelist:  
-Finished frontend (pages, based on thymeleaf template fragments) for all pages  
-New user registration
-Validation script with regular expressions for every field
+Finished frontend (pages, based on thymeleaf template fragments) for all pages    
+New user registration  
+Validation script with regular expressions for every field   
+  
+Next:    
+Heroku    
 
-Next:  
-Heroku  
-
+  
