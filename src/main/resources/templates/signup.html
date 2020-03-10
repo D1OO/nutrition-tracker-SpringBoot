@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head"></head>
+<head th:replace="template :: head(~{::title})">
+    <title>Sign Up - shvdy project</title>
+</head>
 <body>
 <div th:replace="template :: main-navbar"></div>
 <div th:replace="template :: decor-navbar"></div>
