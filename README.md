@@ -19,5 +19,6 @@ Validation script with regular expressions for every field
 Next:    
 Heroku  
 Tests
+Write UA localisation messages
 
   
