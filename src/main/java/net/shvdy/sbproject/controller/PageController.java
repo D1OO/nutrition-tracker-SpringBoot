@@ -34,13 +34,24 @@ public class PageController {
         return "index";
     }
 
-    @RequestMapping("/login")
-    public String getLogin(@RequestParam(value = "error", required = false) String error,
-                           @RequestParam(value = "logout", required = false) String logout,
-                           Model model) {
+    @RequestMapping(value = "/login")
+    public String loginPage(@RequestParam(required = false) String error,
+                            @RequestParam(required = false) String logout,
+                            @RequestParam(required = false) String signedup,
+                            Model model) {
         model.addAttribute("error", error != null);
         model.addAttribute("logout", logout != null);
+        model.addAttribute("signedup", signedup != null);
         return "login";
+    }
+
+    @RequestMapping("/signup")
+    public String signUpPage(@RequestParam(value = "error", required = false) String error,
+                             @RequestParam(value = "logout", required = false) String logout,
+                             Model model) {
+        model.addAttribute("error", error != null);
+        model.addAttribute("logout", logout != null);
+        return "signup";
     }
 
     @RequestMapping("/admin")

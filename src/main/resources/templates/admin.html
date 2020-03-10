@@ -1,55 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
-<head>
-    <meta charset="UTF-8">
-    <title>testing...</title>
-    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".locale").click(function (event) {
-                var selectedOption = $(event.target).val();
-                if (selectedOption != '') {
-                    location.replace('?lang=' + selectedOption);
-                }
-            });
-        });
-    </script>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
 <body>
-<div class="col-md-8 col-md-offset-2">
-    <h1>admin page</h1>
-    <h3 th:text="#{greeting}"></h3>
-    <h3 th:text="#{greeting}"></h3>
-    <div class="locale">
-        <button style="margin-top:30px" value="ua">ua</button>
-        <button style="margin-top:30px" value="eng">en</button>
+<div th:replace="template :: main-navbar"></div>
+<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template :: main(~{:: div.maincontent})">
+
+    <div class="maincontent d-flex flex-nowrap p-lg-3">
+        <img class="pagepic" th:src="@{/img/bg4.jpg}">
+        <div class="mr-auto">
+            <h1>ADMIN PAGE</h1>
+            <h2>Coming soon...</h2>
+        </div>
     </div>
-    <table>
-        <tr>
-            <th th:text="#{index.id}">Id</th>
-            <th th:text="#{index.name}">First Name</th>
-            <th th:text="#{index.last_name}">Last Name</th>
-            <th th:text="#{index.email}">Email</th>
-            <th th:text="#{index.role}">Role</th>
-        </tr>
-        <tr th:each="user: ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.username}"></td>
-            <td>
-                <table>
-                    <tbody>
-                    <tr th:each="authority : ${user.authorities}">
-                        <td th:text="${authority.name()}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </table>
+
 </div>
+<div th:replace="template :: footer"></div>
+<div th:replace="template :: scripts(null)"></div>  <!--(~{::script})-->
 </body>
 </html>

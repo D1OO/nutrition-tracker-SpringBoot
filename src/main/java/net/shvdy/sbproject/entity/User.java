@@ -14,6 +14,7 @@ import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Getter
@@ -27,18 +28,21 @@ import java.util.Set;
         uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class User implements UserDetails {
     @Column(name = "email", nullable = false)
+    @NotNull
     private String username;
     @Column(nullable = false)
+    @NotNull
     private String password;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "first_name", nullable = false)
+    @NotNull
     private String firstName;
-    @Column(name = "first_name_ua", nullable = false)
+    @Column(name = "first_name_ua")
     private String firstNameUa;
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "role", nullable = false)

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
+<body>
+<div th:replace="template :: main-navbar"></div>
+<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template :: main(~{:: div.maincontent})">
+
+    <div class="maincontent d-flex flex-nowrap p-lg-3">
+        <img class="pagepic" th:src="@{/img/signuppic.jpg}">
+        <div class="mr-auto">
+            <div class="row d-flex justify-content-start form">
+                <div class=" mb-5 mb-md-0">
+                    <form class="form" method="post" th:action="@{/signup}" th:object="${user}">
+                        <p class="error-validation"
+                           th:each="error : ${#fields.errors('global')}"
+                           th:if="${#fields.hasGlobalErrors()}"
+                           th:text="${error}">Validation error</p>
+
+                        <div class="form-group col-md-11"
+                             th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
+                            <label class="control-label" for="username">E-mail</label>
+                            <input class="form-control"
+                                   data-msg="Incorrect email"
+                                   data-rule="email" id="username"
+                                   th:field="*{username}"
+                                   th:style="${#fields.hasErrors('username')} ? 'border: 2px solid red;' : ''"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-md-11"
+                             th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+                            <label class="control-label" for="password">Password</label>
+                            <input class="form-control"
+                                   data-msg="Enter a valid password <br>(8+ digit or latin characters)"
+                                   data-rule="pwrd" id="password"
+                                   th:field="*{password}"
+                                   type="password"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-md-11"
+                             th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
+                            <label class="control-label" for="firstName">First name</label>
+                            <input class="form-control"
+                                   data-msg="Enter a valid first name"
+                                   data-rule="firstnameexp" id="firstName"
+                                   th:field="*{firstName}"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-md-11"
+                             th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
+                            <label class="control-label" for="lastName">Last name</label>
+                            <input class="form-control"
+                                   data-msg="Enter a valid last name"
+                                   data-rule="lastnameexp" id="lastName"
+                                   th:field="*{lastName}"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-md-11"
+                             th:classappend="${#fields.hasErrors('firstNameUa')}? 'has-error':''">
+                            <label class="control-label" for="firstNameUa">First name UA</label>
+                            <p style="font-size: 0.9em;">(not required)</p>
+                            <input class="form-control"
+                                   data-msg="Enter a valid first name (ukrainian letters)"
+                                   data-rule="firstnameuaexp" id="firstNameUa"
+                                   th:field="*{firstNameUa}"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <input class="readmore d-block w-100" disabled="disabled" type="submit" value="SIGN UP">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <span>Already signed up? <a style="color:#34ce57" th:href="@{/login}">LOGIN</a></span>
+                        </div>
+
+                        <div class="alert alert-info col-md-12 mb-3" role="alert" th:if="${logout}">You've been logged
+                            out
+                            successfully.
+                        </div>
+                        <div class="alert alert-danger col-md-12 mb-3" role="alert" th:if="${error}">Invalid Username or
+                            Password!
+                        </div>
+                        <div class="col-md-12 mb-3" style="background: #eeeeee">
+                            <div class="loading" style="background: #eeeeee">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">filler</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="template :: footer"></div>
+<div th:replace="template :: scripts(~{::script})">  <!--(~{::script})-->
+    <script>
+        $(document).ready(function () {
+            $('.form-control').keyup(function () {
+                if (allFilled()) {
+                    $('.readmore').removeAttr('disabled')
+                } else {
+                    $('.readmore').prop("disabled", true);
+                }
+            });
+
+            function allFilled() {
+                var filled = true;
+                $('.form-control').each(function () {
+                    if ($(this).val() == '') filled = false;
+                });
+                return filled;
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

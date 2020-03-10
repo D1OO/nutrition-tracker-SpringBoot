@@ -1,193 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <title>Login - shvdy project</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Favicons -->
-    <link href="img/shvdyprojecticon.png" rel="icon">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P:400|Raleway:400,700&display=swap"
-          rel="stylesheet">
-
-    <!-- Bootstrap CSS File -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
-    <link href="vendor/icofont/icofont.min.css" rel="stylesheet">
-    <link href="vendor/line-awesome/css/line-awesome.min.css" rel="stylesheet">
-    <link href="vendor/aos/aos.css" rel="stylesheet">
-    <link href="vendor/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- =======================================================
-      Template Name: MyPortfolio
-      Template URL: https://bootstrapmade.com/myportfolio-bootstrap-portfolio-website-template/
-      Author: BootstrapMade.com
-      Author URL: https://bootstrapmade.com/
-    ======================================================= -->
-</head>
-
+<head th:replace="template :: head"></head>
 <body>
+<div th:replace="template :: main-navbar"></div>
+<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template :: main(~{:: div.maincontent})">
 
-<div class=" navbar custom-navmenu" id="main-navbar">
-    <div class="container">
-        <div class="row align-items-sm-start">
-            <div class="row-md-2">
-                <ul class="list-inline">
-                    <li class=list-inline-item><a href="index.html">Stay</a></li>
-                    <li class=list-inline-item><a href="about.html">Blessed</a></li>
-                    <li class=list-inline-item><a href="services.html">Never</a></li>
-                    <li class=list-inline-item><a href="works.html">Stressed</a></li>
-                    <li class="list-inline-item active"><a href="contact.html">Contact</a></li>
-                </ul>
+    <div class="maincontent d-flex flex-nowrap p-lg-3">
+        <img class="pagepic" th:src="@{/img/loginpic.jpg}">
+        <div class="mr-auto">
+            <div class="row d-flex justify-content-start form">
+                <div class=" mb-5 mb-md-0">
+                    <form class="form" method="post" th:action="@{/login}">
+                        <div class="col-md-11 form-group">
+                            <label for="email">E-mail</label>
+                            <input class="form-control"
+                                   data-msg="Incorrect email"
+                                   data-rule="email"
+                                   id="email" name="username"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="col-md-11 form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control"
+                                   data-msg="Enter a valid password <br>((8+ digit or latin characters)"
+                                   data-rule="pwrd"
+                                   id="password"
+                                   name="password"
+                                   type="password">
+                            <div class="validate"></div>
+                        </div>
+                        <div class="alert alert-info col-md-11 mb-3" role="alert" th:if="${logout}">
+                            You've been logged out
+                            successfully.
+                        </div>
+                        <div class="alert alert-danger col-md-11 mb-3" role="alert" th:if="${error}">
+                            Invalid Username or
+                            Password!
+                        </div>
+                        <div class="alert alert-success col-md-11 mb-3" role="alert" th:if="${signedup}">
+                            Signed up successfully!
+                        </div>
+                        <div class="col-md-11 mb-3" style="background: #eeeeee">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">fifler</div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <input class="readmore d-block w-100" disabled="disabled" type="submit" value="SIGN IN">
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <span>Don't have an account? <a style="color:#34ce57"
+                                                            th:href="@{/signup}">SIGN UP</a></span>
+                        </div>
+                        <div class="col-md-11 mb-2" style="color: #a55444; font-size: 0.8em">
+                            <p>Demo accounts:</p>
+                            <p>ADMIN: 123@123.com, 123123123e</p>
+                            <p>USER: 123123@123.com, 123123123e</p>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-            <!--            <div class="col-md-6 d-none d-md-block  mr-auto">-->
-            <!--                <div class="tweet d-flex">-->
-            <!--                    <span class="icofont-twitter text-white mt-2 mr-3"></span>-->
-            <!--                    <div>-->
-            <!--                        <p><em> <br> <a href="#">t.co/v82jsk</a></em></p>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-            <!--            <div class="col-md-4 d-none d-md-block">-->
-            <!--                <h3>Hire Me</h3>-->
-            <!--                <p><a href="#">myemail@gmail.com</a></p>-->
-            <!--            </div>-->
         </div>
     </div>
+
 </div>
+<div th:replace="template :: footer"></div>
+<div th:replace="template :: scripts(~{::script})">  <!--(~{::script})-->
+    <script>
+        $(document).ready(function () {
+            $('.form-control').keyup(function () {
+                if (allFilled()) {
+                    $('.readmore').removeAttr('disabled')
+                } else {
+                    $('.readmore').prop("disabled", true);
+                }
+            });
 
-<nav class="navbar navbar-light custom-navbar" id="navbar2">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">shvdy______</a>
-        <a class="navbar-brand" id="justatest">this is just a test</a>
-
-        <a class="burger" data-target="#main-navbar" data-toggle="collapse" href="#">
-            <span></span>
-        </a>
-
-    </div>
-</nav>
-
-<main id="main">
-    <div class="site-section pb-0 site-portfolio ">
-        <div class="container  justify-content-start" id="cont">
-            <img id="signinimage" src="/img/bg1.jpg">
-            <div class="mr-auto">
-                <div class="row mb-5 align-items-end d-flex justify-content-sm-start">
-                    <div class="col" data-aos="fade-up">
-                        <!--                    <h2>Contact</h2>-->
-                        <p class="mb-0">Have a good day</p>
-                    </div>
-                </div>
-                <div class="row d-flex justify-content-start">
-                    <div class=" mb-5 mb-md-0" data-aos="fade-up">
-                        <form action="" class="php-email-form" method="post" role="form">
-                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
-                            <div class="col-md-11 form-group">
-                                <label for="name">email</label>
-                                <input class="form-control" data-msg="Please enter a valid email" id="name"
-                                       name="username"/>
-
-                            </div>
-                            <div class="col-md-11 form-group">
-                                <label for="name">password</label>
-                                <input class="form-control" data-msg="" data-rule="" id="email" name="password"
-                                       type="password"/>
-                                <div class="validate"></div>
-                            </div>
-                            <div class="alert alert-info" role="alert" th:if="${logout}">You've been logged out
-                                successfully.
-                            </div>
-                            <div class="alert alert-danger" role="alert" th:if="${error}">Invalid Username or
-                                Password!
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-                            </div>
-
-                            <div class="col-md-6 form-group">
-                                <input class="readmore d-block w-100" type="submit" value="SIGN IN">
-                            </div>
-
-
-                        </form>
-
-                    </div>
-
-                    <!--          <div class="col-md-4 ml-auto order-2" data-aos="fade-up">-->
-                    <!--            <ul class="list-unstyled">-->
-                    <!--              <li class="mb-3">-->
-                    <!--                <strong class="d-block mb-1">Address</strong>-->
-                    <!--                <span>203 Fake St. Mountain View, San Francisco, California, USA</span>-->
-                    <!--              </li>-->
-                    <!--              <li class="mb-3">-->
-                    <!--                <strong class="d-block mb-1">Phone</strong>-->
-                    <!--                <span>+1 232 3235 324</span>-->
-                    <!--              </li>-->
-                    <!--              <li class="mb-3">-->
-                    <!--                <strong class="d-block mb-1">Email</strong>-->
-                    <!--                <span>youremail@domain.com</span>-->
-                    <!--              </li>-->
-                    <!--            </ul>-->
-                    <!--          </div>-->
-
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer class="footer mt-1 pt-1 " role="contentinfo">
-    <div class="container">
-        <div class="d-flex">
-            <div class="row-cols-sm-1">
-                <div class="d-flex"><p>Developed and designed by </p>
-                    <p style="color: black; margin-left: 1em"> shvdy &copy;</p></div>
-                <p>All Rights Reserved</p>
-            </div>
-            <div class="col-3  align-items-sm-end ">
-                <div CLASS="slink-container d-inline-flex">
-                    <a href="https://t.me/liveloveasap"><i class="sicon" id="ghicon"></i></a>
-                    <a class="slink align-self-center" href="https://t.me/liveloveasap">git hub</a>
-                </div>
-                <div CLASS="slink-container d-inline-flex">
-                    <a href="https://t.me/liveloveasap"><i class="sicon" id="tgicon"></i></a>
-                    <a class="slink align-self-center" href="https://t.me/liveloveasap">telegram</a>
-                </div>
-                <div CLASS="slink-container d-inline-flex">
-                    <i class="sicon" id="mailicon"></i>
-                    <p class="slink align-self-center">100dmytro@gmail.com</p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Vendor JS Files -->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/jquery/jquery-migrate.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="vendor/easing/easing.min.js"></script>
-<script src="../static/js/login-form-validation.js"></script>
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
-<script src="vendor/aos/aos.js"></script>
-<script src="vendor/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Template Main JS File -->
-<script src="js/main.js"></script>
-
+            function allFilled() {
+                var filled = true;
+                $('.form-control').each(function () {
+                    if ($(this).val() == '') filled = false;
+                });
+                return filled;
+            }
+        });
+    </script>
+</div>
 </body>
-
 </html>

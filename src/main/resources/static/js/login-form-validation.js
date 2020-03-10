@@ -2,11 +2,15 @@ jQuery(document).ready(function ($) {
   "use strict";
 
   //Contact
-  $('form.php-email-form').submit(function () {
+  $('form.form').submit(function () {
 
     var f = $(this).find('.form-group'),
         ferror = false,
-        emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
+        emailExp = /^([a-z0-9_\.-]{1,30})@([\da-z\.-]{1,15})\.([a-z\.]{2,8})$/,
+        pwrdExp = /^[0-9a-zA-Z]{8,15}$/i,
+        firstNameExp = /^[a-z ,.'-]{2,15}$/i,
+        lastNameExp = /^[a-z ,.'-]{2,30}$/i,
+        firstNameUaExp = /^[абвгдежзийклмнопрстуфхцчшщьюяіїґєАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЮЯІЇЄҐ]{2,20}/i;
 
     f.children('input').each(function () { // run all inputs
 
@@ -40,6 +44,31 @@ jQuery(document).ready(function ($) {
             if (!emailExp.test(i.val())) {
               ferror = ierror = true;
             }
+            break;
+
+          case 'pwrd':
+            if (!pwrdExp.test(i.val())) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case 'firstnameexp':
+            if (!firstNameExp.test(i.val())) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case 'lastnameexp':
+            if (!lastNameExp.test(i.val())) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case 'firstnameuaexp':
+            if (i.val() != null)
+              if (!firstNameUaExp.test(i.val())) {
+                ferror = ierror = true;
+              }
             break;
 
           case 'checked':
@@ -101,9 +130,9 @@ jQuery(document).ready(function ($) {
     //   return false;
     // }
 
-    this_form.find('.sent-message').slideUp();
-    this_form.find('.error-message').slideUp();
-    this_form.find('.loading').slideDown();
+    // this_form.find('.sent-message').slideUp();
+    // this_form.find('.error-message').slideUp();
+    // this_form.find('.loading').slideDown();
 
     this_form.submit();
   });

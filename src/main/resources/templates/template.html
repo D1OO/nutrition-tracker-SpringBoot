@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <title>Login - shvdy project</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="img/shvdyprojecticon.png" rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P:400|Raleway:400,700&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="vendor/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+    <link href="vendor/aos/aos.css" rel="stylesheet">
+    <link href="vendor/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+      Template Name: MyPortfolio
+      Template URL: https://bootstrapmade.com/myportfolio-bootstrap-portfolio-website-template/
+      Author: BootstrapMade.com
+      Author URL: https://bootstrapmade.com/
+    ======================================================= -->
+</head>
+<body>
+
+<div class="navbar custom-navmenu" id="main-navbar" th:fragment="main-navbar">
+    <div class="container" style="background:white">
+        <ul class="list-inline" style="font-size: 0.8em">
+            <li class=list-inline-item><a th:href="index">Stay</a></li>
+            <li class=list-inline-item><a th:href="index">Blessed</a></li>
+            <li class=list-inline-item><a th:href="index">Never</a></li>
+            <li class=list-inline-item><a th:href="index">Stressed</a></li>
+        </ul>
+
+        <ul class="list-inline  navbar-right">
+            <li class=" list-inline-item">
+                <div class="locale">
+                    <button class="btn-secondary" value="ua">ua</button>
+                    <button class="btn-secondary" value="eng">en</button>
+                </div>
+            </li>
+            <li class="list-inline-item" sec:authorize="isAuthenticated()">
+                <ul class="list-inline ">
+                    <li class="list-inline-item" style="font-size: 0.7em; max-width: 560px">
+                        <p><span th:text="#{logged-as}"></span>
+                            <span id="logged-in-as" th:text="${#authentication.getPrincipal().getFirstName()}"></span>
+                            <span th:text="${'(' + #request.userPrincipal.name + ')'}"></span>
+                        </p>
+                    </li>
+                    <li class="list-inline-item" id="logout-link">
+                        <form id="logoutForm" method="POST" th:action="@{/logout}">
+                            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                        </form>
+                        <button class="btn-secondary" onclick="document.forms['logoutForm'].submit()">Logout</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<nav class="navbar navbar-light custom-navbar" id="navbar2" th:fragment="decor-navbar">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">shvdy______</a>
+        <a class="navbar-brand" id="justatest">this is just a test</a>
+        <span sec:authorize="hasAuthority('ROLE_SUPERADMIN')" style="font-size: 0.8em"><a th:href="admin">Admin page</a>
+        </span>
+        <a class="burger" data-target="#main-navbar" data-toggle="collapse" href="#">
+            <span></span>
+        </a>
+    </div>
+</nav>
+
+<main id="main" th:fragment="main(content)">
+    <div class="site-section pb-0 site-portfolio " style="height: 100%">
+        <div class="container align-self-start align-items-start " id="cont" style=" height: 100%">
+            <div class="d-inline-block align-self-start   align-items-start" style="height: 100%; background: #eeeeee">
+                <div class="d-inline-block align-items-start" data-aos="fade-zoom-in" data-aos-offset="0">
+                    <div th:replace="${content}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer mt-1 pt-1 " role="contentinfo" th:fragment="footer">
+    <div class="container">
+        <div class="d-flex">
+            <div class="row-cols-sm-1">
+                <div class="d-flex"><p>Developed and designed by </p>
+                    <p style="color: black; margin-left: 1em"> shvdy &copy;</p></div>
+                <p>All Rights Reserved</p>
+            </div>
+            <div class="col-3  align-items-sm-end ">
+                <div CLASS="slink-container d-inline-flex">
+                    <a href="https://github.com/D1OO/Spring-Boot-Project"><i class="sicon" id="ghicon"></i></a>
+                    <a class="slink align-self-center" href="https://github.com/D1OO/Spring-Boot-Project">git hub</a>
+                </div>
+                <div CLASS="slink-container d-inline-flex">
+                    <a href="https://t.me/liveloveasap"><i class="sicon" id="tgicon"></i></a>
+                    <a class="slink align-self-center" href="https://t.me/liveloveasap">telegram</a>
+                </div>
+                <div CLASS="slink-container d-inline-flex">
+                    <i class="sicon" id="mailicon"></i>
+                    <p class="slink align-self-center">100dmytro@gmail.com</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div th:fragment="scripts(additional_scripts)">   <!--(~{::script})-->
+    <!-- Vendor JS Files -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery-migrate.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/easing/easing.min.js"></script>
+    <script src="vendor/isotope/isotope.pkgd.min.js"></script>
+    <script src="vendor/aos/aos.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="js/main.js"></script>
+
+    <script src="js/login-form-validation.js"></script>
+
+    <script id="change-lang-param" type="text/javascript">
+        $(document).ready(function () {
+            $(".locale").click(function (event) {
+                var selectedOption = $(event.target).val();
+                if (selectedOption != '') {
+                    location.replace('?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+
+    <th:block th:if="${additional_scripts != null}">
+        <th:block th:replace="${additional_scripts}"/>
+    </th:block>
+</div>
+
+</body>
+</html>
