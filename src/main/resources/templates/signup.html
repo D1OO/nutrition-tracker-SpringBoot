@@ -11,12 +11,16 @@
         <div class="mr-auto">
             <div class="row d-flex justify-content-start form">
                 <div class=" mb-5 mb-md-0">
-                    <form class="form" method="post" th:action="@{/signup}" th:object="${user}">
+                    <form class="form" method="post" th:action="@{/signup}" th:object="${newUser}">
                         <p class="error-validation"
                            th:each="error : ${#fields.errors('global')}"
                            th:if="${#fields.hasGlobalErrors()}"
                            th:text="${error}">Validation error</p>
-
+                        <input th:field="*{accountNonExpired}">
+                        <input th:field="${newUser.accountNonLocked}">
+                        <input th:field="${newUser.credentialsNonExpired}">
+                        <input th:field="${newUser.enabled}">
+                        <input th:field="${newUser.authorities}">
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
                             <label class="control-label" for="username">E-mail</label>

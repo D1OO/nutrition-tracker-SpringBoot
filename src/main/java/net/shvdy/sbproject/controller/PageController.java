@@ -42,7 +42,7 @@ public class PageController {
             return "index";
     }
 
-    @PostMapping("/food-diary")
+    @RequestMapping("/food-diary")
     public String foodDiaryFragment(@AuthenticationPrincipal User user, Model model) {
         LocalDate currentDate = LocalDate.now();
         DailyRecordDTO dailyRecord = dailyRecordService.getForUserAndDate(user.getId(), currentDate.toString());
@@ -54,10 +54,11 @@ public class PageController {
         return "fragments/user-page/food-diary :: content";
     }
 
-    @PostMapping("/complete-profile-to-proceed")
+    @RequestMapping("/complete-profile-to-proceed")
     public String completeInfoToProceedFragment() {
         return "fragments/user-page/complete-profile-to-proceed :: content";
     }
+
 
     @PostMapping(value = "/create-add-food-modal-window")
     public String modalFragment(@RequestParam Long recordId, @RequestParam Long userId, Model model) {

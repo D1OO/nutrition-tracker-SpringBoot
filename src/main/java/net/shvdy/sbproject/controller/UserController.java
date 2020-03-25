@@ -1,17 +1,20 @@
 package net.shvdy.sbproject.controller;
 
 import net.shvdy.sbproject.dto.UserDTO;
+import net.shvdy.sbproject.dto.UserProfileDTO;
+import net.shvdy.sbproject.entity.RoleType;
+import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.service.UserService;
 import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Collections;
 
 /**
  * 23.03.2020
@@ -20,12 +23,42 @@ import javax.validation.Valid;
  * @version 1.0
  */
 @Controller
-public class AuthenticationController {
+public class UserController {
 
     private final UserService userService;
 
-    public AuthenticationController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @ModelAttribute("newUser")
+    public UserDTO newUserDTO() {
+        UserDTO newUserDTO = UserDTO.builder()
+                .authorities(Collections.singleton(RoleType.ROLE_USER))
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .build();
+        newUserDTO.setUserProfile(UserProfileDTO.builder().user(newUserDTO).build());
+        return newUserDTO;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
+    @RequestMapping("/profile")
+    public String userProfile(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("userProfile", user);
+        return "fragments/user-page/profile :: content";
+    }
+
+    @PostMapping("/profile")
+    public String saveProfile(UserDTO userProfileDTO, Model model) {
+        userService.updateProfile(userProfileDTO);
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/login")
@@ -56,25 +89,16 @@ public class AuthenticationController {
         return "signup";
     }
 
-    @ModelAttribute("user")
-    public UserDTO userRegistrationDto() {
-        return new UserDTO();
-    }
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-    }
-
     @PostMapping("/signup")
-    public String createAccount(@ModelAttribute("user") @Valid UserDTO userDto, BindingResult result) {
+    public String createAccount(UserDTO userDto) {
         try {
             userService.saveNewUser(userDto);
         } catch (AccountAlreadyExistsException e) {
-            result.rejectValue("username", "", "The account is already existing for this email");
-        }
-        if (result.hasErrors())
             return "signup";
+//            result.rejectValue("username", "", "The account is already existing for this email");
+        }
+//        if (result.hasErrors())
+
         return "redirect:/login?success";
     }
 }

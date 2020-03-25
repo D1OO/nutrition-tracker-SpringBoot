@@ -14,11 +14,11 @@
             </div>
             <div th:switch="${user.getUserProfile().getDailyCalsNorm()}">
                 <div th:case="-1">
-                    <button class="get-content-from-address" style="visibility: hidden"
+                    <button class="is-profile-completed" style="visibility: hidden"
                             value="/complete-profile-to-proceed"></button>
                 </div>
                 <div th:case="*">
-                    <button class="get-content-from-address" style="visibility: hidden" value="/food-diary"></button>
+                    <button class="is-profile-completed" style="visibility: hidden" value="/food-diary"></button>
                 </div>
             </div>
             <div class="maincontent d-flex flex-nowrap p-lg-3" data-aos="fade-zoom-in" data-aos-offset="0"
@@ -31,11 +31,15 @@
 <div th:replace="template :: scripts(~{::script})">
     <script>
         $(document).ready(function () {
-            setContent();
+            setInitialContent();
         });
 
-        function setContent() {
-            $.post($('.get-content-from-address').val(), function (data) {
+        function setInitialContent() {
+            setContentContainerTo($('.is-profile-completed').val());
+        }
+
+        function setContentContainerTo(controllerEndpoint) {
+            $.get(controllerEndpoint, function (data) {
                 document.getElementById('content-container').innerHTML = data;
             });
         }
@@ -55,16 +59,9 @@
 
         window.onclick = function (event) {
             if (event.target == $('#myModal')) {
-                $('#myModal').style.display = "none";
+                $('mmodal').style.display = "none";
             }
         };
-
-
-        function replacePage(html) {
-            document.open("text/html", "replace");
-            document.write(html);
-            document.close();
-        }
 
         function replaceItems(html) {
             $('#items').html(html);
@@ -78,8 +75,6 @@
             var data = $('#newEntryf').serialize();
             $.post('/', data, replaceItems);
         }
-
-
     </script>
 </div>
 </body>

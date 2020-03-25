@@ -1,6 +1,9 @@
 package net.shvdy.sbproject.dto;
 
 import lombok.*;
+import net.shvdy.sbproject.entity.RoleType;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,5 +17,10 @@ public class UserDTO {
     private String firstNameUa;
     private String lastName;
 
+    Set<RoleType> authorities;
     UserProfileDTO userProfile;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 }

@@ -17,7 +17,7 @@
                     <a class="pretty-button signupButton" href="javascript:void(0)"
                        onclick="document.forms['signUpButton'].submit()"
                        th:text="#{create-account}">Create Account</a>
-                    <form id="signUpButton" method="POST" th:action="@{/signup}">
+                    <form id="signUpButton" method="GET" th:action="@{/signup}">
                         <!--                        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>-->
                     </form>
                 </div>

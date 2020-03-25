@@ -18,13 +18,13 @@ import java.util.List;
 @Builder
 public class UserProfileDTO {
 
-    UserDTO user;
-    List<FoodDTO> userFood;
     private Long userId;
     private int age;
     private int height;
     private int weight;
     private UserProfile.Lifestyle lifestyle;
+    UserDTO user;
+    List<FoodDTO> userFood;
 
     // If user's profile isn't filled,
     // Thymeleaf will check on '-1' value and display 'fill profile to proceed' window,

@@ -15,8 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    UserProfile userProfile;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -32,17 +30,20 @@ public class User implements UserDetails {
     @Column(name = "first_name")
     @NotNull
     private String firstName;
-    @NotNull
+
     @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
     private Set<RoleType> authorities;
 
-    @NotNull
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    UserProfile userProfile;
+
+    @Column(name = "account_non_expired")
     private boolean accountNonExpired;
-    @NotNull
+    @Column(name = "account_non_locked")
     private boolean accountNonLocked;
-    @NotNull
+    @Column(name = "credentials_non_expired")
     private boolean credentialsNonExpired;
-    @NotNull
+    @Column(name = "enabled")
     private boolean enabled;
 }
