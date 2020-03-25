@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head(~{::title})">
+<head th:replace="template :: head(~{::title} )">
     <title>Login to shvdy project</title>
+
 </head>
 <body>
-<div th:replace="template :: main-navbar"></div>
-<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
-    <div class="maincontent d-flex flex-nowrap p-lg-3">
+    <div class="maincontent d-flex flex-nowrap p-lg-3" style="height:100%; background: #eeeeee">
         <img class="pagepic" th:src="@{/img/loginpic.jpg}">
         <div class="mr-auto">
             <div class="row d-flex justify-content-start form">
@@ -50,7 +50,8 @@
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <input class="readmore d-block w-100" disabled="disabled" type="submit" value="SIGN IN">
+                            <input class="pretty-button d-block w-100" disabled="disabled" type="submit"
+                                   value="SIGN IN">
                         </div>
 
                         <div class="col-md-12 form-group">
@@ -72,25 +73,6 @@
 </div>
 <div th:replace="template :: footer"></div>
 <div th:replace="template :: scripts(~{::script})">  <!--(~{::script})-->
-    <script>
-        $(document).ready(function () {
-            $('.form-control').keyup(function () {
-                if (allFilled()) {
-                    $('.readmore').removeAttr('disabled')
-                } else {
-                    $('.readmore').prop("disabled", true);
-                }
-            });
-
-            function allFilled() {
-                var filled = true;
-                $('.form-control').each(function () {
-                    if ($(this).val() == '') filled = false;
-                });
-                return filled;
-            }
-        });
-    </script>
 </div>
 </body>
 </html>

@@ -1,22 +1,13 @@
-/**
- * UserService
- * <p>
- * version 1.0
- * <p>
- * 06.03.2020
- * <p>
- * Copyright(r) shvdy.net
- */
-
 package net.shvdy.sbproject.service;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.shvdy.sbproject.dto.UserDTO;
-import net.shvdy.sbproject.dto.UsersDTO;
 import net.shvdy.sbproject.entity.RoleType;
 import net.shvdy.sbproject.entity.User;
+import net.shvdy.sbproject.entity.UserProfile;
 import net.shvdy.sbproject.repository.UserRepository;
+import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,25 +30,13 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public UsersDTO getAllUsers() {
-        //TODO checking for an empty user list
-        return new UsersDTO(userRepository.findAll());
-    }
-
-    public Optional<User> findByUserLogin(String login) {
-        //TODO check for user availability. password check
-        return userRepository.findByUsername(login);
-    }
-
-    public void saveNewUser(UserDTO userDTO) throws Exception {
+    public void saveNewUser(UserDTO userDTO) throws AccountAlreadyExistsException {
         User newUser = DTOToEntityMapper(userDTO);
         newUser.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-        //TODO inform the user about the replay email
-        // TODO exception to endpoint
         try {
             userRepository.save(newUser);
-        } catch (Exception ex) {
-            throw ex;
+        } catch (Exception e) {
+            throw new AccountAlreadyExistsException();
         }
     }
 
@@ -69,14 +48,15 @@ public class UserService implements UserDetailsService {
 
     private User DTOToEntityMapper(UserDTO userDTO) {
         User u = new User();
-
         BeanUtils.copyProperties(userDTO, u);
+        u.setUserProfile(new UserProfile());
+        u.getUserProfile().setUser(u);
+        u.getUserProfile().setUserFood(new ArrayList<>());
         u.setAccountNonExpired(true);
         u.setAccountNonLocked(true);
         u.setEnabled(true);
         u.setCredentialsNonExpired(true);
         u.setAuthorities(Collections.singleton(RoleType.ROLE_USER));
-
         return u;
     }
 }

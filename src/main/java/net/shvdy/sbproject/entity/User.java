@@ -1,13 +1,3 @@
-/**
- * User
- * <p>
- * version 1.0
- * <p>
- * 06.03.2020
- * <p>
- * Copyright(r) shvdy.net
- */
-
 package net.shvdy.sbproject.entity;
 
 import lombok.*;
@@ -22,40 +12,37 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 @Entity
-@Table(name = "user",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Table(name = "user")
 public class User implements UserDetails {
-    @Column(name = "email", nullable = false)
-    @NotNull
-    private String username;
-    @Column(nullable = false)
-    @NotNull
-    private String password;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    UserProfile userProfile;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "first_name", nullable = false)
     @NotNull
-    private String firstName;
+    private String password;
+    @NotNull
+    @Column(name = "email")
+    private String username;
     @Column(name = "first_name_ua")
     private String firstNameUa;
     @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "role", nullable = false)
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
+    @NotNull
     @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
     private Set<RoleType> authorities;
 
-    @Column(nullable = false)
+    @NotNull
     private boolean accountNonExpired;
-    @Column(nullable = false)
+    @NotNull
     private boolean accountNonLocked;
-    @Column(nullable = false)
+    @NotNull
     private boolean credentialsNonExpired;
-    @Column(nullable = false)
+    @NotNull
     private boolean enabled;
 }

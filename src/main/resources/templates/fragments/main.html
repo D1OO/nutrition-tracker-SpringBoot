@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<main id="main" th:fragment="main(content)">
+    <div class="site-section pb-0 site-portfolio" id="bg" style="height: 100%">
+        <div class="container align-self-start align-items-start " id="cont" style=" height: 100%">
+            <div class="d-inline-block align-self-start   align-items-start" style="height: 100% ">
+                <div class="d-inline-block align-items-start" data-aos="fade-zoom-in" data-aos-offset="0">
+                    <!--data-aos="fade-zoom-in"-->
+                    <div th:replace="${content}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

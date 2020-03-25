@@ -1,17 +1,8 @@
-/**
- * MVCConfig
- * <p>
- * version 1.0
- * <p>
- * 06.03.2020
- * <p>
- * Copyright(r) shvdy.net
- */
-
 package net.shvdy.sbproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,6 +11,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
+@EnableSpringDataWebSupport
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Bean

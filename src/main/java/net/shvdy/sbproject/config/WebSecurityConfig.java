@@ -1,13 +1,3 @@
-/**
- * SecurityConfig
- * <p>
- * version 1.0
- * <p>
- * 07.03.2020
- * <p>
- * Copyright(r) shvdy.net
- */
-
 package net.shvdy.sbproject.config;
 
 import net.shvdy.sbproject.service.UserService;
@@ -38,13 +28,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/signup", "/login", "/readme.txt", "/css/*", "/user", "/js/**", "/img/**", "/vendor/**").permitAll()
+                .antMatchers("/", "/signup", "/login", "/css/*", "/user", "/js/**", "/img/**", "/vendor/**").permitAll()
                 .antMatchers("/admin").hasAnyRole("ADMIN", "SUPERADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").successHandler(authenticationSuccessHandler).permitAll()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll();
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and()
+                .csrf().disable();
     }
 
     @Bean

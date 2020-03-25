@@ -4,16 +4,15 @@
     <title>shvdy project</title>
 </head>
 <body>
-<div th:replace="template :: main-navbar"></div>
-<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
     <div class="maincontent d-flex flex-nowrap p-lg-3">
-        <img class="pagepic" th:src="@{/img/bg3.jpg}">
-        <div class="mr-auto">
-            <h1>USER PAGE</h1>
-            <h2>Coming soon...</h2>
-        </div>
+        <img style="max-width: 100%" th:src="@{/img/bg7.jpg}">
+        <!--        <div class="mr-auto">-->
+        <!--            <h1>USER PAGE</h1>-->
+        <!--            <h2>Coming soon...</h2>-->
+        <!--        </div>-->
     </div>
 
 </div>

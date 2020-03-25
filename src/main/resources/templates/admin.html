@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head(~{::title})">
+<head th:replace="template :: head(~{::title} )">
     <title>shvdy project - admin</title>
 </head>
 <body>
-<div th:replace="template :: main-navbar"></div>
-<div th:replace="template :: decor-navbar"></div>
+<div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
-    <div class="maincontent d-flex flex-nowrap p-lg-3">
+    <div class="maincontent d-flex flex-nowrap p-lg-3" style="height:100%; background: #eeeeee">
         <img class="pagepic" th:src="@{/img/bg4.jpg}">
         <div class="mr-auto">
             <h1>ADMIN PAGE</h1>

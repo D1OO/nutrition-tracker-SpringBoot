@@ -22,6 +22,114 @@ body {
     flex-direction: column;
 }
 
+.font-rubick {
+    font-family: 'Rubik', sans-serif;
+}
+
+.pretty-button {
+    display: inline-block;
+    border: 1px solid #000;
+    padding: 10px 15px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #000;
+    transition: .2s all ease;
+    font-weight: 700;
+}
+
+.pretty-button {
+    border: 2px solid black;
+}
+
+.pretty-button:active,
+.pretty-button:focus,
+.pretty-button:hover {
+    outline: none;
+}
+
+.pretty-button:hover {
+    color: #fff;
+    text-decoration: none;
+    background: #000;
+}
+
+.pretty-button:disabled {
+    background: grey;
+    color: #414141;
+}
+
+.pretty-button:disabled:hover {
+    background: grey;
+    color: black;
+}
+
+.top-container .pretty-button {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: 2px solid #292929;
+}
+
+.top-container .pretty-button:hover {
+    color: #000000;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0);
+}
+
+.signupButton {
+    background: rgb(213, 95, 147);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 1) 10%, rgba(233, 232, 148, 1) 100%);
+}
+
+.top-container .pretty-button:hover {
+    background: rgb(213, 95, 147);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 1) 10%, rgba(233, 232, 148, 1) 100%);
+}
+
+.top-container .signupButton:hover {
+    background: rgb(199, 140, 181);
+    background: linear-gradient(338deg, rgb(213, 171, 177) 10%, rgb(226, 226, 165) 100%);
+}
+
+.formf input {
+
+    width: 8em;
+}
+
+
+.table {
+    -webkit-border-radius: 32px;
+    -moz-border-radius: 32px;
+    border-radius: 32px;
+    headeborder: 1px solid black;
+}
+
+.table thead .bg {
+    background: #a5e6a3;
+}
+
+.table thead #first {
+    /*height: 60px;*/
+    border-top-left-radius: 10px;
+}
+
+.table thead :last-child {
+    border-top-right-radius: 10px;
+}
+
+table {
+    table-layout: auto !important;
+    /*white-space: nowrap*/
+}
+
+
+.left-cell {
+
+}
+
+.right-cell {
+
+}
+
 #cont {
     /*background: url("../img/loginpic.jpg") center left no-repeat;*/
     /*background-size: 290px;*/
@@ -39,8 +147,17 @@ body {
     border: 4px solid black;
 }
 
-#logged-in-as {
-    background-color: black;
+.logged-in-as {
+    background-color: #272727;
+    color: white !important;
+
+    padding: 5px;
+
+}
+
+
+.logged-in-as2 {
+    background-color: #575757;
     color: white !important;
 
     padding: 5px;
@@ -91,6 +208,13 @@ body {
     margin-bottom: 0.4em;
     margin-right: 0.4em;
 }
+
+/*#bg {*/
+/*    background-image: url(/img/bg5.jpg);*/
+/*    background-size: cover;*/
+/*    display: inline-block;*/
+/*    opacity: 0.2;*/
+/*}*/
 
 #tgicon {
     background: url("../img/telegram.svg") center left no-repeat;
@@ -297,42 +421,6 @@ h6,
     font-size: 28px;
 }
 
-.readmore {
-    display: inline-block;
-    border: 1px solid #000;
-    padding: 10px 15px;
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #000;
-    transition: .2s all ease;
-    font-weight: 700;
-}
-
-.readmore {
-    border: 2px solid black;
-}
-
-.readmore:active,
-.readmore:focus,
-.readmore:hover {
-    outline: none;
-}
-
-.readmore:hover {
-    color: #fff;
-    text-decoration: none;
-    background: #000;
-}
-
-.readmore:disabled {
-    background: grey;
-    color: #414141;
-}
-
-.readmore:disabled:hover {
-    background: grey;
-    color: black;
-}
 
 .testimonial-carousel .owl-dots {
     position: absolute;
@@ -493,9 +581,22 @@ h6,
 
 .custom-navmenu {
     /* Center the image */
-    background: url("../img/navbg.png") center;
+    /*background: url("../img/navbg.png") center;*/
     background-size: cover;
-    display: block;
+}
+
+.navbar-light {
+    background: rgb(238, 174, 202);
+    background: linear-gradient(338deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
+.navbar-brand {
+    color: #202020;
+}
+
+.top-container {
+    background: rgb(238, 174, 202);
+    background: linear-gradient(338deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
 
 .custom-navmenu .custom-menu,
@@ -675,4 +776,10 @@ h6,
         background: url("../img/telegram.svg") center right no-repeat;
         padding-right: 18px;
     }
+}
+
+.removeButton:hover {
+    color: #000;
+    text-decoration: none;
+    background: #fdbaba;
 }

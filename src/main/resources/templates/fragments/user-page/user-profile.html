@@ -1,0 +1,147 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="col-md-3 content-container" style="max-width: 75%">
+        <div class="h2 mb-4 font-rubick d-flex justify-content-center">Food Diary</div>
+        <div class="row align-items-center">
+            <h4 class="font-rubick mr-2">Your daily calories norm:</h4>
+            <h4 class="font-rubick  logged-in-as" th:text="${dailyCalsPercentage} + '%'"></h4>
+            <h4 class="font-rubick " th:text="' (' + ${dailyRecord.getTotalCalories()} + '/' +
+                     ${user.userProfile.getDailyCalsNorm()}"></h4><h4 class="font-rubick">)</h4>
+            <!--                    <h4 class="font-rubick mr-1"> norm: </h4>-->
+            <!--                    <h4 class="font-rubick logged-in-as" th:text="${user.userProfile.getDailyCalsNorm()}"></h4>-->
+        </div>
+        <div class=" mb-5 mb-md-0">
+            <form class="form" method="post" th:action="@{/update-profile}" th:object="${user}">
+                <p class="error-validation"
+                   th:each="error : ${#fields.errors('global')}"
+                   th:if="${#fields.hasGlobalErrors()}"
+                   th:text="${error}">Validation error</p>
+
+                <div class="form-group col-md-11"
+                     th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
+                    <label class="control-label" for="username">E-mail</label>
+                    <input class="form-control"
+                           data-msg="Incorrect email"
+                           data-rule="email" id="username"
+                           th:field="*{username}"
+                           th:style="${#fields.hasErrors('username')} ? 'border: 2px solid red;' : ''"/>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-11"
+                     th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+                    <label class="control-label" for="password">Password</label>
+                    <input class="form-control"
+                           data-msg="Enter a valid password <br>(8+ digit or latin characters)"
+                           data-rule="pwrd" id="password"
+                           th:field="*{password}"
+                           type="password"/>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-11"
+                     th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
+                    <label class="control-label" for="firstName">First name</label>
+                    <input class="form-control"
+                           data-msg="Enter a valid first name"
+                           data-rule="firstnameexp" id="firstName"
+                           th:field="*{firstName}"/>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-11"
+                     th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
+                    <label class="control-label" for="lastName">Last name</label>
+                    <input class="form-control"
+                           data-msg="Enter a valid last name"
+                           data-rule="lastnameexp" id="lastName"
+                           th:field="*{lastName}"/>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-11"
+                     th:classappend="${#fields.hasErrors('firstNameUa')}? 'has-error':''">
+                    <label class="control-label" for="firstNameUa">First name UA</label>
+                    <p style="font-size: 0.9em;">(not required)</p>
+                    <input class="form-control"
+                           data-msg="Enter a valid first name (ukrainian letters)"
+                           data-rule="firstnameuaexp" id="firstNameUa"
+                           th:field="*{firstNameUa}"/>
+                    <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-5">
+                    <input class="pretty-button d-block w-100" disabled="disabled" type="submit" value="SIGN UP">
+                </div>
+                <div class="form-group col-md-12">
+                    <span>Already signed up? <a style="color:#34ce57" th:href="@{/login}">LOGIN</a></span>
+                </div>
+
+                <div class="alert alert-info col-md-12 mb-3" role="alert" th:if="${logout}">You've been logged
+                    out
+                    successfully.
+                </div>
+                <div class="alert alert-danger col-md-12 mb-3" role="alert" th:if="${error}">Invalid Username or
+                    Password!
+                </div>
+                <div class="col-md-12 mb-3" style="background: #eeeeee">
+                    <div class="loading" style="background: #eeeeee">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">filler</div>
+                </div>
+            </form>
+        </div>
+        <table class="table font-rubick" style="width: 450px; font-size: 1.2em">
+            <thead style="font-size: 0.9em; font-weight: normal; text-align: right">
+            <!--            <tr>-->
+            <!--                <th colspan="2" style="text-align: left">-->
+            <!--                            <span class="font-rubick p-lg-2"-->
+            <!--                                  style=" color: darkslategrey; font-size: 1.2em" th:text="-->
+            <!--                                  ${#temporals.dayOfWeekName(localDate)} + ' ' +-->
+            <!--                                  ${#temporals.day(localDate)} + ', ' +-->
+            <!--                                  ${#temporals.monthName(localDate)} + ' ' +-->
+            <!--                                  ${#temporals.year(localDate)}">-->
+            <!--                            </span>-->
+            <!--                </th>-->
+            <!--                <th class="bg" id="first" th:text="#{user.fat}">Fat</th>-->
+            <!--                <th class="bg" th:text="#{user.carbs}">Carbs</th>-->
+            <!--                <th class="bg" th:text="#{user.prot}">Prot</th>-->
+            <!--                <th class="bg" th:text="#{user.calories}">Cals</th>-->
+            <!--            </tr>-->
+            <!--            </thead>-->
+            <!--            <tbody style="text-align: right">-->
+            <!--            <tr>-->
+            <!--                <td>TOTAL</td>-->
+            <!--                <td></td>-->
+            <!--                <td th:text="${dailyRecord.getTotalFats()}"></td>-->
+            <!--                <td th:text="${dailyRecord.getTotalProteins()}"></td>-->
+            <!--                <td th:text="${dailyRecord.getTotalCarbs()}"></td>-->
+            <!--                <td th:text="${dailyRecord.getTotalCalories()}"></td>-->
+            <!--            </tr>-->
+            <tr th:each="food: ${dailyRecord.entries}">
+
+                <td style="text-align: right;" th:text="${food.food.name}"></td>
+                <td style=" vertical-align: middle; text-align: left; color: #747478; font-size: 0.7em"
+                    th:text="${food.quantity} + 'g'"></td>
+
+                <!--                            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>-->
+                <td th:text="${food.food.fats * food.quantity/100}"></td>
+                <td th:text="${food.food.carbohydrates * food.quantity/100}"></td>
+                <td th:text="${food.food.proteins * food.quantity/100}"></td>
+                <td style="background: #e2bfaf   ;font-weight: bold"
+                    th:text="${food.food.calories * food.quantity/100}"></td>
+            </tr>
+            <!--            <tr>-->
+            <!--                <td>-->
+            <!--                    <form id="data-for-modal"  method="post">-->
+            <!--                        <input th:value="${modalData}" name="userFood" id="userFood">-->
+            <!--                        <input th:field="${dailyRecord.recordId}">-->
+            <!--                        &lt;!&ndash;                        <input th:field="${userFood}">&ndash;&gt;-->
+            <!--                    </form>-->
+            <!--                    <button class="pretty-button" th:onclick="sss()" id="myBtn" style="width: 12em"> +</button>-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="scripts(additional_scripts)">   <!--(~{::script})-->
+    <!-- Vendor JS Files -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery-migrate.min.js"></script>
+    <script src="vendor/jquery/jquery-form-plugin.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/easing/easing.min.js"></script>
+    <script src="vendor/isotope/isotope.pkgd.min.js"></script>
+    <script src="vendor/aos/aos.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="js/main.js"></script>
+    <script src="js/login-form-validation.js"></script>
+
+
+    <script id="change-lang-param" type="text/javascript">
+
+        $(document).ready(function () {
+            AOS.init({
+                easing: 'ease',
+                duration: 1000,
+            });
+
+            $(".locale").click(function (event) {
+                var selectedOption = event.target.id;
+                if (selectedOption != '') {
+                    location.replace('?lang=' + selectedOption);
+                }
+            });
+
+            $('.slink-container').hover(function () {
+                $(this).css("text-decoration", "underline");
+            }, function () {
+                // on mouseout, reset the background colour
+                $(this).css("text-decoration", "none");
+            });
+
+            $('.form-control').keyup(function () {
+                if (allFilled()) {
+                    $('.pretty-button').removeAttr('disabled')
+                } else {
+                    $('.pretty-button').prop("disabled", true);
+                }
+            });
+
+            function allFilled() {
+                var filled = true;
+                $('.form-control').each(function () {
+                    if ($(this).val() == '') filled = false;
+                });
+                return filled;
+            }
+
+            $('.pretty-button').hover(function () {
+                if (allFilled()) {
+                    $('.pretty-button').removeAttr('disabled')
+                } else {
+                    $('.pretty-button').prop("disabled", true);
+                }
+            });
+        });
+    </script>
+    <th:block th:if="${additional_scripts != null}">
+        <th:block th:replace="${additional_scripts}"/>
+    </th:block>
+</div>
+</body>
+</html>

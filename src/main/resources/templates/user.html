@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head(~{::title})">
+    <title>shvdy project</title>
+</head>
+<body>
+<div th:replace="template::top-bar"></div>
+<div id="mmodal" style="display: none"></div>
+<div th:replace="template :: main(~{:: div.maincontent})">
+    <div class="maincontent d-flex flex-nowrap p-lg-3">
+        <div class="row" style="width: 100%">
+            <div class="col-md maincontent d-flex flex-nowrap p-lg-3" style="background: #eeeeee">
+                <div class="h5 fgfg">Header test</div>
+            </div>
+            <div th:switch="${user.getUserProfile().getDailyCalsNorm()}">
+                <div th:case="-1">
+                    <button class="get-content-from-address" style="visibility: hidden"
+                            value="/complete-profile-to-proceed"></button>
+                </div>
+                <div th:case="*">
+                    <button class="get-content-from-address" style="visibility: hidden" value="/food-diary"></button>
+                </div>
+            </div>
+            <div class="maincontent d-flex flex-nowrap p-lg-3" data-aos="fade-zoom-in" data-aos-offset="0"
+                 id="content-container" style="background: #eeeeee">
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="template :: footer"></div>
+<div th:replace="template :: scripts(~{::script})">
+    <script>
+        $(document).ready(function () {
+            setContent();
+        });
+
+        function setContent() {
+            $.post($('.get-content-from-address').val(), function (data) {
+                document.getElementById('content-container').innerHTML = data;
+            });
+        }
+
+        function openAddFoodModalWindow() {
+            event.preventDefault();
+            var data = $('#data-for-add-food-modal-window').serialize();
+            $.post('/create-add-food-modal-window', data, function (data) {
+                document.getElementById('mmodal').innerHTML = data;
+                $("#mmodal").css("display", "block");
+            });
+        }
+
+        function closeAddFoodModalWindow() {
+            $('#mmodal').css("display", "none");
+        }
+
+        window.onclick = function (event) {
+            if (event.target == $('#myModal')) {
+                $('#myModal').style.display = "none";
+            }
+        };
+
+
+        function replacePage(html) {
+            document.open("text/html", "replace");
+            document.write(html);
+            document.close();
+        }
+
+        function replaceItems(html) {
+            $('#items').html(html);
+        }
+
+        function functionName() {
+            event.preventDefault();
+            var x = $('.foodentry').length;
+            $("#items").append('<input type="hidden" class=".foodlink" value="0" id="entries' + x + '.quanitity" name="entries[' + x + '].quantity" >'
+                + '<input type="hidden" value="' + event.target.nextSibling.nextSibling.value + '" id="entries' + x + '.foodId" name="entries[' + x + '].foodId" >');
+            var data = $('#newEntryf').serialize();
+            $.post('/', data, replaceItems);
+        }
+
+
+    </script>
+</div>
+</body>
+</html>

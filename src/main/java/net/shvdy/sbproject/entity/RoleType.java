@@ -1,13 +1,3 @@
-/**
- * RoleType
- * <p>
- * version 1.0
- * <p>
- * 06.03.2020
- * <p>
- * Copyright(r) shvdy.net
- */
-
 package net.shvdy.sbproject.entity;
 
 import org.springframework.security.core.GrantedAuthority;
