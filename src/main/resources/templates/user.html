@@ -10,20 +10,10 @@
     <div class="maincontent d-flex flex-nowrap">
         <div class="row" style="width: 100%">
             <div class="row mx-2" style=" background: #eeeeee">
-                <!--                <div class="h5">Header test</div>-->
                 <button class="pretty-button m-3" onclick="setContentContainerTo('/food-diary')">My Diary</button>
                 <button class="pretty-button m-3" onclick="setContentContainerTo('/profile')">My Profile</button>
             </div>
-            <!--            <div style="visibility:hidden;" th:switch="${user.getUserProfile().getDailyCalsNorm()}">-->
-            <!--                <div th:case="-1">-->
-            <!--                    <button class="is-profile-completed" style="visibility: hidden"-->
-            <!--                            value="/complete-profile-to-proceed"></button>-->
-            <!--                </div>-->
-            <!--                <div th:case="*">-->
-            <!--                    <button class="is-profile-completed" style="visibility: hidden" value="/food-diary"></button>-->
-            <!--                </div>-->
-            <!--            </div>-->
-            <div class="maincontent  d-flex flex-grow-1 flex-nowrap m-2" data-aos="fade-zoom-in" data-aos-offset="0"
+            <div class="maincontent  d-flex flex-grow-1 flex-nowrap m-2"
                  id="content-container" style="background: #eeeeee; border: 1px solid black">
             </div>
         </div>
@@ -42,10 +32,30 @@
             });
         }
 
+        function changeModalContent(containerName) {
+            // $('.switch-content').text = newbuttonName;
+            setModalContainerTo(containerName);
+        }
+
+        function setModalContainerTo(name) {
+            $('#modalbody > *').css("display", "none");
+            document.getElementById(name).style.display = "block";
+        }
+
+        function funn() {
+            event.preventDefault();
+            var data = $('#createfoodform').serialize();
+            $.post('/create-food', data, function (data, statusText, xhr) {
+                document.getElementById('modal-window').innerHTML = data;
+                document.getElementById('modal-window').innerHTML = xhr + ' ' + statusText;
+                // $("#modal-window").css("display", "block");
+            });
+        }
+
         function openAddFoodModalWindow() {
             event.preventDefault();
             var data = $('#data-for-add-food-modal-window').serialize();
-            $.post('/create-add-food-modal-window', data, function (data) {
+            $.get('/create-add-food-modal-window', data, function (data) {
                 document.getElementById('modal-window').innerHTML = data;
                 $("#modal-window").css("display", "block");
             });
@@ -62,7 +72,7 @@
         };
 
         function replaceItems(html) {
-            $('#items').html(html);
+            $('#new-entries-container').html(html);
         }
 
         function appendNewEntry() {

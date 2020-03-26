@@ -1,0 +1,170 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="modal" id="myModal" th:fragment="content" xmlns:th="http://www.thymeleaf.org">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p2 class="p-1 mt-2 mb-2" style="size:4em">Meals to add:</p2>
+            <span class="close mt-0" onclick="closeAddFoodModalWindow()">&times;</span>
+        </div>
+        <div class="modal-body container" id="modalbody">
+            <div class="m-2" id="addfoodcontainer" style="display: block">
+                <div class=" row mb-3">
+                    <div class="user_food m-2" th:each="food : ${userFood}">
+                        <div class="portfolio-wrapper ">
+                            <a rel="group" title=""></a>
+                            <div class="label">
+                                <div class="label-text">
+                                    <button class="pretty-button foodlink" onclick="appendNewEntry()"
+                                            th:text="${food.value.name}"></button>
+                                    <input id="foodClickedId" th:value="${food.key}" type="hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form class="formf" id="newEntryf" method="post" th:action="@{/save}" th:object="${newEntriesDTO}">
+                        <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
+                        <input th:field="${newEntriesDTO.foodDTOContainerJSON}" type="hidden">
+                        <div id="new-entries-container">
+                            <fieldset id="items" th:fragment="items2">
+                                <table style="width: 80%">
+                                    <tr align="center" class="row align-items-top m-1" id="fff"
+                                        th:each="o, stat : ${newEntriesDTO.entries}">
+                                        <td class="foodlabel  row justify-content-end m-1"
+                                            style="width: 18%; justify-content: end">
+                                            <p class="mr-2" style="text-align: right"
+                                               th:text="${userFood[__newEntriesDTO.entries[__stat.index__].foodId__].name}"></p>
+                                        </td>
+                                        <td class="col-sm-auto row align-items-top m-1">
+                                            <input class="form-control" placeholder="quantity(g)"
+                                                   th:field="${newEntriesDTO.entries[__${stat.index}__].quantity}">
+                                            <label>(g)</label>
+                                        </td>
+                                        <td class="">
+                                            <button class="pretty-button mt-2 removeButton" style="padding: 4px 8px"
+                                                    type="button"
+                                            >Remove
+                                            </button>
+                                            <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $(".removeButton").on("click", function () {
+                                                        $(this).closest('tr').remove();
+                                                        var data = $('#newEntryf').serialize();
+                                                        $.post('/', data, replaceItems);
+                                                    });
+                                                });
+                                            </script>
+                                            <input class="foodentry form-control"
+                                                   th:field="${newEntriesDTO.entries[__${stat.index}__].foodId}"
+                                                   type="hidden">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+                <button class="pretty-button switch-content" onclick="changeModalContent('createfoodcontainer')"
+                        style="width: 40%">Create New
+                </button>
+            </div>
+            <div class="mt-4" id="createfoodcontainer" style="display: none">
+                <form class="form" id="createfoodform" method="post" style="width: 100%" th:action="@{/create-food}"
+                      th:object="${newFoodDTO}">
+                    <input th:field="${newFoodDTO.userId}" type="hidden">
+                    <div class="row" style="width: 100%;">
+                        <div class="col-6">
+                            <div class="form-group col-md-11"
+                                 th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
+                                <label class="control-label" for="name">Food Name</label>
+                                <input class="form-control"
+                                       data-msg="Enter a valid first name"
+                                       data-rule="firstnameexp" id="name"
+                                       th:field="*{name}"/>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="form-group col-md-11"
+                                 th:classappend="${#fields.hasErrors('calories')}? 'has-error':''">
+                                <label class="control-label" for="calories">Calories</label>
+                                <input class="form-control"
+                                       data-msg="Enter a valid last name"
+                                       data-rule="lastnameexp" id="calories"
+                                       th:field="*{calories}"/>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="form-group col-md-11"
+                                 th:classappend="${#fields.hasErrors('proteins')}? 'has-error':''">
+                                <label class="control-label" for="proteins">Proteins</label>
+                                <p style="font-size: 0.9em;">(not required)</p>
+                                <input class="form-control"
+                                       data-msg="Enter a valid first name (ukrainian letters)"
+                                       data-rule="firstnameuaexp" id="proteins"
+                                       th:field="*{proteins}"/>
+                                <div class="validate"></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group col-md-11"
+                                 th:classappend="${#fields.hasErrors('fats')}? 'has-error':''">
+                                <label class="control-label" for="fats">Fats</label>
+                                <input class="form-control"
+                                       data-msg="Enter a valid first name"
+                                       data-rule="firstnameexp" id="fats"
+                                       th:field="*{fats}"/>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="form-group col-md-11"
+                                 th:classappend="${#fields.hasErrors('carbohydrates')}? 'has-error':''">
+                                <label class="control-label" for="carbohydrates">Carbohydrates</label>
+                                <input class="form-control"
+                                       data-msg="Enter a valid last name"
+                                       data-rule="lastnameexp" id="carbohydrates"
+                                       th:field="*{carbohydrates}"/>
+                                <div class="validate"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="m-2 d-flex flex-column col-5">
+                    <button class="pretty-button mt-2" id="myBtn" onclick="funn()">Save</button>
+                    <button class="pretty-button switch-content mt-2" onclick="changeModalContent('addfoodcontainer')">
+                        Back
+                    </button>
+                </div>
+                <!--                <p class="error-validation"-->
+                <!--                   th:each="error : ${#fields.errors('global')}"-->
+                <!--                   th:if="${#fields.hasGlobalErrors()}"-->
+                <!--                   th:text="${error}">Validation error</p>-->
+
+                <!--                <div class="form-group col-md-5">-->
+                <!--                    <input class="pretty-button d-block w-100" disabled="disabled" type="submit" value="SIGN UP">-->
+                <!--                </div>-->
+                <!--                <div class="form-group col-md-12">-->
+                <!--                    <span>Already signed up? <a style="color:#34ce57" th:href="@{/login}">LOGIN</a></span>-->
+                <!--                </div>-->
+
+                <!--                <div class="alert alert-info col-md-12 mb-3" role="alert" th:if="${logout}">You've been logged-->
+                <!--                    out-->
+                <!--                    successfully.-->
+                <!--                </div>-->
+                <!--                <div class="alert alert-danger col-md-12 mb-3" role="alert" th:if="${error}">Invalid Username or-->
+                <!--                    Password!-->
+                <!--                </div>-->
+                <!--                <div class="col-md-12 mb-3" style="background: #eeeeee">-->
+                <!--                    <div class="loading" style="background: #eeeeee">Loading</div>-->
+                <!--                    <div class="error-message"></div>-->
+                <!--                    <div class="sent-message">filler</div>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="pretty-button" onclick="document.forms['newEntryf'].submit()" style="width: 40%"
+                    type="submit">save
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

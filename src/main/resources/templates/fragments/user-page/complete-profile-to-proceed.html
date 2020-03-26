@@ -1,10 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div class="row" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
-    <!--    <button th:onclick="setContentContainerTo('/profile')">Complete your profile</button>-->
-    <button th:onclick="setContentContainerTo('/profile')">Complete your profile</button>
-    <h1 class="ml-2">to proceed</h1>
+<div class="content-container  container justify-content-center align-items-center" data-aos="fade-zoom-in"
+     data-aos-offset="0" style="width: 100%; height: 100%" th:fragment="content">
+    <div class="flex-grow-1" style="width: 100%; height: 100%">
+        <button class="pretty-button" th:onclick="setContentContainerTo('/profile')">Complete your profile</button>
+        <h4 class="ml-2">to proceed</h4>
+    </div>
 </div>
 </body>
 </html>

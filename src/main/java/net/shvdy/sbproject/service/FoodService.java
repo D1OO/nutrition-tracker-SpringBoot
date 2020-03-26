@@ -3,11 +3,15 @@ package net.shvdy.sbproject.service;
 import net.shvdy.sbproject.dto.FoodDTO;
 import net.shvdy.sbproject.entity.Food;
 import net.shvdy.sbproject.entity.User;
+import net.shvdy.sbproject.entity.UserProfile;
 import net.shvdy.sbproject.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 public class FoodService {
     private UserRepository userRepository;
     private ModelMapper modelMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public FoodService(UserRepository userRepository, ModelMapper modelMapper) {
@@ -39,6 +45,15 @@ public class FoodService {
             return entityToDTO(userFood);
         } else
             return new ArrayList<>();
+    }
+
+    @Transactional
+    public void saveNewUsersFood(Long userId, FoodDTO newFoodDTO) {
+        Food food = modelMapper.map(newFoodDTO, Food.class);
+        UserProfile u = userRepository.findById(userId).orElse(new User()).getUserProfile();
+        food.setUserProfile(u);
+        u.getUserFood().add(food);
+        entityManager.merge(u);
     }
 
     public HashMap<Long, FoodDTO> convertListToHashMapOnFoodId(List<FoodDTO> foodList) {

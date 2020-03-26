@@ -34,7 +34,6 @@ public class Food {
     @NotNull
     private int carbohydrates;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     UserProfile userProfile;
