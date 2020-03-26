@@ -27,7 +27,8 @@ public class PageController {
     private final ObjectMapper jacksonMapper;
 
     @Autowired
-    public PageController(DailyRecordService dailyRecordService, FoodService foodService, ObjectMapper jacksonMapper) {
+    public PageController(DailyRecordService dailyRecordService,
+                          FoodService foodService, ObjectMapper jacksonMapper) {
         this.dailyRecordService = dailyRecordService;
         this.foodService = foodService;
         this.jacksonMapper = jacksonMapper;
@@ -44,21 +45,17 @@ public class PageController {
 
     @RequestMapping("/food-diary")
     public String foodDiaryFragment(@AuthenticationPrincipal User user, Model model) {
-        LocalDate currentDate = LocalDate.now();
-        DailyRecordDTO dailyRecord = dailyRecordService.getForUserAndDate(user.getId(), currentDate.toString());
-        model.addAttribute("localDate", currentDate);
-        model.addAttribute("user", user);
-        model.addAttribute("dailyRecord", dailyRecord);
-        model.addAttribute("dailyCalsPercentage",
-                (int) (dailyRecord.getTotalCalories() / (double) user.getUserProfile().getDailyCalsNorm() * 100));
-        return "fragments/user-page/food-diary :: content";
+        if (user.getUserProfile().getDailyCalsNorm() > 0) {
+            LocalDate currentDate = LocalDate.now();
+            DailyRecordDTO dailyRecord = dailyRecordService.getForUserAndDate(user.getId(), currentDate.toString());
+            model.addAttribute("localDate", currentDate);
+            model.addAttribute("user", user);
+            model.addAttribute("dailyRecord", dailyRecord);
+            model.addAttribute("dailyCalsPercentage",
+                    (int) (dailyRecord.getTotalCalories() / (double) user.getUserProfile().getDailyCalsNorm() * 100));
+            return "fragments/user-page/food-diary :: content";
+        } else return "fragments/user-page/complete-profile-to-proceed :: content";
     }
-
-    @RequestMapping("/complete-profile-to-proceed")
-    public String completeInfoToProceedFragment() {
-        return "fragments/user-page/complete-profile-to-proceed :: content";
-    }
-
 
     @PostMapping(value = "/create-add-food-modal-window")
     public String modalFragment(@RequestParam Long recordId, @RequestParam Long userId, Model model) {

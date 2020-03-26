@@ -14,15 +14,15 @@
                 <button class="pretty-button m-3" onclick="setContentContainerTo('/food-diary')">My Diary</button>
                 <button class="pretty-button m-3" onclick="setContentContainerTo('/profile')">My Profile</button>
             </div>
-            <div style="visibility:hidden;" th:switch="${user.getUserProfile().getDailyCalsNorm()}">
-                <div th:case="-1">
-                    <button class="is-profile-completed" style="visibility: hidden"
-                            value="/complete-profile-to-proceed"></button>
-                </div>
-                <div th:case="*">
-                    <button class="is-profile-completed" style="visibility: hidden" value="/food-diary"></button>
-                </div>
-            </div>
+            <!--            <div style="visibility:hidden;" th:switch="${user.getUserProfile().getDailyCalsNorm()}">-->
+            <!--                <div th:case="-1">-->
+            <!--                    <button class="is-profile-completed" style="visibility: hidden"-->
+            <!--                            value="/complete-profile-to-proceed"></button>-->
+            <!--                </div>-->
+            <!--                <div th:case="*">-->
+            <!--                    <button class="is-profile-completed" style="visibility: hidden" value="/food-diary"></button>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="maincontent  d-flex flex-grow-1 flex-nowrap m-2" data-aos="fade-zoom-in" data-aos-offset="0"
                  id="content-container" style="background: #eeeeee; border: 1px solid black">
             </div>
@@ -33,12 +33,8 @@
 <div th:replace="template :: scripts(~{::script})">
     <script>
         $(document).ready(function () {
-            setInitialContent();
+            setContentContainerTo('/food-diary');
         });
-
-        function setInitialContent() {
-            setContentContainerTo($('.is-profile-completed').val());
-        }
 
         function setContentContainerTo(controllerEndpoint) {
             $.get(controllerEndpoint, function (data) {
