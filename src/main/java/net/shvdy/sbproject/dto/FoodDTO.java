@@ -17,7 +17,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class FoodDTO {
-
     private Long food_id;
     private Long userId;
     private String name;

@@ -23,13 +23,6 @@ public class User implements UserDetails {
     @NotNull
     @Column(name = "email")
     private String username;
-    @Column(name = "first_name_ua")
-    private String firstNameUa;
-    @Column(name = "last_name")
-    private String lastName;
-    @Column(name = "first_name")
-    @NotNull
-    private String firstName;
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)

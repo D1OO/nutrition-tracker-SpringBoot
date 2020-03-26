@@ -16,11 +16,6 @@
                            th:each="error : ${#fields.errors('global')}"
                            th:if="${#fields.hasGlobalErrors()}"
                            th:text="${error}">Validation error</p>
-                        <input th:field="*{accountNonExpired}">
-                        <input th:field="${newUser.accountNonLocked}">
-                        <input th:field="${newUser.credentialsNonExpired}">
-                        <input th:field="${newUser.enabled}">
-                        <input th:field="${newUser.authorities}">
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
                             <label class="control-label" for="username">E-mail</label>
@@ -42,31 +37,31 @@
                             <div class="validate"></div>
                         </div>
                         <div class="form-group col-md-11"
-                             th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
-                            <label class="control-label" for="firstName">First name</label>
+                             th:classappend="${#fields.hasErrors('userProfile.firstName')}? 'has-error':''">
+                            <label class="control-label" for="userProfile.firstName">First name</label>
                             <input class="form-control"
                                    data-msg="Enter a valid first name"
-                                   data-rule="firstnameexp" id="firstName"
-                                   th:field="*{firstName}"/>
+                                   data-rule="firstnameexp" id="userProfile.firstName"
+                                   th:field="*{userProfile.firstName}"/>
                             <div class="validate"></div>
                         </div>
                         <div class="form-group col-md-11"
-                             th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
-                            <label class="control-label" for="lastName">Last name</label>
+                             th:classappend="${#fields.hasErrors('userProfile.lastName')}? 'has-error':''">
+                            <label class="control-label" for="userProfile.lastName">Last name</label>
                             <input class="form-control"
                                    data-msg="Enter a valid last name"
-                                   data-rule="lastnameexp" id="lastName"
-                                   th:field="*{lastName}"/>
+                                   data-rule="lastnameexp" id="userProfile.lastName"
+                                   th:field="*{userProfile.lastName}"/>
                             <div class="validate"></div>
                         </div>
                         <div class="form-group col-md-11"
-                             th:classappend="${#fields.hasErrors('firstNameUa')}? 'has-error':''">
-                            <label class="control-label" for="firstNameUa">First name UA</label>
+                             th:classappend="${#fields.hasErrors('userProfile.firstNameUa')}? 'has-error':''">
+                            <label class="control-label" for="userProfile.firstNameUa">First name UA</label>
                             <p style="font-size: 0.9em;">(not required)</p>
                             <input class="form-control"
                                    data-msg="Enter a valid first name (ukrainian letters)"
-                                   data-rule="firstnameuaexp" id="firstNameUa"
-                                   th:field="*{firstNameUa}"/>
+                                   data-rule="firstnameuaexp" id="userProfile.firstNameUa"
+                                   th:field="*{userProfile.firstNameUa}"/>
                             <div class="validate"></div>
                         </div>
                         <div class="form-group col-md-5">

@@ -3,6 +3,7 @@ package net.shvdy.sbproject.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -23,17 +24,22 @@ public class UserProfile {
     @Column(name = "user_id")
     private Long userId;
 
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    User user;
+    @Column(name = "first_name_ua")
+    private String firstNameUa;
+    @Column(name = "last_name")
+    private String lastName;
     @Enumerated(EnumType.STRING)
     private Lifestyle lifestyle;
-
     private int age;
     private int height;
     private int weight;
-
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    User user;
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userProfile", cascade = CascadeType.ALL)
     List<Food> userFood;
@@ -56,12 +62,6 @@ public class UserProfile {
         }
     }
 
-    // If user's profile isn't filled,
-    // Thymeleaf will check on '-1' value and display 'fill profile to proceed' window,
-    // otherwise, if normal value is returned - user's 'food diary' will be loaded
-
-    // 'Optional<Integer> can't be used, because Thymeleaf can't call .isPresent() or .get(),
-    // nor any other method except Thymeleaf's '#...' predefined expressions or variable's class methods like this one
     public int getDailyCalsNorm() {
         try {
             return (int) ((66 + 13.75 * weight + 5 * height - 6.755 * age) * lifestyle.getFactor());

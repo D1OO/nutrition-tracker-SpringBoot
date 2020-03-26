@@ -17,12 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class UserProfileDTO {
-
-    private Long userId;
+    private String firstName;
+    private String firstNameUa;
+    private String lastName;
     private int age;
     private int height;
     private int weight;
     private UserProfile.Lifestyle lifestyle;
+
     UserDTO user;
     List<FoodDTO> userFood;
 

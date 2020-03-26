@@ -14,7 +14,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DailyRecordEntryDTO {
-
     private Long entryId;
     private Long foodId;
     private int quantity;

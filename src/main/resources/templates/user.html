@@ -5,14 +5,16 @@
 </head>
 <body>
 <div th:replace="template::top-bar"></div>
-<div id="mmodal" style="display: none"></div>
+<div id="modal-window" style="display: none"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
-    <div class="maincontent d-flex flex-nowrap p-lg-3">
+    <div class="maincontent d-flex flex-nowrap">
         <div class="row" style="width: 100%">
-            <div class="col-md maincontent d-flex flex-nowrap p-lg-3" style="background: #eeeeee">
-                <div class="h5 fgfg">Header test</div>
+            <div class="row mx-2" style=" background: #eeeeee">
+                <!--                <div class="h5">Header test</div>-->
+                <button class="pretty-button m-3" onclick="setContentContainerTo('/food-diary')">My Diary</button>
+                <button class="pretty-button m-3" onclick="setContentContainerTo('/profile')">My Profile</button>
             </div>
-            <div th:switch="${user.getUserProfile().getDailyCalsNorm()}">
+            <div style="visibility:hidden;" th:switch="${user.getUserProfile().getDailyCalsNorm()}">
                 <div th:case="-1">
                     <button class="is-profile-completed" style="visibility: hidden"
                             value="/complete-profile-to-proceed"></button>
@@ -21,8 +23,8 @@
                     <button class="is-profile-completed" style="visibility: hidden" value="/food-diary"></button>
                 </div>
             </div>
-            <div class="maincontent d-flex flex-nowrap p-lg-3" data-aos="fade-zoom-in" data-aos-offset="0"
-                 id="content-container" style="background: #eeeeee">
+            <div class="maincontent  d-flex flex-grow-1 flex-nowrap m-2" data-aos="fade-zoom-in" data-aos-offset="0"
+                 id="content-container" style="background: #eeeeee; border: 1px solid black">
             </div>
         </div>
     </div>
@@ -48,18 +50,18 @@
             event.preventDefault();
             var data = $('#data-for-add-food-modal-window').serialize();
             $.post('/create-add-food-modal-window', data, function (data) {
-                document.getElementById('mmodal').innerHTML = data;
-                $("#mmodal").css("display", "block");
+                document.getElementById('modal-window').innerHTML = data;
+                $("#modal-window").css("display", "block");
             });
         }
 
         function closeAddFoodModalWindow() {
-            $('#mmodal').css("display", "none");
+            $('#modal-window').css("display", "none");
         }
 
         window.onclick = function (event) {
             if (event.target == $('#myModal')) {
-                $('mmodal').style.display = "none";
+                $('modal-window').style.display = "none";
             }
         };
 
@@ -67,8 +69,7 @@
             $('#items').html(html);
         }
 
-        function functionName() {
-            event.preventDefault();
+        function appendNewEntry() {
             var x = $('.foodentry').length;
             $("#items").append('<input type="hidden" class=".foodlink" value="0" id="entries' + x + '.quanitity" name="entries[' + x + '].quantity" >'
                 + '<input type="hidden" value="' + event.target.nextSibling.nextSibling.value + '" id="entries' + x + '.foodId" name="entries[' + x + '].foodId" >');

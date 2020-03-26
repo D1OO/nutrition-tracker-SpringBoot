@@ -29,18 +29,22 @@ public class DailyRecordDTO {
 
 
     public int getTotalCalories() {
-        return entries == null ? 0 : entries.stream().mapToInt(x -> x.getFood().getCalories() * x.getQuantity() / 100).sum();
+        return entries == null ? 0 : entries.stream()
+                .mapToInt(x -> x.getFood().getCalories() * x.getQuantity() / 100).sum();
     }
 
     public int getTotalFats() {
-        return entries == null ? 0 : entries.stream().mapToInt(x -> x.getFood().getFats() * x.getQuantity() / 100).sum();
+        return entries == null ? 0 : entries.stream()
+                .mapToInt(x -> x.getFood().getFats() * x.getQuantity() / 100).sum();
     }
 
     public int getTotalProteins() {
-        return entries == null ? 0 : entries.stream().mapToInt(x -> x.getFood().getProteins() * x.getQuantity() / 100).sum();
+        return entries == null ? 0 : entries.stream()
+                .mapToInt(x -> x.getFood().getProteins() * x.getQuantity() / 100).sum();
     }
 
     public int getTotalCarbs() {
-        return entries == null ? 0 : entries.stream().mapToInt(x -> x.getFood().getCarbohydrates() * x.getQuantity() / 100).sum();
+        return entries == null ? 0 : entries.stream()
+                .mapToInt(x -> x.getFood().getCarbohydrates() * x.getQuantity() / 100).sum();
     }
 }

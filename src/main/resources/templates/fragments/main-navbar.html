@@ -33,8 +33,10 @@
                     <li class="list-inline-item" style="font-size: 0.7em; max-width: 560px">
                         <p><span th:text="#{logged-as}"></span>
                             <span class="logged-in-as"
-                                  th:text="${#authentication.getPrincipal().getFirstName()}"></span>
-                            <span th:text="${'(' + #request.userPrincipal.name + ')'}"></span>
+                                  th:text="${#authentication.getPrincipal().getUserProfile().getFirstName()}"></span>
+                            <span class="logged-in-as"
+                                  th:text="${#authentication.getPrincipal().getUserProfile().getLastName()}"></span>
+                            <!--                            <span th:text="${'(' + #request.userPrincipal.name + ')'}"></span>-->
                         </p>
                     </li>
                     <li class="list-inline-item" id="logout-link">

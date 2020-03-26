@@ -41,12 +41,6 @@ public class FoodService {
             return new ArrayList<>();
     }
 
-    public HashMap<Long, FoodDTO> convertListToHashMapOnFoodId(Long userId) {
-        List<FoodDTO> foodList = getUsersFood(userId);
-        return new HashMap<>(foodList.stream()
-                .collect(Collectors.toMap(FoodDTO::getFood_id, Function.identity())));
-    }
-
     public HashMap<Long, FoodDTO> convertListToHashMapOnFoodId(List<FoodDTO> foodList) {
         return new HashMap<>(foodList.stream()
                 .collect(Collectors.toMap(FoodDTO::getFood_id, Function.identity())));

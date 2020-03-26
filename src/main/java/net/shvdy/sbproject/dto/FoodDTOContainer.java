@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class FoodDTOContainer {
-
     List<FoodDTO> userFood;
 
     @Override

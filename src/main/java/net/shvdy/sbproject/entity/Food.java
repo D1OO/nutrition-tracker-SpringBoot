@@ -19,10 +19,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "user_food")
 public class Food {
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    UserProfile userProfile;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @NotNull
@@ -37,6 +33,11 @@ public class Food {
     private int fats;
     @NotNull
     private int carbohydrates;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    UserProfile userProfile;
 
 //    @OneToOne
 //    @JoinColumn(name="food_id")

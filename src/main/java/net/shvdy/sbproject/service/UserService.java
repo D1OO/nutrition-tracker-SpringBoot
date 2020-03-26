@@ -3,7 +3,10 @@ package net.shvdy.sbproject.service;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.shvdy.sbproject.dto.UserDTO;
+import net.shvdy.sbproject.entity.RoleType;
 import net.shvdy.sbproject.entity.User;
+import net.shvdy.sbproject.entity.UserProfile;
+import net.shvdy.sbproject.repository.UserProfileRepository;
 import net.shvdy.sbproject.repository.UserRepository;
 import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.modelmapper.ModelMapper;
@@ -14,37 +17,66 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.util.Collections;
+
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private ModelMapper modelMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository,
+                       ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.modelMapper = modelMapper;
     }
 
     public void saveNewUser(UserDTO userDTO) throws AccountAlreadyExistsException {
-        User newUser = modelMapper.map(userDTO, User.class);
-        newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         try {
-            userRepository.save(newUser);
+            userRepository.save(setUpNewUser(userDTO));
         } catch (Exception e) {
             throw new AccountAlreadyExistsException();
         }
     }
 
-    public void updateProfile(UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
-        userRepository.save(user);
+    @Transactional
+    public void updateUserProfile(UserProfile userProfile) {
+//        UserProfile userProfile = modelMapper.map(userProfileDTO, UserProfile.class);
+        try {
+            entityManager.merge(userProfile);
+        } catch (Exception e) {
+            System.out.println(4);
+        }
+    }
+
+    public UserProfile getUserProfile(Long userId) {
+        return userProfileRepository.findById(userId).orElse(new UserProfile());
     }
 
     @Override
     public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
         return userRepository.findByUsername(email).orElseThrow(() ->
                 new UsernameNotFoundException("user " + email + " was not found!"));
+    }
+
+    private User setUpNewUser(UserDTO userDTO) {
+        User newUser = modelMapper.map(userDTO, User.class);
+        newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
+        newUser.setAuthorities(Collections.singleton(RoleType.ROLE_USER));
+        newUser.getUserProfile().setUser(newUser);
+        newUser.setAccountNonLocked(true);
+        newUser.setAccountNonExpired(true);
+        newUser.setCredentialsNonExpired(true);
+        newUser.setEnabled(true);
+        return newUser;
     }
 }

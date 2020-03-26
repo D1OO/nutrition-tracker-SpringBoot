@@ -15,7 +15,7 @@
                         <a rel="group" title=""></a>
                         <div class="label">
                             <div class="label-text">
-                                <button class="pretty-button foodlink" onclick="functionName()"
+                                <button class="pretty-button foodlink" onclick="appendNewEntry()"
                                         th:text="${food.value.name}"></button>
                                 <input id="foodClickedId" th:value="${food.key}" type="hidden">
                             </div>
@@ -74,7 +74,6 @@
             </button>
         </div>
     </div>
-
 </div>
 </body>
 </html>

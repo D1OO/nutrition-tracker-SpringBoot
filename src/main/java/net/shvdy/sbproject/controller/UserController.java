@@ -1,9 +1,8 @@
 package net.shvdy.sbproject.controller;
 
 import net.shvdy.sbproject.dto.UserDTO;
-import net.shvdy.sbproject.dto.UserProfileDTO;
-import net.shvdy.sbproject.entity.RoleType;
 import net.shvdy.sbproject.entity.User;
+import net.shvdy.sbproject.entity.UserProfile;
 import net.shvdy.sbproject.service.UserService;
 import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 
 /**
  * 23.03.2020
@@ -33,15 +30,7 @@ public class UserController {
 
     @ModelAttribute("newUser")
     public UserDTO newUserDTO() {
-        UserDTO newUserDTO = UserDTO.builder()
-                .authorities(Collections.singleton(RoleType.ROLE_USER))
-                .accountNonLocked(true)
-                .accountNonExpired(true)
-                .credentialsNonExpired(true)
-                .enabled(true)
-                .build();
-        newUserDTO.setUserProfile(UserProfileDTO.builder().user(newUserDTO).build());
-        return newUserDTO;
+        return new UserDTO();
     }
 
     @InitBinder
@@ -51,13 +40,16 @@ public class UserController {
 
     @RequestMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("userProfile", user);
+        UserProfile userProfile = userService.getUserProfile(user.getId());
+        model.addAttribute("userProfilee", userProfile);
         return "fragments/user-page/profile :: content";
     }
 
-    @PostMapping("/profile")
-    public String saveProfile(UserDTO userProfileDTO, Model model) {
-        userService.updateProfile(userProfileDTO);
+    @PostMapping("/update-profile")
+    public String saveProfile(UserProfile userProfileDTO, @AuthenticationPrincipal User user) {
+//        user.setUserProfile(userProfileDTO);
+        userProfileDTO.setUserId(user.getId());
+        userService.updateUserProfile(userProfileDTO);
         return "redirect:/";
     }
 
@@ -98,7 +90,6 @@ public class UserController {
 //            result.rejectValue("username", "", "The account is already existing for this email");
         }
 //        if (result.hasErrors())
-
         return "redirect:/login?success";
     }
 }
