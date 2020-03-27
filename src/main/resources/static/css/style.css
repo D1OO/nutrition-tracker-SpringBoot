@@ -90,6 +90,26 @@ body {
     background: linear-gradient(338deg, rgb(213, 171, 177) 10%, rgb(226, 226, 165) 100%);
 }
 
+.tabs .pretty-button {
+    font-family: 'Rubik', sans-serif;
+    text-transform: none;
+    font-size: 1em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 2px solid #292929;
+}
+
+.tabs .pretty-button:hover {
+    color: #000000;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0);
+}
+
+.tabs .pretty-button:hover {
+    background: rgb(213, 95, 147);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 0.62) 10%, rgba(233, 232, 148, 0.73) 100%);
+}
+
 .formf input {
 
     width: 8em;

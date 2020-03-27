@@ -18,7 +18,7 @@ import lombok.*;
 @Builder
 public class FoodDTO {
     private Long food_id;
-    private Long userId;
+    private Long profileId;
     private String name;
     private int calories;
     private int proteins;

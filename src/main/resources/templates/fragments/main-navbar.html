@@ -13,8 +13,8 @@
         <ul class="list-inline  navbar-right">
             <li class=" list-inline-item" sec:authorize="isAnonymous()">
                 <div>
-                    <a class="pretty-button" th:href="@{/login}" th:text="#{sign-in}">Sign in</a>
-                    <a class="pretty-button signupButton" href="javascript:void(0)"
+                    <a class="pretty-button bg" th:href="@{/login}" th:text="#{sign-in}">Sign in</a>
+                    <a class="pretty-button bg signupButton" href="javascript:void(0)"
                        onclick="document.forms['signUpButton'].submit()"
                        th:text="#{create-account}">Create Account</a>
                     <form id="signUpButton" method="GET" th:action="@{/signup}">
@@ -24,8 +24,8 @@
             </li>
             <li class="list-inline-item">
                 <div class="locale">
-                    <a class="pretty-button " href="javascript:void(0)" id="ua">ua</a>
-                    <a class="pretty-button " href="javascript:void(0)" id="eng">en</a>
+                    <a class="pretty-button bg" href="javascript:void(0)" id="ua">ua</a>
+                    <a class="pretty-button bg " href="javascript:void(0)" id="eng">en</a>
                 </div>
             </li>
             <li class="list-inline-item" sec:authorize="isAuthenticated()">
@@ -43,7 +43,7 @@
                         <form id="logoutForm" method="POST" th:action="@{/logout}">
                             <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
                         </form>
-                        <button class="pretty-button signupButton" onclick="document.forms['logoutForm'].submit()"
+                        <button class="pretty-button bg signupButton" onclick="document.forms['logoutForm'].submit()"
                                 th:text="#{logout}">
                             Logout
                         </button>

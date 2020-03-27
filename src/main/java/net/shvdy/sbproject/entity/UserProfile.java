@@ -20,14 +20,15 @@ import java.util.List;
 @Entity
 @Table(name = "user_profile")
 public class UserProfile {
-    @Id
-    @Column(name = "user_id")
-    private Long userId;
-
     @MapsId
     @OneToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "profile_id", insertable = false, updatable = false)
     User user;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
+    List<DailyRecord> dailyRecord;
+    @Id
+    @Column(name = "profile_id")
+    private Long userId;
     @Column(name = "first_name_ua")
     private String firstNameUa;
     @Column(name = "last_name")
@@ -37,12 +38,12 @@ public class UserProfile {
     private int age;
     private int height;
     private int weight;
-    @Column(name = "first_name")
-    @NotNull
-    private String firstName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userProfile", cascade = CascadeType.ALL)
     List<Food> userFood;
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
 
     public enum Lifestyle {
         SEDENTARY(1.2f),

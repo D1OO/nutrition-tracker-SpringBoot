@@ -28,13 +28,12 @@ public class DailyRecord {
     private Long recordId;
 
     @NotNull
-    @Column(name = "user_id")
-    private Long userId;
-
-    @NotNull
     @Column(name = "record_date")
     private String recordDate;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "dailyRecord", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    UserProfile userProfile;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dailyRecord", cascade = CascadeType.ALL)
     private List<DailyRecordEntry> entries;
 }

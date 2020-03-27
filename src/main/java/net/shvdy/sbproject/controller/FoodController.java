@@ -8,7 +8,6 @@ import net.shvdy.sbproject.dto.NewEntriesModalWindowDTO;
 import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.service.DailyRecordService;
 import net.shvdy.sbproject.service.FoodService;
-import net.shvdy.sbproject.service.exception.RecordDoesntExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ class FoodController {
 
     @ModelAttribute("newFoodDTO")
     public FoodDTO newUserDTO(@AuthenticationPrincipal User user) {
-        return FoodDTO.builder().userId(user.getId()).build();
+        return FoodDTO.builder().profileId(user.getUserProfile().getUserId()).build();
     }
 
     @Autowired
@@ -49,7 +48,8 @@ class FoodController {
     }
 
     @GetMapping(value = "/create-add-food-modal-window")
-    public String modalFragment(@RequestParam Long recordId, @RequestParam Long userId, Model model) {
+    public String modalFragment(@RequestParam Long recordId, @RequestParam Long userId, @RequestParam String recordDate,
+                                Model model) {
         FoodDTOContainer userFoodContainer = new FoodDTOContainer(foodService.getUsersFood(userId));
         String FoodDTOContainerJSON = "";
         try {
@@ -57,7 +57,8 @@ class FoodController {
         } catch (JsonProcessingException e) {
             model.addAttribute("errors", "failed to map user's FoodDTOContainer to JSON");
         }
-        model.addAttribute("newEntriesDTO", new NewEntriesModalWindowDTO(recordId, FoodDTOContainerJSON, Collections.emptyList()));
+        model.addAttribute("newEntriesDTO", new NewEntriesModalWindowDTO(recordId,
+                userId, recordDate, FoodDTOContainerJSON, Collections.emptyList()));
         model.addAttribute("userFood", foodService.convertListToHashMapOnFoodId(userFoodContainer.getUserFood()));
         return "fragments/user-page/add-food-modal-window/add-food :: content";
     }
@@ -81,11 +82,7 @@ class FoodController {
     @PostMapping(value = "/save")
     public String saveNewEntriesList(NewEntriesModalWindowDTO newEntriesToSave) {
         Optional.of(newEntriesToSave).ifPresent(x -> {
-            try {
-                dailyRecordService.saveNewEntriesToRecordWithId(x.getRecordId(), x);
-            } catch (RecordDoesntExistException e) {
-                e.printStackTrace();
-            }
+            dailyRecordService.saveNewEntries(newEntriesToSave);
         });
         return ("redirect:/");
     }

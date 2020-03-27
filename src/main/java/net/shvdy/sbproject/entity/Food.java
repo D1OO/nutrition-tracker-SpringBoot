@@ -35,11 +35,6 @@ public class Food {
     private int carbohydrates;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "profile_id")
     UserProfile userProfile;
-
-//    @OneToOne
-//    @JoinColumn(name="food_id")
-//    private DailyRecordEntry dailyRecordEntry;
-
 }

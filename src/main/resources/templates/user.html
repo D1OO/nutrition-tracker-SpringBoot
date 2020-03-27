@@ -9,12 +9,13 @@
 <div th:replace="template :: main(~{:: div.maincontent})">
     <div class="maincontent d-flex flex-nowrap">
         <div class="row" style="width: 100%">
-            <div class="row mx-2" style=" background: #eeeeee">
-                <button class="pretty-button m-3" onclick="setContentContainerTo('/food-diary')">My Diary</button>
-                <button class="pretty-button m-3" onclick="setContentContainerTo('/profile')">My Profile</button>
+            <div class="row tabs mx-2" style=" background: #eeeeee; border: 1px solid black">
+                <button class="pretty-button bg m-3" onclick="setContentContainerTo('/food-diary')">My Diary</button>
+                <button class="pretty-button bg m-3" onclick="setContentContainerTo('/profile')">My Profile</button>
             </div>
             <div class="maincontent  d-flex flex-grow-1 flex-nowrap m-2"
-                 id="content-container" style="background: #eeeeee; border: 1px solid black">
+                 id="content-container" style=" background: rgba(192,181,218,0.4);
+background: linear-gradient(180deg, rgba(218,216,212,0.4) 11%, rgba(224,224,224,0.5) 49%, rgba(240,255,239,0.5) 100%); border: 1px solid black">
             </div>
         </div>
     </div>
@@ -24,7 +25,14 @@
     <script>
         $(document).ready(function () {
             setContentContainerTo('/food-diary');
+
+
         });
+
+        function tabClick(tab) {
+            $('.record-tabs').css("display", "none");
+            $(tab).css("display", "block");
+        }
 
         function setContentContainerTo(controllerEndpoint) {
             $.get(controllerEndpoint, function (data) {
@@ -52,9 +60,9 @@
             });
         }
 
-        function openAddFoodModalWindow() {
+        function openAddFoodModalWindow(recordtab) {
             event.preventDefault();
-            var data = $('#data-for-add-food-modal-window').serialize();
+            var data = $(recordtab).serialize();
             $.get('/create-add-food-modal-window', data, function (data) {
                 document.getElementById('modal-window').innerHTML = data;
                 $("#modal-window").css("display", "block");

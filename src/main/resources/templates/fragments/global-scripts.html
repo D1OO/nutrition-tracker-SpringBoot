@@ -55,11 +55,11 @@
                 return filled;
             }
 
-            $('.pretty-button').hover(function () {
+            $('.submit-button').hover(function () {
                 if (allFilled()) {
-                    $('.pretty-button').removeAttr('disabled')
+                    $('.submit-button').removeAttr('disabled')
                 } else {
-                    $('.pretty-button').prop("disabled", true);
+                    $('.submit-button').prop("disabled", true);
                 }
             });
         });

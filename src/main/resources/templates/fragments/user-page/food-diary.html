@@ -1,65 +1,88 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div class="content-container d-flex flex-grow-1" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
-    <div class="h2 mb-4 m-4 font-rubick justify-content-center">Food Diary</div>
-    <div class="row align-items-center">
-        <h4 class="font-rubick mr-2">Your daily calories norm:</h4>
-        <h4 class="font-rubick  logged-in-as" th:text="${dailyCalsPercentage} + '%'"></h4>
-        <h4 class="font-rubick " th:text="' (' + ${dailyRecord.getTotalCalories()} + '/' +
-                     ${user.userProfile.getDailyCalsNorm()}"></h4><h4 class="font-rubick">)</h4>
-    </div>
-    <table class="table font-rubick" style="width: 450px; font-size: 1.2em">
-        <thead style="font-size: 0.9em; font-weight: normal; text-align: right">
-        <tr>
-            <th colspan="2" style="text-align: left">
-                            <span class="font-rubick p-lg-2"
-                                  style=" color: darkslategrey; font-size: 1.2em" th:text="
-                                  ${#temporals.dayOfWeekName(localDate)} + ' ' +
+<div class="content-container flex-column d-flex flex-grow-1" data-aos="fade-zoom-in" data-aos-offset="0"
+     th:fragment="content">
+    <div class="d-flex mb-4 m-4 font-rubick flex-grow-1" style="width: 100%;">
+        <h2>Food Diary</h2>
+        <div class="d-flex flex-grow-1 justify-content-center">
+            <span class="font-rubick p-lg-2 mr-lg-5"
+                  style=" color: darkslategrey; font-size: 1.2em" th:text="${#temporals.dayOfWeekName(localDate)} + ' ' +
                                   ${#temporals.day(localDate)} + ', ' +
                                   ${#temporals.monthName(localDate)} + ' ' +
                                   ${#temporals.year(localDate)}">
-                            </span>
-            </th>
-            <th class="bg" id="first" th:text="#{user.fat}">Fat</th>
-            <th class="bg" th:text="#{user.carbs}">Carbs</th>
-            <th class="bg" th:text="#{user.prot}">Prot</th>
-            <th class="bg" th:text="#{user.calories}">Cals</th>
-        </tr>
-        </thead>
-        <tbody style="text-align: right">
-        <tr>
-            <td>TOTAL</td>
-            <td></td>
-            <td th:text="${dailyRecord.getTotalFats()}"></td>
-            <td th:text="${dailyRecord.getTotalProteins()}"></td>
-            <td th:text="${dailyRecord.getTotalCarbs()}"></td>
-            <td th:text="${dailyRecord.getTotalCalories()}"></td>
-        </tr>
-        <tr th:each="food: ${dailyRecord.entries}">
+        </span>
+        </div>
+    </div>
+    <div class="tabs row d-flex flex-grow-1 ml-2 mb-3" style="width: 100%">
+        <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${data}"
+                th:onclick="'tabClick(\'.dailyRecord' + ${stat.index} +'\')'"
+                th:text="${rec.recordDate}"
+        ></button>
+        <button class="pretty-button m4 ml-3"
+                onclick="setContentContainerTo('/food-diary?d=' + this.getAttribute('lastdate'))"
+                th:lastdate="${data[#lists.size(data) - 1].recordDate}">Next
+        </button>
+    </div>
 
-            <td style="text-align: right;" th:text="${food.food.name}"></td>
-            <td style=" vertical-align: middle; text-align: left; color: #747478; font-size: 0.7em"
-                th:text="${food.quantity} + 'g'"></td>
+    <div class="record-tabs" th:classappend="${'dailyRecord' + stat.index}" th:each="rec,stat : ${data}"
+         th:style="${stat.first ? 'display:block' : 'display:none'}">
+        <div class="row ml-4 align-items-center">
+            <h4 class="font-rubick mr-2">Your daily calories norm:</h4>
+            <h4 class="font-rubick  logged-in-as" th:text="${rec.getPercentage()} + '%'"></h4>
+            <h4 class="font-rubick " th:text="' (' + ${rec.getTotalCalories()} + '/' +
+                     ${user.userProfile.getDailyCalsNorm()}"></h4><h4 class="font-rubick">)</h4>
+        </div>
+        <div>
+            <table class="col-8 table font-rubick" style="width: 450px; font-size: 1.2em">
+                <thead style="font-size: 0.9em; font-weight: normal; text-align: right">
+                <tr>
+                    <th colspan="2" style="text-align: left">
+                    </th>
+                    <th class="bg" id="first" th:text="#{user.fat}">Fat</th>
+                    <th class="bg" th:text="#{user.carbs}">Carbs</th>
+                    <th class="bg" th:text="#{user.prot}">Prot</th>
+                    <th class="bg" th:text="#{user.calories}">Cals</th>
+                </tr>
+                </thead>
+                <tbody style="text-align: right">
+                <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td th:text="${rec.getTotalFats()}"></td>
+                    <td th:text="${rec.getTotalProteins()}"></td>
+                    <td th:text="${rec.getTotalCarbs()}"></td>
+                    <td th:text="${rec.getTotalCalories()}"></td>
+                </tr>
+                <tr th:each="food: ${rec.entries}">
 
-            <!--                            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>-->
-            <td th:text="${food.food.fats * food.quantity/100}"></td>
-            <td th:text="${food.food.carbohydrates * food.quantity/100}"></td>
-            <td th:text="${food.food.proteins * food.quantity/100}"></td>
-            <td style="background: #e2bfaf   ;font-weight: bold"
-                th:text="${food.food.calories * food.quantity/100}"></td>
-        </tr>
-        <tr>
-            <td>
-                <form id="data-for-add-food-modal-window" method="post">
-                    <input id="userId" name="userId" th:value="${user.id}" type="hidden">
-                    <input th:field="${dailyRecord.recordId}" type="hidden">
-                </form>
-                <button class="pretty-button" style="width: 12em" th:onclick="openAddFoodModalWindow()"> +</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                    <td style="text-align: right;" th:text="${food.food.name}"></td>
+                    <td style=" vertical-align: middle; text-align: left; color: #747478; font-size: 0.7em"
+                        th:text="${food.quantity} + 'g'"></td>
+                    <!--                            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>-->
+                    <td th:text="${food.food.fats * food.quantity/100}"></td>
+                    <td th:text="${food.food.carbohydrates * food.quantity/100}"></td>
+                    <td th:text="${food.food.proteins * food.quantity/100}"></td>
+                    <td style="background: #e2bfaf   ;font-weight: bold"
+                        th:text="${food.food.calories * food.quantity/100}"></td>
+                </tr>
+                <tr>
+                    <td class="tabs">
+                        <form method="post" th:classappend="${'data-food-modal-window' + stat.index}">
+                            <input id="userId" name="userId" th:value="${user.id}" type="hidden">
+                            <input id="recordId" name="recordId" th:value="${rec.recordId}" type="hidden">
+                            <input id="recordDate" name="recordDate" th:value="${rec.recordDate}" type="hidden">
+                        </form>
+                        <button class="pretty-button" style="width: 12em; "
+                                th:onclick="'openAddFoodModalWindow(\'.data-food-modal-window' + ${stat.index} +'\')'">
+                            NEW
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

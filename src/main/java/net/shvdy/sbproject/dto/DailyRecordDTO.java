@@ -18,15 +18,14 @@ import java.util.List;
 public class DailyRecordDTO {
 
     private Long recordId;
-    private Long userId;
+    private Long profileId;
     private String recordDate;
     private List<DailyRecordEntryDTO> entries;
+    private UserProfileDTO userProfile;
 
-    private int totalCalories;
-    private int totalProt;
-    private int totalFats;
-    private int totalCarbs;
-
+    public int getPercentage() {
+        return entries == null ? 0 : (int) (getTotalCalories() / (double) userProfile.getDailyCalsNorm() * 100);
+    }
 
     public int getTotalCalories() {
         return entries == null ? 0 : entries.stream()

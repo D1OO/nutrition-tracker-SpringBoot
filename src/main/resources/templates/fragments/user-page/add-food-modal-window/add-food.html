@@ -8,7 +8,7 @@
             <span class="close mt-0" onclick="closeAddFoodModalWindow()">&times;</span>
         </div>
         <div class="modal-body container" id="modalbody">
-            <div class="m-2" id="addfoodcontainer" style="display: block">
+            <div class="m-2 tabs" id="addfoodcontainer" style="display: block">
                 <div class=" row mb-3">
                     <div class="user_food m-2" th:each="food : ${userFood}">
                         <div class="portfolio-wrapper ">
@@ -26,6 +26,8 @@
                 <div>
                     <form class="formf" id="newEntryf" method="post" th:action="@{/save}" th:object="${newEntriesDTO}">
                         <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
+                        <input th:field="${newEntriesDTO.userId}" type="hidden"/>
+                        <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
                         <input th:field="${newEntriesDTO.foodDTOContainerJSON}" type="hidden">
                         <div id="new-entries-container">
                             <fieldset id="items" th:fragment="items2">
@@ -73,7 +75,7 @@
             <div class="mt-4" id="createfoodcontainer" style="display: none">
                 <form class="form" id="createfoodform" method="post" style="width: 100%" th:action="@{/create-food}"
                       th:object="${newFoodDTO}">
-                    <input th:field="${newFoodDTO.userId}" type="hidden">
+                    <input th:field="${newFoodDTO.profileId}" type="hidden">
                     <div class="row" style="width: 100%;">
                         <div class="col-6">
                             <div class="form-group col-md-11"
@@ -127,7 +129,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="m-2 d-flex flex-column col-5">
+                <div class="m-2 d-flex flex-column col-5 tabs">
                     <button class="pretty-button mt-2" id="myBtn" onclick="funn()">Save</button>
                     <button class="pretty-button switch-content mt-2" onclick="changeModalContent('addfoodcontainer')">
                         Back

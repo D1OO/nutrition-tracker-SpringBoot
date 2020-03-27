@@ -1,11 +1,12 @@
 package net.shvdy.sbproject.repository;
 
 import net.shvdy.sbproject.entity.DailyRecord;
+import net.shvdy.sbproject.entity.UserProfile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
 public interface DailyRecordRepository extends JpaRepository<DailyRecord, Long> {
-
-    Optional<DailyRecord> findByUserIdAndRecordDate(Long user_id, String record_date);
+    Page<DailyRecord> queryByUserProfileAndRecordDateLessThanEqualOrderByRecordDateDesc
+            (UserProfile userProfile, String recordDate, Pageable pageable);
 }

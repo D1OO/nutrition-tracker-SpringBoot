@@ -27,6 +27,7 @@ public class UserProfileDTO {
 
     UserDTO user;
     List<FoodDTO> userFood;
+    List<DailyRecordDTO> dailyRecords;
 
     // If user's profile isn't filled,
     // Thymeleaf will check on '-1' value and display 'fill profile to proceed' window,

@@ -17,6 +17,8 @@ import java.util.List;
 @Builder
 public class NewEntriesModalWindowDTO {
     private Long recordId;
+    private Long userId;
+    private String recordDate;
     private String foodDTOContainerJSON;
     private List<DailyRecordEntryDTO> entries;
 }

@@ -22,7 +22,6 @@ public class DailyRecordEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @NotNull
     @Column(name = "entry_id")
     private Long entryId;
 
@@ -34,7 +33,7 @@ public class DailyRecordEntry {
     @NotNull
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "record_id")
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "record_id", insertable = true)
     private DailyRecord dailyRecord;
 }
