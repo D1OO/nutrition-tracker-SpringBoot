@@ -3,6 +3,7 @@ package net.shvdy.sbproject.controller;
 import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.service.DailyRecordService;
 import net.shvdy.sbproject.service.UserService;
+import net.shvdy.sbproject.service.exception.NoValidProfileDataProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
 
 @Controller
 public class PageController {
@@ -35,26 +34,22 @@ public class PageController {
             return "index";
     }
 
+    @RequestMapping("/food-diary")
+    public String foodDiaryFragment(@RequestParam(name = "d", required = false) String date,
+                                    @AuthenticationPrincipal User user, Model model) {
+        try {
+            user.getUserProfile().getDailyCalsNorm();
+        } catch (NoValidProfileDataProvidedException e) {
+            return "fragments/user-page/complete-profile-to-proceed :: content";
+        }
+        model.addAttribute("data", dailyRecordService.getPaginatedForUserAndLastDate(user.getUserProfile(),
+                date, PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
+        return "fragments/user-page/food-diary :: content";
+    }
+
     @RequestMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model) {
+        model.addAttribute("users", userService.getUsersList());
         return "admin";
     }
-
-    @RequestMapping("/food-diary")
-    public String foodDiaryFragment(@RequestParam(name = "d", required = false) String lastDate,
-                                    @AuthenticationPrincipal User user, Model model) {
-        if (userService.getUserProfile(user.getId()).getDailyCalsNorm() > 0) {
-            if (lastDate == null) lastDate = LocalDate.now().toString();
-            model.addAttribute("data", dailyRecordService
-                    .getPaginatedForUserAndLastDate(user.getUserProfile(),
-                            lastDate, PageRequest.of(0, 5, Sort.Direction.DESC, "recordDate")));
-            LocalDate currentDate = LocalDate.now();
-            model.addAttribute("localDate", currentDate);
-            model.addAttribute("user", user);
-
-            return "fragments/user-page/food-diary :: content";
-        } else return "fragments/user-page/complete-profile-to-proceed :: content";
-    }
-
-
 }

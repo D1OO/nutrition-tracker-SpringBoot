@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.List;
 
 /**
- * 24.03.2020
+ * 23.03.2020
  *
  * @author Dmitriy Storozhenko
  * @version 1.0
@@ -17,12 +17,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FoodDTOContainer {
-    List<FoodDTO> userFood;
+public class NewEntriesContainerDTO {
+    private Long recordId;
+    private Long profileId;
+    private String recordDate;
+    private List<DailyRecordEntryDTO> entries;
 
     @Override
     public String toString() {
-        //Jackson (Java object to JSON String mapper)
+        //Jackson (Java object to JSON String mapping)
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);

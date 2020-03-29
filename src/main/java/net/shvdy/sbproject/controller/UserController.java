@@ -8,6 +8,8 @@ import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -41,15 +43,18 @@ public class UserController {
     @RequestMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User user, Model model) {
         UserProfile userProfile = userService.getUserProfile(user.getId());
-        model.addAttribute("userProfilee", userProfile);
+        model.addAttribute("userProfile", userProfile);
         return "fragments/user-page/profile :: content";
     }
 
     @PostMapping("/update-profile")
     public String saveProfile(UserProfile userProfileDTO, @AuthenticationPrincipal User user) {
-//        user.setUserProfile(userProfileDTO);
-        userProfileDTO.setUserId(user.getId());
         userService.updateUserProfile(userProfileDTO);
+        user.setUserProfile(userProfileDTO);
+        userProfileDTO.setUser(user);
+        PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(user,
+                user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return "redirect:/";
     }
 
@@ -82,14 +87,14 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String createAccount(UserDTO userDto) {
+    public String createAccount(UserDTO userDto, Model model) {
         try {
             userService.saveNewUser(userDto);
+
         } catch (AccountAlreadyExistsException e) {
+            model.addAttribute("error", "The account is already existing for this email");
             return "signup";
-//            result.rejectValue("username", "", "The account is already existing for this email");
         }
-//        if (result.hasErrors())
-        return "redirect:/login?success";
+        return "redirect:/login?signedup";
     }
 }

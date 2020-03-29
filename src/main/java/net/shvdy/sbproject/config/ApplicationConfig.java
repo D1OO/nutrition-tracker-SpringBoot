@@ -23,7 +23,7 @@ public class ApplicationConfig {
         modelMapper.addMappings(new PropertyMap<Food, FoodDTO>() {
             @Override
             protected void configure() {
-                map().setProfileId(source.getUserProfile().getUserId());
+                map().setProfileId(source.getUserProfile().getProfileId());
             }
         });
         return modelMapper;

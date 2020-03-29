@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)" th:replace="/fragments/head :: head(${title})"></head>
 <body>
-<div class="top-container container" style="padding: 0; margin-bottom: 15px; border: 1px solid black; border-top: none"
+<div class="top-container container"
+     style="padding: 0; margin-bottom: 0.1rem; border: 5px solid rgba(217,255,166,0.53); border-top: none ; border-right: none ; border-left: none"
      th:fragment="top-bar">
     <nav th:fragment="main-navbar" th:replace="/fragments/main-navbar :: content"></nav>
     <nav th:fragment="menubar" th:replace="/fragments/menubar :: content"></nav>

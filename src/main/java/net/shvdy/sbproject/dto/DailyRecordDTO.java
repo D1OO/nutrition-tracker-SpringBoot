@@ -2,6 +2,7 @@ package net.shvdy.sbproject.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,12 +24,16 @@ public class DailyRecordDTO {
     private List<DailyRecordEntryDTO> entries;
     private UserProfileDTO userProfile;
 
+    public LocalDate getRecordDateAsLD() {
+        return LocalDate.parse(recordDate);
+    }
+
     public int getPercentage() {
         return entries == null ? 0 : (int) (getTotalCalories() / (double) userProfile.getDailyCalsNorm() * 100);
     }
 
     public int getTotalCalories() {
-        return entries == null ? 0 : entries.stream()
+        return entries == null ? -1 : entries.stream()
                 .mapToInt(x -> x.getFood().getCalories() * x.getQuantity() / 100).sum();
     }
 

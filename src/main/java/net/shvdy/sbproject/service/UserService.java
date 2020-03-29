@@ -10,6 +10,7 @@ import net.shvdy.sbproject.repository.UserProfileRepository;
 import net.shvdy.sbproject.repository.UserRepository;
 import net.shvdy.sbproject.service.exception.AccountAlreadyExistsException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,12 +57,17 @@ public class UserService implements UserDetailsService {
         try {
             entityManager.merge(userProfile);
         } catch (Exception e) {
-            System.out.println(4);
+            e.printStackTrace();
         }
     }
 
     public UserProfile getUserProfile(Long userId) {
         return userProfileRepository.findById(userId).orElse(new UserProfile());
+    }
+
+    public List<UserDTO> getUsersList() {
+        return modelMapper.map(userRepository.findAll(), new TypeToken<ArrayList<UserDTO>>() {
+        }.getType());
     }
 
     @Override

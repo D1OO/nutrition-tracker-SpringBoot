@@ -1,5 +1,7 @@
 package net.shvdy.sbproject.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
 /**
@@ -14,9 +16,19 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DailyRecordEntryDTO {
-    private Long entryId;
-    private Long foodId;
+    private String foodName;
+    private String foodDTOJSON;
     private int quantity;
     private FoodDTO food;
-    private DailyRecordDTO dailyRecordDTO;
+
+    @Override
+    public String toString() {
+        //Jackson (Java object to JSON String mapping)
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "";
+        }
+    }
 }

@@ -3,12 +3,55 @@
 <body>
 <nav class="navbar navbar-light custom-navbar" id="navbar2" th:fragment="content">
     <div class="container px-0">
-        <div class="d-flex flex-grow-1 justify-content-center">
-            <a class="navbar-brand" th:href="@{/}">DREAMFIT</a>
+        <div class="align-self-start d-inline-flex mt-sm-1">
+                <span class="font-rubick navbar-light p-lg-2 mr-lg-5 "
+                      style="color: #3a2332; font-weight: lighter; font-size: 1em !important;  background: rgb(178,183,223);
+background: radial-gradient(circle, rgba(178,183,223,1) 0%, rgba(232,253,203,0.7245097868248862) 0%, rgba(178,183,223,1) 100%);  font-size: 1.2em"
+                      th:text="${#temporals.dayOfWeekName(currentDate)} + ' ' +
+                                  ${#temporals.day(currentDate)} + ', ' +
+                                  ${#temporals.monthName(currentDate)} + ' ' +
+                                  ${#temporals.year(currentDate)}">
+        </span>
+        </div>
+        <div class="d-flex flex-grow-1 justify-content-center align-items-end " style="position: relative; left: -2%;">
+            <h1 style="font-family:'Run Medium',serif;font-weight:normal;font-size:42px" th:href="@{/}">dreamfit</h1>
         </div>
         <a class="navbar-brand" id="justatest"></a>
-        <span sec:authorize="hasAuthority('ROLE_SUPERADMIN')" style="font-size: 0.8em"><a th:href="admin">Admin page</a>
-        </span>
+        <div class="align-self-start d-inline-flex mt-sm-1">
+            <ul class="list-inline  navbar-right mr-4">
+                <li class=" list-inline-item" sec:authorize="isAnonymous()">
+                    <div>
+                        <a class="pretty-button bg" th:href="@{/login}" th:text="#{sign-in}">Sign in</a>
+                        <a class="pretty-button bg signupButton" href="javascript:void(0)"
+                           onclick="document.forms['signUpButton'].submit()"
+                           th:text="#{create-account}">Create Account</a>
+                        <form id="signUpButton" method="GET" th:action="@{/signup}">
+                            <!--                        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>-->
+                        </form>
+                    </div>
+                </li>
+                <li class="list-inline-item" sec:authorize="isAuthenticated()">
+                    <ul class="list-inline mt-0" style="margin-top: 0;">
+                        <li class="list-inline-item" style="font-size: 1.1em; max-width: 560px">
+                            <!--                        <p><span th:text="#{logged-as}"></span>-->
+                            <span class="logged-in-as mt-sm-1" th:text="${#authentication.getPrincipal().getUserProfile().getFirstName()
+                            + ' ' + #authentication.getPrincipal().getUserProfile().getLastName()}"></span>
+                            </p>
+                        </li>
+                        <li class="list-inline-item" id="logout-link">
+                            <form id="logoutForm" method="POST" th:action="@{/logout}">
+                                <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                            </form>
+                            <button class="pretty-button bg signupButton"
+                                    onclick="document.forms['logoutForm'].submit()"
+                                    th:text="#{logout}">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
         <a class="burger" data-target="#main-navbar" data-toggle="collapse" href="#">
             <span></span>
         </a>

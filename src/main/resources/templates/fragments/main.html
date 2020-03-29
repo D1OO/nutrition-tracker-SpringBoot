@@ -2,11 +2,11 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <main id="main" th:fragment="main(content)">
-    <div class="site-section pb-0 site-portfolio" id="bg" style="height: 100%">
-        <div class="container align-self-start align-items-start " id="cont" style=" height: 100%">
-            <div class="d-inline-block align-self-start   align-items-start" style="height: 100% ">
-                <div class="d-inline-block align-items-start" data-aos="fade-zoom-in" data-aos-offset="0">
-                    <!--data-aos="fade-zoom-in"-->
+    <div class="site-section pb-0" id="bg" style="height: 100%">
+        <div class="container" id="cont" style=" height: 100%">
+            <div class="d-inline-block" style="height: 100%; width: 100%">
+                <div class="d-inline-block" data-aos="fade-zoom-in" data-aos-offset="0"
+                     style="height: 100%; width: 100%">
                     <div th:replace="${content}"></div>
                 </div>
             </div>

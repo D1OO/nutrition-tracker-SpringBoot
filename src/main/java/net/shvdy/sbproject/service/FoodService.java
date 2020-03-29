@@ -2,22 +2,13 @@ package net.shvdy.sbproject.service;
 
 import net.shvdy.sbproject.dto.FoodDTO;
 import net.shvdy.sbproject.entity.Food;
-import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.entity.UserProfile;
-import net.shvdy.sbproject.repository.UserRepository;
-import org.modelmapper.ModelMapper;
+import net.shvdy.sbproject.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 20.03.2020
@@ -27,44 +18,20 @@ import java.util.stream.Collectors;
  */
 @Service
 public class FoodService {
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    FoodRepository foodRepository;
+    FoodUtils foodUtils;
     @PersistenceContext
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Autowired
-    public FoodService(UserRepository userRepository, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
+    public FoodService(FoodRepository foodRepository, FoodUtils foodUtils) {
+        this.foodRepository = foodRepository;
+        this.foodUtils = foodUtils;
     }
 
-    public List<FoodDTO> getUsersFood(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            List<Food> userFood = user.get().getUserProfile().getUserFood();
-            return entityToDTO(userFood);
-        } else
-            return new ArrayList<>();
-    }
-
-    @Transactional
-    public void saveNewUsersFood(Long userId, FoodDTO newFoodDTO) {
-        Food food = modelMapper.map(newFoodDTO, Food.class);
-        UserProfile u = userRepository.findById(userId).orElse(new User()).getUserProfile();
-        food.setUserProfile(u);
-        u.getUserFood().add(food);
-        entityManager.merge(u);
-    }
-
-    public HashMap<Long, FoodDTO> convertListToHashMapOnFoodId(List<FoodDTO> foodList) {
-        return new HashMap<>(foodList.stream()
-                .collect(Collectors.toMap(FoodDTO::getFood_id, Function.identity())));
-    }
-
-    private List<FoodDTO> entityToDTO(List<Food> entities) {
-        return entities
-                .stream()
-                .map(source -> modelMapper.map(source, FoodDTO.class))
-                .collect(Collectors.toList());
+    public Food saveNewFood(FoodDTO foodDTO) {
+        Food food = foodUtils.mapDTOToEntity(foodDTO);
+        food.setUserProfile(entityManager.getReference(UserProfile.class, foodDTO.getProfileId()));
+        return foodRepository.save(food);
     }
 }

@@ -1,6 +1,7 @@
 package net.shvdy.sbproject.entity;
 
 import lombok.*;
+import net.shvdy.sbproject.service.exception.NoValidProfileDataProvidedException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,11 +29,14 @@ public class UserProfile {
     List<DailyRecord> dailyRecord;
     @Id
     @Column(name = "profile_id")
-    private Long userId;
+    private Long profileId;
     @Column(name = "first_name_ua")
     private String firstNameUa;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
     @Enumerated(EnumType.STRING)
     private Lifestyle lifestyle;
     private int age;
@@ -41,9 +45,6 @@ public class UserProfile {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userProfile", cascade = CascadeType.ALL)
     List<Food> userFood;
-    @Column(name = "first_name")
-    @NotNull
-    private String firstName;
 
     public enum Lifestyle {
         SEDENTARY(1.2f),
@@ -63,11 +64,10 @@ public class UserProfile {
         }
     }
 
-    public int getDailyCalsNorm() {
-        try {
-            return (int) ((66 + 13.75 * weight + 5 * height - 6.755 * age) * lifestyle.getFactor());
-        } catch (NullPointerException e) {
-            return -1;
-        }
+    public int getDailyCalsNorm() throws NoValidProfileDataProvidedException {
+        int i = (int) ((66 + 13.75 * weight + 5 * height - 6.755 * age) * lifestyle.getFactor());
+        if (i <= 0)
+            throw new NoValidProfileDataProvidedException();
+        else return i;
     }
 }

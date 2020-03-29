@@ -11,10 +11,12 @@
 html {
     height: 100%;
     margin: 0;
+    overflow-y: scroll;
 }
 
 body {
-    font-family: "Press start 2P", monosapce;
+    font-family: 'Gotham Rounded Bold', 'Gotham Office Regular', Serif;
+    /*font-weight:normal;*/
     color: #0d1e2d;
     height: 100%;
     margin: 0;
@@ -22,8 +24,48 @@ body {
     flex-direction: column;
 }
 
+* > th {
+    position: sticky;
+    top: 0;
+}
+
+
+#navbar2 {
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.0
+}
+
+#navbar2 h1 {
+    line-height: 1.0
+}
+
+#main-navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+dl, ol, ul {
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+#content-container {
+    height: 100%;
+    width: 100%;
+    background: rgba(192, 181, 218, 0.4);
+    background: linear-gradient(180deg, rgba(218, 216, 212, 0.4) 11%, rgba(224, 224, 224, 0.5) 49%, rgba(240, 255, 239, 0.5) 100%);
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.record-tabs {
+    margin-bottom: 10px;
+}
+
+
 .font-rubick {
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Gotham Rounded Bold', Serif;
 }
 
 .pretty-button {
@@ -38,7 +80,8 @@ body {
 }
 
 .pretty-button {
-    border: 2px solid black;
+    border: 1px solid black;
+    border-radius: 4px;
 }
 
 .pretty-button:active,
@@ -64,9 +107,9 @@ body {
 }
 
 .top-container .pretty-button {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border: 2px solid #292929;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 1px solid #292929;
 }
 
 .top-container .pretty-button:hover {
@@ -90,13 +133,25 @@ body {
     background: linear-gradient(338deg, rgb(213, 171, 177) 10%, rgb(226, 226, 165) 100%);
 }
 
+
+.menu-pr-button {
+    font-family: "Run Medium", sans-serif !important;
+    font-weight: lighter;
+    font-size: 1.5em !important;
+    background: rgb(192, 181, 218);
+    background: linear-gradient(180deg, rgba(192, 181, 218, 0.8281512434075192) 19%,
+    rgba(224, 224, 224, 0.8813725319229254) 65%, rgba(217, 255, 166, 0.6040616075531775) 100%);
+    border: none !important;
+}
+
+
 .tabs .pretty-button {
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Gotham Rounded Medium', sans-serif;
     text-transform: none;
     font-size: 1em;
     padding-top: 8px;
     padding-bottom: 8px;
-    border: 2px solid #292929;
+    border: 1px solid #292929;
 }
 
 .tabs .pretty-button:hover {
@@ -109,6 +164,26 @@ body {
     background: rgb(213, 95, 147);
     background: linear-gradient(338deg, rgba(213, 95, 147, 0.62) 10%, rgba(233, 232, 148, 0.73) 100%);
 }
+
+.food-diary-container {
+    background: rgba(213, 95, 147, 0.24);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 0.19) 10%, rgba(233, 232, 148, 0.4) 100%);
+}
+
+.recordTab :hover {
+    background: rgb(213, 95, 147);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 0.62) 10%, rgba(233, 232, 148, 0.73) 100%);
+}
+
+.active-tab-button {
+    background: rgb(213, 95, 147);
+    background: linear-gradient(338deg, rgba(213, 95, 147, 1) 10%, rgba(233, 232, 148, 1) 100%);
+}
+
+.nextb:hover {
+    background: #afa5af;
+}
+
 
 .formf input {
 
@@ -279,14 +354,15 @@ a:hover {
     color: #000;
 }
 
-h1,
+
 h2,
 h3,
 h4,
 h5,
 h6,
 .font-heading {
-    font-family: "Raleway", sans-serif;
+    font-family: "Gotham Rounded Medium", sans-serif !important;
+    font-weight: lighter;
 }
 
 .site-section {
@@ -663,10 +739,6 @@ h6,
 
 /* Custom Navbar */
 
-.custom-navbar {
-    padding-top: 5px;
-    width: 100%;
-}
 
 .custom-navbar .navbar-brand {
     font-size: 1.7rem;
@@ -802,4 +874,51 @@ h6,
     color: #000;
     text-decoration: none;
     background: #fdbaba;
+}
+
+@font-face {
+    font-family: 'Run Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Run Medium'), url('../fonts/run.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Rounded Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Rounded Bold'), url('../fonts/Gotham Rounded Bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Rounded Light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Rounded Light'), url('../fonts/Gotham Rounded Light.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Rounded Light Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Rounded Light Italic'), url('../fonts/Gotham Rounded Light Italic.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Rounded Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Rounded Medium'), url('../fonts/Gotham Rounded Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Rounded Medium Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Rounded Medium Italic'), url('../fonts/Gotham Rounded Medium Italic.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Gotham Office Regular';
+url('../fonts/GothamOffice-Regular.woff2') format('woff2'),
 }

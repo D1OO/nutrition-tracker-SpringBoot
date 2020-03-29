@@ -2,7 +2,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="content-container" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
-    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${userProfilee.getUser().username}">User</div>
+    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${userProfile.getUser().username}">User</div>
     <!--        <div class="row align-items-center">-->
     <!--            <h4 class="font-rubick mr-2">Your daily calories norm:</h4>-->
     <!--            <h4 class="font-rubick  logged-in-as" th:text="${dailyCalsPercentage} + '%'"></h4>-->
@@ -12,7 +12,8 @@
     <!--            &lt;!&ndash;                    <h4 class="font-rubick logged-in-as" th:text="${user.userProfile.getDailyCalsNorm()}"></h4>&ndash;&gt;-->
     <!--        </div>-->
     <!--        <div class=" mb-5 mb-md-0">-->
-    <form class="form" method="post" style="width: 100%" th:action="@{/update-profile}" th:object="${userProfilee}">
+    <form class="form" method="post" style="width: 100%" th:action="@{/update-profile}" th:object="${userProfile}">
+        <input id="profileId" name="profileId" th:value="${#authentication.getPrincipal().getId()}" type="hidden"/>
         <div class="row" style="width: 100%;">
             <div class="col-6">
                 <div class="form-group col-md-11"
@@ -73,17 +74,9 @@
                            th:field="*{age}"/>
                     <div class="validate"></div>
                 </div>
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('user')}? 'has-error':''">
-                    <label class="control-label" for="age">Age</label>
-                    <!--                        <p style="font-size: 0.9em;">(not required)</p>-->
-                    <input class="form-control"
-                           data-msg="Enter a valid first name (ukrainian letters)"
-                           data-rule="firstnameuaexp" id="user"
-                           th:field="${userProfilee.user}"/>
+                <div class="form-group col-md-11">
                     <div class="validate"></div>
                 </div>
-
                 <select th:field="*{lifestyle}">
                     <option value=""> --</option>
                     <option th:each="colorOpt : ${T(net.shvdy.sbproject.entity.UserProfile.Lifestyle).values()}"
@@ -91,8 +84,8 @@
                 </select>
             </div>
         </div>
-        <div>
-            <button class="pretty-button" id="myBtn" style="width: 12em">Save changes</button>
+        <div class="container m2 mb-4">
+            <button class="pretty-button" id="myBtn">Save changes</button>
         </div>
 
         <!--                <p class="error-validation"-->

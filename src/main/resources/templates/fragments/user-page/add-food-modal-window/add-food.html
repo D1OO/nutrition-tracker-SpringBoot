@@ -9,75 +9,71 @@
         </div>
         <div class="modal-body container" id="modalbody">
             <div class="m-2 tabs" id="addfoodcontainer" style="display: block">
-                <div class=" row mb-3">
-                    <div class="user_food m-2" th:each="food : ${userFood}">
-                        <div class="portfolio-wrapper ">
+                <div class="d-inline-flex">
+                    <div class="mb-3" th:each="food : ${userFood}">
+                        <div class="user_food m-2">
                             <a rel="group" title=""></a>
-                            <div class="label">
+                            <div class="label ">
                                 <div class="label-text">
-                                    <button class="pretty-button foodlink" onclick="appendNewEntry()"
-                                            th:text="${food.value.name}"></button>
-                                    <input id="foodClickedId" th:value="${food.key}" type="hidden">
+                                    <button class="pretty-button foodlink"
+                                            onclick="addedNewEntry(this.getAttribute('food'), this.getAttribute('food-name'))"
+                                            th:food="${food}" th:food-name="${food.name}"
+                                            th:text="${food.name}"></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <form class="formf" id="newEntryf" method="post" th:action="@{/save}" th:object="${newEntriesDTO}">
-                        <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
-                        <input th:field="${newEntriesDTO.userId}" type="hidden"/>
-                        <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
-                        <input th:field="${newEntriesDTO.foodDTOContainerJSON}" type="hidden">
-                        <div id="new-entries-container">
-                            <fieldset id="items" th:fragment="items2">
+                    <div id="new-entries-container">
+                        <div id="items" th:fragment="entries-list">
+                            <input id="new-entries-list" th:value="${newEntriesDTO}" type="hidden">
+                            <form id="new-entries-form" method="post" th:action="@{/save-new-entries}"
+                                  th:object="${newEntriesDTO}">
                                 <table style="width: 80%">
+                                    <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
+                                    <input th:field="${newEntriesDTO.profileId}" type="hidden"/>
+                                    <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
                                     <tr align="center" class="row align-items-top m-1" id="fff"
-                                        th:each="o, stat : ${newEntriesDTO.entries}">
+                                        th:each="entry, stat : ${newEntriesDTO.entries}">
                                         <td class="foodlabel  row justify-content-end m-1"
                                             style="width: 18%; justify-content: end">
                                             <p class="mr-2" style="text-align: right"
-                                               th:text="${userFood[__newEntriesDTO.entries[__stat.index__].foodId__].name}"></p>
+                                               th:text="${entry.foodName}"></p>
                                         </td>
-                                        <td class="col-sm-auto row align-items-top m-1">
-                                            <input class="form-control" placeholder="quantity(g)"
+                                        <td class="d-inline-flex col-sm-auto align-items-top m-1">
+                                            <input class="form-control mr-2" placeholder="quantity(g)"
+                                                   style="width: 50%"
                                                    th:field="${newEntriesDTO.entries[__${stat.index}__].quantity}">
+                                            <input class="form-control"
+                                                   th:field="${newEntriesDTO.entries[__${stat.index}__].foodDTOJSON}"
+                                                   type="hidden">
                                             <label>(g)</label>
                                         </td>
                                         <td class="">
-                                            <button class="pretty-button mt-2 removeButton" style="padding: 4px 8px"
-                                                    type="button"
-                                            >Remove
-                                            </button>
-                                            <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                    $(".removeButton").on("click", function () {
-                                                        $(this).closest('tr').remove();
-                                                        var data = $('#newEntryf').serialize();
-                                                        $.post('/', data, replaceItems);
-                                                    });
-                                                });
-                                            </script>
-                                            <input class="foodentry form-control"
-                                                   th:field="${newEntriesDTO.entries[__${stat.index}__].foodId}"
-                                                   type="hidden">
+                                            <a class=" mt-2 removeButton"
+                                               onclick="removedEntry(this.getAttribute('indexx'))"
+                                               style="padding: 4px 8px; color: rgba(168,56,59,0.66)"
+                                               th:indexx="${stat.index}" type="button">
+                                                Remove
+                                            </a>
                                         </td>
                                     </tr>
                                 </table>
-                            </fieldset>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                <button class="pretty-button switch-content" onclick="changeModalContent('createfoodcontainer')"
+                <button class="pretty-button switch-content" onclick="setModalContainerTo('createfoodcontainer')"
                         style="width: 40%">Create New
                 </button>
             </div>
             <div class="mt-4" id="createfoodcontainer" style="display: none">
-                <form class="form" id="createfoodform" method="post" style="width: 100%" th:action="@{/create-food}"
+                <form class="form" id="createfoodform" method="post" style="width: 100%" th:action="@{/save-new-food}"
                       th:object="${newFoodDTO}">
                     <input th:field="${newFoodDTO.profileId}" type="hidden">
-                    <div class="row" style="width: 100%;">
-                        <div class="col-6">
+                    <div class="row">
+                        <div class="col-3">
                             <div class="form-group col-md-11"
                                  th:classappend="${#fields.hasErrors('name')}? 'has-error':''">
                                 <label class="control-label" for="name">Food Name</label>
@@ -99,7 +95,6 @@
                             <div class="form-group col-md-11"
                                  th:classappend="${#fields.hasErrors('proteins')}? 'has-error':''">
                                 <label class="control-label" for="proteins">Proteins</label>
-                                <p style="font-size: 0.9em;">(not required)</p>
                                 <input class="form-control"
                                        data-msg="Enter a valid first name (ukrainian letters)"
                                        data-rule="firstnameuaexp" id="proteins"
@@ -107,7 +102,7 @@
                                 <div class="validate"></div>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <div class="form-group col-md-11"
                                  th:classappend="${#fields.hasErrors('fats')}? 'has-error':''">
                                 <label class="control-label" for="fats">Fats</label>
@@ -130,8 +125,8 @@
                     </div>
                 </form>
                 <div class="m-2 d-flex flex-column col-5 tabs">
-                    <button class="pretty-button mt-2" id="myBtn" onclick="funn()">Save</button>
-                    <button class="pretty-button switch-content mt-2" onclick="changeModalContent('addfoodcontainer')">
+                    <button class="pretty-button mt-2" id="myBtn" onclick="saveCreatedFood()">Save</button>
+                    <button class="pretty-button switch-content mt-2" onclick="setModalContainerTo('addfoodcontainer')">
                         Back
                     </button>
                 </div>
@@ -162,9 +157,7 @@
             </div>
         </div>
         <div class="modal-footer d-flex justify-content-center">
-            <button class="pretty-button" onclick="document.forms['newEntryf'].submit()" style="width: 40%"
-                    type="submit">save
-            </button>
+            <button class="pretty-button" onclick="saveNewEntries()" style="width: 40%">save</button>
         </div>
     </div>
 </div>

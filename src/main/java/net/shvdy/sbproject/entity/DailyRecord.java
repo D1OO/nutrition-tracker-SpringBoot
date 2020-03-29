@@ -36,4 +36,8 @@ public class DailyRecord {
     UserProfile userProfile;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "dailyRecord", cascade = CascadeType.ALL)
     private List<DailyRecordEntry> entries;
+
+//    @PrePersist void temporaryfixForDumbMySqlSavingLocalDate1DayBeforeProvidedValue() {
+//        recordDate = recordDate.plusDays(1);
+//    }
 }
