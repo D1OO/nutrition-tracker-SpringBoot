@@ -1,5 +1,6 @@
-# [Spring Boot Project](http://shvdy-project.herokuapp.com)  
+# [Nutrition tracking service](https://dreamfit-spring.herokuapp.com/)  
 
+### Java, Spring Boot, JPA (Hibernate), MySQL, Thymeleaf
 
 Система Похудения/Трекинга Пищи. Клиент выбирает еду (название,
 кол. белки, жиры, углеволы), которую съел (из уже готового списка) и пишет
@@ -30,5 +31,3 @@ Deployed [here](http://shvdy-project.herokuapp.com/login)
 ### Next:    
 Tests  
 Write UA localisation messages  
-
-  
