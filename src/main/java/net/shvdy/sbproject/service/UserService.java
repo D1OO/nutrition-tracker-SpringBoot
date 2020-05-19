@@ -53,12 +53,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void updateUserProfile(UserProfile userProfile) {
-//        UserProfile userProfile = modelMapper.map(userProfileDTO, UserProfile.class);
-        try {
-            entityManager.merge(userProfile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        entityManager.merge(userProfile);
     }
 
     public UserProfile getUserProfile(Long userId) {

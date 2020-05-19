@@ -21,6 +21,7 @@ public class NewEntriesContainerDTO {
     private Long recordId;
     private Long profileId;
     private String recordDate;
+//    private String newEntriesContainerJSON;
     private List<DailyRecordEntryDTO> entries;
 
     @Override
@@ -33,4 +34,8 @@ public class NewEntriesContainerDTO {
             return "";
         }
     }
+
+//    private List<DailyRecordEntryDTO> getEntries(){
+//        setNewEntriesContainerJSON(this.toString());
+//    }
 }

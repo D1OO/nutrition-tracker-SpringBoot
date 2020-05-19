@@ -42,7 +42,7 @@ public class PageController {
         } catch (NoValidProfileDataProvidedException e) {
             return "fragments/user-page/complete-profile-to-proceed :: content";
         }
-        model.addAttribute("data", dailyRecordService.getPaginatedForUserAndLastDate(user.getUserProfile(),
+        model.addAttribute("data", dailyRecordService.getWeeklyRecords(user.getUserProfile(),
                 date, PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
         return "fragments/user-page/food-diary :: content";
     }

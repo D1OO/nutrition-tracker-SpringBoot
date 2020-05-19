@@ -65,7 +65,7 @@ dl, ol, ul {
 
 
 .font-rubick {
-    font-family: 'Gotham Rounded Bold', Serif;
+    font-family: 'Clother Light','Gotham Rounded Bold', Serif;
 }
 
 .pretty-button {
@@ -828,6 +828,11 @@ h6,
 .footer {
     flex-shrink: 0;
     padding: 0 0 1rem 0;
+
+    background: rgb(168,168,168);
+    background: linear-gradient(198deg, rgba(168,168,168,0.4471988624551383) 1%, rgba(216,255,158,0.4612044646960347) 54%, rgba(158,238,175,0.6964985823430935) 93%);
+    border-top: 2px rgba(40, 0, 169, 0.34);
+    border: 4px;
 }
 
 .footer a {
@@ -919,6 +924,6 @@ h6,
 }
 
 @font-face {
-    font-family: 'Gotham Office Regular';
-url('../fonts/GothamOffice-Regular.woff2') format('woff2'),
+    font-family: 'Clother Light';
+url('../fonts/Closer-Light.woff2') format('woff2'),
 }

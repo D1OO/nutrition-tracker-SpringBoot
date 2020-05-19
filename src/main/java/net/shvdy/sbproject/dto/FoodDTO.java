@@ -3,6 +3,7 @@ package net.shvdy.sbproject.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 21.03.2020
@@ -19,6 +20,7 @@ import lombok.*;
 public class FoodDTO {
     private Long food_id;
     private Long profileId;
+    @Length(min = 2)
     private String name;
     private int calories;
     private int proteins;

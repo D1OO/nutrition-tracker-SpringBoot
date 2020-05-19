@@ -18,7 +18,7 @@
                            th:text="${error}">Validation error</p>
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
-                            <label class="control-label" for="username">E-mail</label>
+                            <label class="control-label" for="username" th:text="#{login.email}">E-mail</label>
                             <input class="form-control"
                                    data-msg="Incorrect email"
                                    data-rule="email" id="username"
@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
-                            <label class="control-label" for="password">Password</label>
+                            <label class="control-label" for="password" th:text="#{login.password}">Password</label>
                             <input class="form-control"
                                    data-msg="Enter a valid password <br>(8+ digit or latin characters)"
                                    data-rule="pwrd" id="password"
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('userProfile.firstName')}? 'has-error':''">
-                            <label class="control-label" for="userProfile.firstName">First name</label>
+                            <label class="control-label" for="userProfile.firstName"  th:text="#{login.first-name}">First name</label>
                             <input class="form-control"
                                    data-msg="Enter a valid first name"
                                    data-rule="firstnameexp" id="userProfile.firstName"
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('userProfile.lastName')}? 'has-error':''">
-                            <label class="control-label" for="userProfile.lastName">Last name</label>
+                            <label class="control-label" for="userProfile.lastName"  th:text="#{login.last-name}">Last name</label>
                             <input class="form-control"
                                    data-msg="Enter a valid last name"
                                    data-rule="lastnameexp" id="userProfile.lastName"
@@ -56,8 +56,8 @@
                         </div>
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('userProfile.firstNameUa')}? 'has-error':''">
-                            <label class="control-label" for="userProfile.firstNameUa">First name UA</label>
-                            <p style="font-size: 0.9em;">(not required)</p>
+                            <label class="control-label" for="userProfile.firstNameUa"  th:text="#{login.first-name-ua}">First name UA</label>
+                            <p style="font-size: 0.9em;"  th:text="#{login.not-required}">(not required)</p>
                             <input class="form-control"
                                    data-msg="Enter a valid first name (ukrainian letters)"
                                    data-rule="firstnameuaexp" id="userProfile.firstNameUa"
@@ -65,11 +65,10 @@
                             <div class="validate"></div>
                         </div>
                         <div class="form-group col-md-5">
-                            <input class="pretty-button submit-button d-block w-100" disabled="disabled" type="submit"
-                                   value="SIGN UP">
+                            <input class="pretty-button submit-button d-block w-100" disabled="disabled" type="submit"  th:value="#{login.sign-up}">
                         </div>
-                        <div class="form-group col-md-12">
-                            <span>Already signed up? <a style="color:#34ce57" th:href="@{/login}">LOGIN</a></span>
+                        <div class="form-group col-md-12 ">
+                            <span class="mr-2" th:text="#{login.already-signed-up}"></span><a style="color:#34ce57" th:href="@{/login}"  th:text="#{login.login}">LOGIN</a>
                         </div>
 
                         <div class="alert alert-info col-md-12 mb-3" role="alert" th:if="${logout}">You've been logged

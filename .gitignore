@@ -29,3 +29,9 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/static/about.html
+/src/main/resources/static/contact.html
+/src/main/resources/static/index.html
+/src/main/resources/static/services.html
+/src/main/resources/static/work-single.html
+/src/main/resources/static/works.html

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Optional;
 
 /**
  * 21.03.2020
@@ -26,7 +25,6 @@ import java.util.Optional;
  */
 @Controller
 class DiaryController {
-
     private final FoodService foodService;
     private final DailyRecordService dailyRecordService;
     private final FoodUtils foodUtils;
@@ -52,7 +50,7 @@ class DiaryController {
                 .recordDate(recordDate)
                 .entries(Collections.emptyList()).build());
         model.addAttribute("userFood", foodUtils.entityToDTO(user.getUserProfile().getUserFood()));
-        return "fragments/user-page/add-food-modal-window/add-food :: content";
+        return "fragments/user-page/add-entries-and-create-food :: content";
     }
 
     @PostMapping(value = "/added-entry")
@@ -61,27 +59,22 @@ class DiaryController {
         NewEntriesContainerDTO newEntriesDTO = new ObjectMapper().readValue(newEntriesDTOJSON, NewEntriesContainerDTO.class);
         newEntriesDTO.getEntries().add(DailyRecordEntryDTO.builder().foodName(foodName).foodDTOJSON(foodDTOJSON).build());
         model.addAttribute("newEntriesDTO", newEntriesDTO);
-        return "fragments/user-page/add-food-modal-window/add-food :: entries-list";
+        return "fragments/user-page/add-entries-and-create-food :: new-entries-list";
     }
 
     @PostMapping(value = "/removed-entry")
-    public String updateAddingEntriesWindow(@RequestParam int index, @RequestParam String newEntriesDTOJSON, Model model) throws IOException {
+    public String updateAddingEntriesWindow(@RequestParam int index, @RequestParam String newEntriesDTOJSON,
+                                            Model model) throws IOException {
         NewEntriesContainerDTO newEntriesDTO = new ObjectMapper().readValue(newEntriesDTOJSON, NewEntriesContainerDTO.class);
         newEntriesDTO.getEntries().remove(index);
         model.addAttribute("newEntriesDTO", newEntriesDTO);
-        return "fragments/user-page/add-food-modal-window/add-food :: entries-list";
+        return "fragments/user-page/add-entries-and-create-food :: new-entries-list";
     }
 
-
     @RequestMapping(value = "/save-new-entries")
-    public String saveNewEntriesList(NewEntriesContainerDTO newEntriesDTO) {
-        Optional.of(newEntriesDTO).ifPresent(x -> {
-            try {
-                dailyRecordService.saveNewEntries(newEntriesDTO);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+    public String saveNewEntriesList(NewEntriesContainerDTO newEntriesDTO) throws IOException {
+        if (!newEntriesDTO.getEntries().isEmpty())
+            dailyRecordService.saveNewEntries(newEntriesDTO);
         return ("redirect:/");
     }
 

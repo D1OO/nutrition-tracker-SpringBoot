@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 public class UserController {
-
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -58,6 +57,24 @@ public class UserController {
         return "redirect:/";
     }
 
+    @RequestMapping("/signup")
+    public String signUpPage(Authentication auth) {
+        if (auth != null && auth.isAuthenticated())
+            return "redirect:/";
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String createAccount(UserDTO userDto, Model model) {
+        try {
+            userService.saveNewUser(userDto);
+        } catch (AccountAlreadyExistsException e) {
+            model.addAttribute("error", "The account is already existing for this email");
+            return "signup";
+        }
+        return "redirect:/login?signedup";
+    }
+
     @RequestMapping(value = "/login")
     public String loginPage(Authentication auth,
                             @RequestParam(required = false) String error,
@@ -71,30 +88,5 @@ public class UserController {
         model.addAttribute("logout", logout != null);
         model.addAttribute("signedup", signedup != null);
         return "login";
-    }
-
-    @RequestMapping("/signup")
-    public String signUpPage(Authentication auth,
-                             @RequestParam(value = "error", required = false) String error,
-                             @RequestParam(value = "logout", required = false) String logout,
-                             Model model) {
-        if (auth != null && auth.isAuthenticated()) {
-            return "redirect:/";
-        }
-        model.addAttribute("error", error != null);
-        model.addAttribute("logout", logout != null);
-        return "signup";
-    }
-
-    @PostMapping("/signup")
-    public String createAccount(UserDTO userDto, Model model) {
-        try {
-            userService.saveNewUser(userDto);
-
-        } catch (AccountAlreadyExistsException e) {
-            model.addAttribute("error", "The account is already existing for this email");
-            return "signup";
-        }
-        return "redirect:/login?signedup";
     }
 }

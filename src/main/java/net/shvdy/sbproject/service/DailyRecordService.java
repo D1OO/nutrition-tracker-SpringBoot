@@ -55,32 +55,29 @@ public class DailyRecordService {
         dailyRecordRepository.save(newDailyRecord);
     }
 
-    public ArrayList<DailyRecordDTO> getPaginatedForUserAndLastDate(UserProfile userProfile, String lastDayOfPageRequest,
-                                                                    Pageable pageable) {
-        lastDayOfPageRequest = (lastDayOfPageRequest == null) ?
-                LocalDate.now().toString() : LocalDate.parse(lastDayOfPageRequest).minusDays(1).toString();
+    public ArrayList<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String requestedDay, Pageable pageable) {
+        //////////////
+        requestedDay = (requestedDay == null) ?
+                LocalDate.now().toString() : LocalDate.parse(requestedDay).minusDays(1).toString();
 
         Page<DailyRecord> existingDailyRecords = dailyRecordRepository
-                .queryByUserProfileAndRecordDateLessThanEqualOrderByRecordDateDesc(userProfile, lastDayOfPageRequest, pageable);
+                .findByUserProfileAndRecordDateLessThanEqualOrderByRecordDateDesc(userProfile, requestedDay, pageable);
 
-        ArrayList<DailyRecord> recordsForAllDaysBeforeTheRequested = new ArrayList<>();
-        ArrayList<DailyRecord> existing = existingDailyRecords.stream()
-                .collect(toCollection(ArrayList::new));
-        List<LocalDate> existingRecordsDates = existing
-                .stream().map(x -> LocalDate.parse(x.getRecordDate())).collect(toList());
-        LocalDate firstDay = LocalDate.parse(lastDayOfPageRequest).minusDays(pageable.getPageSize());
+        ArrayList<DailyRecord> existingRecords = existingDailyRecords.stream().collect(toCollection(ArrayList::new));
+        List<LocalDate> existingRecordsDates = existingRecords.stream().map(x -> LocalDate.parse(x.getRecordDate())).collect(toList());
+        LocalDate dayWeekBeforeTheRequested = LocalDate.parse(requestedDay).minusDays(pageable.getPageSize());
+        ArrayList<DailyRecord> recordsForEachDayBeforeTheRequested = new ArrayList<>();
 
-        for (LocalDate day = LocalDate.parse(lastDayOfPageRequest); day.isAfter(firstDay); day = day.minusDays(1)) {
+        for (LocalDate day = LocalDate.parse(requestedDay); day.isAfter(dayWeekBeforeTheRequested); day = day.minusDays(1)) {
             String dayString = day.toString();
-            if (!existingRecordsDates.contains(day))
-                recordsForAllDaysBeforeTheRequested.add(DailyRecord.builder().recordDate(dayString).build());
-            else {
-                recordsForAllDaysBeforeTheRequested.add(existing.stream()
+            if (existingRecordsDates.contains(day)) {
+                recordsForEachDayBeforeTheRequested.add(existingRecords.stream()
                         .filter(dr -> dr.getRecordDate().equals(dayString))
                         .findFirst().orElse(new DailyRecord()));
-            }
+            } else
+                recordsForEachDayBeforeTheRequested.add(DailyRecord.builder().recordDate(dayString).build());
         }
-        return modelMapper.map(recordsForAllDaysBeforeTheRequested, new TypeToken<ArrayList<DailyRecordDTO>>() {
+        return modelMapper.map(recordsForEachDayBeforeTheRequested, new TypeToken<ArrayList<DailyRecordDTO>>() {
         }.getType());
     }
 }
