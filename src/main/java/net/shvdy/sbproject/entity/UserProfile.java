@@ -5,6 +5,7 @@ import net.shvdy.sbproject.service.exception.NoValidProfileDataProvidedException
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class UserProfile {
     @Column(name = "first_name_ua")
     private String firstNameUa;
     @Column(name = "last_name")
+    @NotNull
     private String lastName;
     @Column(name = "first_name")
     @NotNull
@@ -44,7 +46,7 @@ public class UserProfile {
     private int weight;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userProfile", cascade = CascadeType.ALL)
-    List<Food> userFood;
+    List<Food> userFood = new ArrayList<>();
 
     public enum Lifestyle {
         SEDENTARY(1.2f),
@@ -65,6 +67,8 @@ public class UserProfile {
     }
 
     public int getDailyCalsNorm() throws NoValidProfileDataProvidedException {
+        if (this.lifestyle == null)
+            throw new NoValidProfileDataProvidedException();
         int i = (int) ((66 + 13.75 * weight + 5 * height - 6.755 * age) * lifestyle.getFactor());
         if (i <= 0)
             throw new NoValidProfileDataProvidedException();

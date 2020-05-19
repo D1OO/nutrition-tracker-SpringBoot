@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="template :: head(~{::title})">
-    <title>Sign Up - shvdy project</title>
+    <title>Sign Up • Dreamfit</title>
 </head>
 <body>
 <div th:replace="template::top-bar"></div>
@@ -19,7 +19,7 @@
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
                             <label class="control-label" for="username" th:text="#{login.email}">E-mail</label>
-                            <input class="form-control"
+                            <input class="form-control required"
                                    data-msg="Incorrect email"
                                    data-rule="email" id="username"
                                    th:field="*{username}"
@@ -29,7 +29,7 @@
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
                             <label class="control-label" for="password" th:text="#{login.password}">Password</label>
-                            <input class="form-control"
+                            <input class="form-control required"
                                    data-msg="Enter a valid password <br>(8+ digit or latin characters)"
                                    data-rule="pwrd" id="password"
                                    th:field="*{password}"
@@ -39,7 +39,7 @@
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('userProfile.firstName')}? 'has-error':''">
                             <label class="control-label" for="userProfile.firstName"  th:text="#{login.first-name}">First name</label>
-                            <input class="form-control"
+                            <input class="form-control required"
                                    data-msg="Enter a valid first name"
                                    data-rule="firstnameexp" id="userProfile.firstName"
                                    th:field="*{userProfile.firstName}"/>
@@ -48,7 +48,7 @@
                         <div class="form-group col-md-11"
                              th:classappend="${#fields.hasErrors('userProfile.lastName')}? 'has-error':''">
                             <label class="control-label" for="userProfile.lastName"  th:text="#{login.last-name}">Last name</label>
-                            <input class="form-control"
+                            <input class="form-control required"
                                    data-msg="Enter a valid last name"
                                    data-rule="lastnameexp" id="userProfile.lastName"
                                    th:field="*{userProfile.lastName}"/>

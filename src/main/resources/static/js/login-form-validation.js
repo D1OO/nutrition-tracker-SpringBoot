@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
 
           case 'firstnameuaexp':
             if (i.val() != null)
-              if (!firstNameUaExp.test(i.val())) {
+              if (i.val().length > 0 && !firstNameUaExp.test(i.val())) {
                 ferror = ierror = true;
               }
             break;

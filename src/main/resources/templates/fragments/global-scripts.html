@@ -16,7 +16,6 @@
     <script src="js/main.js"></script>
     <script src="js/login-form-validation.js"></script>
 
-
     <script id="change-lang-param" type="text/javascript">
 
         $(document).ready(function () {
@@ -26,7 +25,7 @@
             });
 
             $(".locale").click(function (event) {
-                var selectedOption = event.target.id;
+                let selectedOption = event.target.id;
                 if (selectedOption != '') {
                     location.replace('?lang=' + selectedOption);
                 }
@@ -48,8 +47,8 @@
             });
 
             function allFilled() {
-                var filled = true;
-                $('.form-control').each(function () {
+                let filled = true;
+                $('.required').each(function () {
                     if ($(this).val() == '') filled = false;
                 });
                 return filled;

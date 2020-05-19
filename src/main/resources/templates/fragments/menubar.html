@@ -6,16 +6,13 @@
         <div class="align-self-start d-inline-flex mt-sm-1">
                 <span class="font-rubick navbar-light p-lg-2 mr-lg-5 "
                       style="color: #3a2332; font-weight: lighter; font-size: 1em !important;  background: rgb(178,183,223);
-background: radial-gradient(circle, rgba(178,183,223,1) 0%, rgba(232,253,203,0.7245097868248862) 0%, rgba(178,183,223,1) 100%);  font-size: 1.2em"  th:text="${localizedDate}">
-<!--                      th:text="${#temporals.dayOfWeekName(currentDate)} + ' ' +-->
-<!--                                  ${#temporals.day(currentDate)} + ', ' +-->
-<!--                                  ${#temporals.monthName(currentDate)} + ' ' +-->
-<!--                                  ${#temporals.year(currentDate)}">-->
-
-        </span>
+background: radial-gradient(circle, rgba(178,183,223,1) 0%, rgba(232,253,203,0.7245097868248862) 0%, rgba(178,183,223,1) 100%);  font-size: 1.2em"
+                      th:text="${localizedDate}"></span>
         </div>
         <div class="d-flex flex-grow-1 justify-content-center align-items-end " style="position: relative; left: -2%;">
-            <h1 style="font-family:'Run Medium',serif;font-weight:normal;font-size:42px" th:href="@{/}">dreamfit</h1>
+            <a th:href="@{/}" style="text-decoration: none">
+                <h1 style="font-family:'Run Medium',serif;font-weight:normal;font-size:42px">dreamfit</h1>
+            </a>
         </div>
         <a class="navbar-brand" id="justatest"></a>
         <div class="align-self-start d-inline-flex mt-sm-1">
@@ -34,7 +31,6 @@ background: radial-gradient(circle, rgba(178,183,223,1) 0%, rgba(232,253,203,0.7
                 <li class="list-inline-item" sec:authorize="isAuthenticated()">
                     <ul class="list-inline mt-0" style="margin-top: 0;">
                         <li class="list-inline-item" style="font-size: 1.1em; max-width: 560px">
-                            <!--                        <p><span th:text="#{logged-as}"></span>-->
                             <span class="logged-in-as mt-sm-1" th:text="${#authentication.getPrincipal().getUserProfile().getFirstName()
                             + ' ' + #authentication.getPrincipal().getUserProfile().getLastName()}"></span>
                             </p>

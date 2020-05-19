@@ -75,13 +75,15 @@
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
+                    <label class="control-label" for="lifestyle">Lifestyle</label>
+                    <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
+                        <option value=""> </option>
+                        <option th:each="colorOpt : ${T(net.shvdy.sbproject.entity.UserProfile.Lifestyle).values()}"
+                                th:text="${colorOpt}" th:value="${colorOpt}"></option>
+                    </select>
                     <div class="validate"></div>
                 </div>
-                <select th:field="*{lifestyle}">
-                    <option value=""> --</option>
-                    <option th:each="colorOpt : ${T(net.shvdy.sbproject.entity.UserProfile.Lifestyle).values()}"
-                            th:text="${colorOpt}" th:value="${colorOpt}"></option>
-                </select>
+
             </div>
         </div>
         <div class="container m2 mb-4">

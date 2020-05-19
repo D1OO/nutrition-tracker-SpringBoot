@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SBProjectApplication {
+public class DreamfitWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SBProjectApplication.class, args);
+        SpringApplication.run(DreamfitWebApplication.class, args);
     }
 }
