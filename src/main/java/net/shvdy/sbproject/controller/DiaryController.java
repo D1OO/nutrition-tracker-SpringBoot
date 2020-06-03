@@ -8,7 +8,10 @@ import net.shvdy.sbproject.entity.User;
 import net.shvdy.sbproject.service.DailyRecordService;
 import net.shvdy.sbproject.service.FoodService;
 import net.shvdy.sbproject.service.FoodUtils;
+import net.shvdy.sbproject.service.exception.NoValidProfileDataProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +42,19 @@ class DiaryController {
     @ModelAttribute("newFoodDTO")
     public FoodDTO newFoodDTO(@AuthenticationPrincipal User user) {
         return FoodDTO.builder().profileId(user.getUserProfile().getProfileId()).build();
+    }
+
+    @RequestMapping("/food-diary")
+    public String foodDiaryFragment(@RequestParam(name = "d", required = false) String date,
+                                    @AuthenticationPrincipal User user, Model model) {
+        try {
+            user.getUserProfile().getDailyCalsNorm();
+        } catch (NoValidProfileDataProvidedException e) {
+            return "fragments/user-page/complete-profile-to-proceed :: content";
+        }
+        model.addAttribute("data", dailyRecordService.getWeeklyRecords(user.getUserProfile(),
+                date, PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
+        return "fragments/user-page/food-diary :: content";
     }
 
     @GetMapping(value = "/adding-entries-modal-window")

@@ -29,9 +29,9 @@ public class ApplicationConfig {
         return modelMapper;
     }
 
-    //Jackson
     @Bean
     public ObjectMapper jackson() {
         return new ObjectMapper();
     }
+
 }

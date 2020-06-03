@@ -28,13 +28,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/signup", "/login", "/css/*", "/fonts/*", "/user", "/js/**", "/img/**", "/vendor/**").permitAll()
-                .antMatchers("/admin").hasAnyRole("ADMIN", "SUPERADMIN")
+                .antMatchers("/signup", "/login", "/login?error").anonymous()
+                .antMatchers("/logout").authenticated()
+                .antMatchers("/", "/css/*", "/fonts/*", "/js/**", "/img/**", "/vendor/**").permitAll()
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").successHandler(authenticationSuccessHandler).permitAll()
+                .formLogin().loginPage("/login").successHandler(authenticationSuccessHandler)
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied")
                 .and()
                 .csrf().disable();
     }
@@ -46,8 +51,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception {
-        auth
-                .userDetailsService(userService)
-                .passwordEncoder(bcryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(bcryptPasswordEncoder());
     }
 }

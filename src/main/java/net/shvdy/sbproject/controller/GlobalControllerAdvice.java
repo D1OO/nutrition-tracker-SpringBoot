@@ -30,18 +30,17 @@ public class GlobalControllerAdvice {
     @ModelAttribute("localizedDate")
     public String localisedDate() {
         return LocalDate.now()
-                .format(DateTimeFormatter
-                        .ofLocalizedDate(FormatStyle.LONG)
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
                         .withLocale(LocaleContextHolder.getLocale()));
     }
 
     @ModelAttribute("currentLocale")
-    public Locale currentLocale(){
+    public Locale currentLocale() {
         return LocaleContextHolder.getLocale();
     }
 
     @ExceptionHandler
-    public ResponseEntity <String> serverError(final Exception e) {
+    public ResponseEntity<String> serverError(final Exception e) {
         final String message = Optional.of(e.getMessage()).orElse(e.getClass().getSimpleName());
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -32,6 +32,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
     private ModelMapper modelMapper;
+
     @PersistenceContext
     private EntityManager entityManager;
 

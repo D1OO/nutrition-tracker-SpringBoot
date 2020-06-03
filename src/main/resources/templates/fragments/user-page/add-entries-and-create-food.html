@@ -10,15 +10,17 @@
         <div class="modal-body container" id="modalbody">
             <div class="m-2 tabs" id="addfoodcontainer" style="display: block">
                 <div class="d-inline-flex flex-wrap">
-                    <div class="mb-1" th:each="food : ${userFood}">
-                        <div class="user_food m-2">
-                            <a rel="group" title=""></a>
-                            <div class="label ">
-                                <div class="label-text">
-                                    <button class="pretty-button foodlink"
-                                            onclick="addedNewEntry(this.getAttribute('food'), this.getAttribute('food-name'))"
-                                            th:food="${food}" th:food-name="${food.name}"
-                                            th:text="${food.name}"></button>
+                    <div class="mb-3" th:each="food : ${userFood}">
+                        <div class="mb-1">
+                            <div class="user_food m-2">
+                                <a rel="group" title=""></a>
+                                <div class="label">
+                                    <div class="label-text">
+                                        <button class="pretty-button foodlink"
+                                                onclick="addedNewEntry(this.getAttribute('food'), this.getAttribute('food-name'))"
+                                                th:food="${food}" th:food-name="${food.name}"
+                                                th:text="${food.name}"></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
