@@ -78,7 +78,7 @@
                     <label class="control-label" for="lifestyle">Lifestyle</label>
                     <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
                         <option value=""> </option>
-                        <option th:each="colorOpt : ${T(net.shvdy.sbproject.entity.UserProfile.Lifestyle).values()}"
+                        <option th:each="colorOpt : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
                                 th:text="${colorOpt}" th:value="${colorOpt}"></option>
                     </select>
                     <div class="validate"></div>
