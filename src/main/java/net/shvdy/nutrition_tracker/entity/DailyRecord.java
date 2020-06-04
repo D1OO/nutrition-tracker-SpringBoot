@@ -31,9 +31,15 @@ public class DailyRecord {
     @Column(name = "record_date")
     private String recordDate;
 
+    @NotNull
+    @Column(name = "daily_calories_norm")
+    private int dailyCaloriesNorm;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     UserProfile userProfile;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "dailyRecord", cascade = CascadeType.ALL)
     private List<DailyRecordEntry> entries;
+
 }

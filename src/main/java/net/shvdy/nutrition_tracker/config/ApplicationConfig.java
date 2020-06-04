@@ -1,10 +1,7 @@
 package net.shvdy.nutrition_tracker.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.shvdy.nutrition_tracker.dto.FoodDTO;
-import net.shvdy.nutrition_tracker.entity.Food;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,14 +16,13 @@ public class ApplicationConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<Food, FoodDTO>() {
-            @Override
-            protected void configure() {
-                map().setProfileId(source.getUserProfile().getProfileId());
-            }
-        });
-        return modelMapper;
+        //        modelMapper.addMappings(new PropertyMap<Food, FoodDTO>() {
+//            @Override
+//            protected void configure() {
+//                map().setProfileId(source.getUserProfile().getProfileId());
+//            }
+//        });
+        return new ModelMapper();
     }
 
     @Bean

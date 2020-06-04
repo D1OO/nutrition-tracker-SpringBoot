@@ -2,118 +2,58 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="content-container" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
-    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${userProfile.getUser().username}">User</div>
-    <!--        <div class="row align-items-center">-->
-    <!--            <h4 class="font-rubick mr-2">Your daily calories norm:</h4>-->
-    <!--            <h4 class="font-rubick  logged-in-as" th:text="${dailyCalsPercentage} + '%'"></h4>-->
-    <!--            <h4 class="font-rubick " th:text="' (' + ${dailyRecord.getTotalCalories()} + '/' +-->
-    <!--                     ${user.userProfile.getDailyCalsNorm()}"></h4><h4 class="font-rubick">)</h4>-->
-    <!--            &lt;!&ndash;                    <h4 class="font-rubick mr-1"> norm: </h4>&ndash;&gt;-->
-    <!--            &lt;!&ndash;                    <h4 class="font-rubick logged-in-as" th:text="${user.userProfile.getDailyCalsNorm()}"></h4>&ndash;&gt;-->
-    <!--        </div>-->
-    <!--        <div class=" mb-5 mb-md-0">-->
+    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${@sessionInfo.user.username}">User</div>
     <form class="form" method="post" style="width: 100%" th:action="@{/update-profile}" th:object="${userProfile}">
-        <input id="profileId" name="profileId" th:value="${#authentication.getPrincipal().getId()}" type="hidden"/>
+        <input id="profileId" name="profileId" th:value="${@sessionInfo.user.userProfile.profileId}" type="hidden"/>
         <div class="row" style="width: 100%;">
             <div class="col-6">
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="firstName" th:text="#{login.first-name}">First name</label>
-                    <input class="form-control"
-                           data-msg="Enter a valid first name"
-                           data-rule="firstnameexp" id="firstName"
-                           th:field="*{firstName}"/>
+                    <input class="form-control" th:field="*{firstName}"/>
                     <div class="validate"></div>
                 </div>
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="lastName" th:text="#{login.last-name}">Last name</label>
-                    <input class="form-control"
-                           data-msg="Enter a valid last name"
-                           data-rule="lastnameexp" id="lastName"
-                           th:field="*{lastName}"/>
+                    <input class="form-control" th:field="*{lastName}"/>
                     <div class="validate"></div>
                 </div>
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('firstNameUa')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="firstNameUa">First name UA</label>
                     <p style="font-size: 0.9em;">(not required)</p>
-                    <input class="form-control"
-                           data-msg="Enter a valid first name (ukrainian letters)"
-                           data-rule="firstnameuaexp" id="firstNameUa"
-                           th:field="*{firstNameUa}"/>
+                    <input class="form-control" th:field="*{firstNameUa}"/>
                     <div class="validate"></div>
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('weight')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="weight">Weight</label>
-                    <input class="form-control"
-                           data-msg="Enter a valid first name"
-                           data-rule="firstnameexp" id="weight"
-                           th:field="*{weight}"/>
+                    <input class="form-control" th:field="*{weight}"/>
                     <div class="validate"></div>
                 </div>
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('height')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="height">Height</label>
-                    <input class="form-control"
-                           data-msg="Enter a valid last name"
-                           data-rule="lastnameexp" id="height"
-                           th:field="*{height}"/>
+                    <input class="form-control" th:field="*{height}"/>
                     <div class="validate"></div>
                 </div>
-                <div class="form-group col-md-11"
-                     th:classappend="${#fields.hasErrors('age')}? 'has-error':''">
+                <div class="form-group col-md-11">
                     <label class="control-label" for="age">Age</label>
-                    <!--                        <p style="font-size: 0.9em;">(not required)</p>-->
-                    <input class="form-control"
-                           data-msg="Enter a valid first name (ukrainian letters)"
-                           data-rule="firstnameuaexp" id="age"
-                           th:field="*{age}"/>
+                    <input class="form-control" th:field="*{age}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="lifestyle">Lifestyle</label>
                     <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
-                        <option value=""> </option>
+                        <option value="*{lifestyle}"></option>
                         <option th:each="colorOpt : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
                                 th:text="${colorOpt}" th:value="${colorOpt}"></option>
                     </select>
                     <div class="validate"></div>
                 </div>
-
             </div>
         </div>
         <div class="container m2 mb-4">
             <button class="pretty-button" id="myBtn">Save changes</button>
         </div>
-
-        <!--                <p class="error-validation"-->
-        <!--                   th:each="error : ${#fields.errors('global')}"-->
-        <!--                   th:if="${#fields.hasGlobalErrors()}"-->
-        <!--                   th:text="${error}">Validation error</p>-->
-
-        <!--                <div class="form-group col-md-5">-->
-        <!--                    <input class="pretty-button d-block w-100" disabled="disabled" type="submit" value="SIGN UP">-->
-        <!--                </div>-->
-        <!--                <div class="form-group col-md-12">-->
-        <!--                    <span>Already signed up? <a style="color:#34ce57" th:href="@{/login}">LOGIN</a></span>-->
-        <!--                </div>-->
-
-        <!--                <div class="alert alert-info col-md-12 mb-3" role="alert" th:if="${logout}">You've been logged-->
-        <!--                    out-->
-        <!--                    successfully.-->
-        <!--                </div>-->
-        <!--                <div class="alert alert-danger col-md-12 mb-3" role="alert" th:if="${error}">Invalid Username or-->
-        <!--                    Password!-->
-        <!--                </div>-->
-        <!--                <div class="col-md-12 mb-3" style="background: #eeeeee">-->
-        <!--                    <div class="loading" style="background: #eeeeee">Loading</div>-->
-        <!--                    <div class="error-message"></div>-->
-        <!--                    <div class="sent-message">filler</div>-->
-        <!--                </div>-->
     </form>
 </div>
 </body>

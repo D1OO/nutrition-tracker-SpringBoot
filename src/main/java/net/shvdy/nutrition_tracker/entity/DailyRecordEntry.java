@@ -20,6 +20,10 @@ import javax.validation.constraints.NotNull;
 @Table(name = "daily_record_entry")
 public class DailyRecordEntry {
 
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "record_id")
+    private DailyRecord dailyRecord;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "entry_id")
@@ -33,7 +37,4 @@ public class DailyRecordEntry {
     @NotNull
     private int quantity;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "record_id", insertable = true)
-    private DailyRecord dailyRecord;
 }

@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.shvdy.nutrition_tracker.dto.DailyRecordEntryDTO;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.NewEntriesContainerDTO;
-import net.shvdy.nutrition_tracker.entity.User;
+import net.shvdy.nutrition_tracker.entity.UserProfile;
 import net.shvdy.nutrition_tracker.service.DailyRecordService;
-import net.shvdy.nutrition_tracker.service.FoodService;
-import net.shvdy.nutrition_tracker.service.FoodUtils;
+import net.shvdy.nutrition_tracker.service.ServiceUtils;
+import net.shvdy.nutrition_tracker.service.UserService;
 import net.shvdy.nutrition_tracker.service.exception.NoValidProfileDataProvidedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,44 +27,46 @@ import java.util.Collections;
  */
 @Controller
 class DiaryController {
-    private final FoodService foodService;
+    private final UserService userService;
     private final DailyRecordService dailyRecordService;
-    private final FoodUtils foodUtils;
+    private final ServiceUtils serviceUtils;
+    private final SessionInfo sessionInfo;
 
     @Autowired
-    public DiaryController(FoodService foodService, DailyRecordService dailyRecordService, FoodUtils foodUtils) {
-        this.foodService = foodService;
+    public DiaryController(UserService userService, DailyRecordService dailyRecordService, ServiceUtils serviceUtils,
+                           SessionInfo sessionInfo) {
+        this.userService = userService;
         this.dailyRecordService = dailyRecordService;
-        this.foodUtils = foodUtils;
+        this.serviceUtils = serviceUtils;
+        this.sessionInfo = sessionInfo;
     }
 
     @ModelAttribute("newFoodDTO")
-    public FoodDTO newFoodDTO(@AuthenticationPrincipal User user) {
-        return FoodDTO.builder().profileId(user.getUserProfile().getProfileId()).build();
+    public FoodDTO newFoodDTO() {
+        return new FoodDTO();
     }
 
     @RequestMapping("/food-diary")
-    public String foodDiaryFragment(@RequestParam(name = "d", required = false) String date,
-                                    @AuthenticationPrincipal User user, Model model) {
+    public String foodDiaryFragment(@RequestParam(name = "d", required = false) String date, Model model) {
         try {
-            user.getUserProfile().getDailyCalsNorm();
+            model.addAttribute("dailyCal", getDailyCalsNorm(sessionInfo.getUser().getUserProfile()));
         } catch (NoValidProfileDataProvidedException e) {
             return "fragments/user-page/complete-profile-to-proceed :: content";
         }
-        model.addAttribute("data", dailyRecordService.getWeeklyRecords(user.getUserProfile(),
+        model.addAttribute("data", dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
                 date, PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
         return "fragments/user-page/food-diary :: content";
     }
 
     @GetMapping(value = "/adding-entries-modal-window")
-    public String createAddingEntriesWindow(@AuthenticationPrincipal User user, @RequestParam Long recordId,
-                                            @RequestParam Long profileId, @RequestParam String recordDate, Model model) {
+    public String createAddingEntriesWindow(@RequestParam Long recordId, @RequestParam String recordDate, Model model) {
         model.addAttribute("newEntriesDTO", NewEntriesContainerDTO.builder()
-                .profileId(profileId)
+                .profileId(sessionInfo.getUser().getId())
                 .recordId(recordId)
                 .recordDate(recordDate)
                 .entries(Collections.emptyList()).build());
-        model.addAttribute("userFood", foodUtils.entityToDTO(user.getUserProfile().getUserFood()));
+        model.addAttribute("userFood",
+                serviceUtils.FoodListEntityToDTO(sessionInfo.getUser().getUserProfile().getUserFood()));
         return "fragments/user-page/add-entries-and-create-food :: content";
     }
 
@@ -95,9 +96,20 @@ class DiaryController {
     }
 
     @RequestMapping(value = "/save-new-food")
-    public String saveCreatedFood(@AuthenticationPrincipal User user, FoodDTO createdFood) {
-        user.getUserProfile().getUserFood().add(foodService.saveNewFood(createdFood));
-        foodUtils.updateAuthenticatedUser(user);
+    public String saveCreatedFood(FoodDTO createdFood) {
+        sessionInfo.getUser().getUserProfile().getUserFood().add(serviceUtils.mapFoodDTOToEntity(createdFood));
+        userService.updateUserProfile(sessionInfo.getUser().getUserProfile());
         return ("redirect:/");
     }
+
+    private int getDailyCalsNorm(UserProfile userProfile) throws NoValidProfileDataProvidedException {
+        if (userProfile.getLifestyle() == null)
+            throw new NoValidProfileDataProvidedException();
+        int i = (int) ((66 + 13.75 * userProfile.getWeight() + 5 * userProfile.getHeight()
+                - 6.755 * userProfile.getAge()) * userProfile.getLifestyle().getFactor());
+        if (i <= 0)
+            throw new NoValidProfileDataProvidedException();
+        return i;
+    }
+
 }

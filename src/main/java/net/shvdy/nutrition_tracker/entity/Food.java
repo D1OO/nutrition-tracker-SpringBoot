@@ -17,12 +17,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_food")
+@Table(name = "food")
 public class Food {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @NotNull
     private Long food_id;
+
     @NotNull
     private String name;
     @NotNull
@@ -34,7 +36,4 @@ public class Food {
     @NotNull
     private int carbohydrates;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
-    UserProfile userProfile;
 }

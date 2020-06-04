@@ -2,7 +2,9 @@ package net.shvdy.nutrition_tracker.service;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
+import net.shvdy.nutrition_tracker.entity.Food;
 import net.shvdy.nutrition_tracker.entity.RoleType;
 import net.shvdy.nutrition_tracker.entity.User;
 import net.shvdy.nutrition_tracker.entity.UserProfile;
@@ -24,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,8 +60,13 @@ public class UserService implements UserDetailsService {
         entityManager.merge(userProfile);
     }
 
-    public UserProfile getUserProfile(Long userId) {
-        return userProfileRepository.findById(userId).orElse(new UserProfile());
+    public void saveCreatedFood(UserProfile userProfile, FoodDTO foodDTO) {
+        userProfile.getUserFood().add(modelMapper.map(foodDTO, Food.class));
+        updateUserProfile(userProfile);
+    }
+
+    public Optional<UserProfile> findUserProfileById(Long userId) {
+        return userProfileRepository.findById(userId);
     }
 
     public List<UserDTO> getUsersList() {

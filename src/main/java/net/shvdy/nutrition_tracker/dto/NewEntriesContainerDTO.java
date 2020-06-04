@@ -26,7 +26,6 @@ public class NewEntriesContainerDTO {
 
     @Override
     public String toString() {
-        //Jackson (Java object to JSON String mapping)
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);

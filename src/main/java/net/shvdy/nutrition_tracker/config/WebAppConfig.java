@@ -13,7 +13,7 @@ import java.util.Locale;
 
 @EnableSpringDataWebSupport
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebAppConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();

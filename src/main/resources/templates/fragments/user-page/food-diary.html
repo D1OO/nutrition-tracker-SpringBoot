@@ -24,8 +24,7 @@
                 <h4 class="mr-2" th:text="#{daily-cals-norm}">Your daily calories norm:</h4>
                 <h4 class="logged-in-as" th:text="${rec.getPercentage()} + '%'"></h4>
                 <h4 class="float-right" th:text="' (' + ${rec.getTotalCalories()} + '/' +
-                     ${#authentication.getPrincipal().getUserProfile().getDailyCalsNorm()}"></h4><h4
-                    class="font-rubick">)</h4>
+                    ${dailyCal}"></h4><h4 class="font-rubick">)</h4>
             </div>
             <div>
                 <table class="col-8 table" style="width: 450px; font-size: 1.2em">
@@ -65,7 +64,8 @@
             </div>
         </div>
         <div th:unless="${rec.getTotalCalories() != -1}">
-            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em" th:text="#{user.empy-list}">Your eaten food
+            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em" th:text="#{user.empy-list}">
+                Your eaten food
                 list for this day is empty...</p>
         </div>
         <div class="tabs container m2 mb-4">

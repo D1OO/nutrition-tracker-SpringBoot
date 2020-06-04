@@ -19,7 +19,6 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class FoodDTO {
     private Long food_id;
-    private Long profileId;
     @Length(min = 2)
     private String name;
     private int calories;

@@ -23,12 +23,12 @@ import java.util.List;
 @Service
 public class DailyRecordUtils {
     private ObjectMapper jacksonMapper;
-    private FoodUtils foodUtils;
+    private ServiceUtils serviceUtils;
     @PersistenceContext
     private EntityManager entityManager;
 
-    public DailyRecordUtils(FoodUtils foodUtils, ObjectMapper jacksonMapper) {
-        this.foodUtils = foodUtils;
+    public DailyRecordUtils(ServiceUtils serviceUtils, ObjectMapper jacksonMapper) {
+        this.serviceUtils = serviceUtils;
         this.jacksonMapper = jacksonMapper;
     }
 
@@ -41,7 +41,7 @@ public class DailyRecordUtils {
         for (DailyRecordEntryDTO dreDTO : container.getEntries()) {
             DailyRecordEntry dailyRecordEntry = new DailyRecordEntry();
             BeanUtils.copyProperties(dreDTO, dailyRecordEntry);
-            dailyRecordEntry.setFood(foodUtils.getFoodFromJSON(dreDTO.getFoodDTOJSON()));
+            dailyRecordEntry.setFood(serviceUtils.getFoodFromJSON(dreDTO.getFoodDTOJSON()));
             if (container.getRecordId() == null)
                 dailyRecordEntry.setDailyRecord(record);
             else
