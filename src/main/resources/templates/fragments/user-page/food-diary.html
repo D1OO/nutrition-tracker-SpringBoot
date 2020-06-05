@@ -9,7 +9,7 @@
     <div class="tabs row d-flex ml-2 mb-3" style="width: 100%">
         <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${paginatedRecords}"
                 th:onclick="'tabClick(\'.dailyRecord' + ${stat.index} +'\')'"
-                th:text="${#temporals.day(rec.getRecordDateAsLD()) + ' ' + #temporals.format(rec.getRecordDateAsLD(),'EE', currentLocale)}"></button>
+                th:text="${rec.name()}"></button>
         <button class="pretty-button m4 ml-3 nextb" style="background: rgba(40,0,169,0.36)"
                 onclick="setContentContainerTo('/food-diary?d=' + this.getAttribute('lastdate'))"
                 th:lastdate="${paginatedRecords[#lists.size(paginatedRecords) - 1].recordDate}" th:text="#{diary.next}">

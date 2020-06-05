@@ -1,8 +1,10 @@
 package net.shvdy.nutrition_tracker.dto;
 
 import lombok.*;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -25,8 +27,9 @@ public class DailyRecordDTO {
     private List<DailyRecordEntryDTO> entries;
     private UserProfileDTO userProfile;
 
-    public LocalDate getRecordDateAsLD() {
-        return LocalDate.parse(recordDate);
+    public String name() {
+        return LocalDate.parse(recordDate)
+                .format(DateTimeFormatter.ofPattern("d EE", LocaleContextHolder.getLocale()));
     }
 
     public int getPercentage() {

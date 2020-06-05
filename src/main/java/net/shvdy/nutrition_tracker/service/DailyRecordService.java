@@ -46,7 +46,7 @@ public class DailyRecordService {
 
     public List<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String requestedDay, Pageable pageable) {
         return insertBlankForAbsentDays(userProfile, requestedDay, pageable.getPageSize(),
-                dailyRecordRepository.findByUserProfileAndRecordDateBetweenOrderByRecordDateDesc(
+                dailyRecordRepository.findByUserProfileAndRecordDateBetween(
                         userProfile,
                         LocalDate.parse(requestedDay).minusDays(pageable.getPageSize() - 1).toString(),
                         requestedDay,

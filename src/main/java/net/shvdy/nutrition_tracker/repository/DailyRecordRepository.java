@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DailyRecordRepository extends JpaRepository<DailyRecord, Long> {
-    Page<DailyRecord> findByUserProfileAndRecordDateBetweenOrderByRecordDateDesc
+    Page<DailyRecord> findByUserProfileAndRecordDateBetween
             (UserProfile userProfile, String periodStartDate, String periodEndDate, Pageable pageable);
 }

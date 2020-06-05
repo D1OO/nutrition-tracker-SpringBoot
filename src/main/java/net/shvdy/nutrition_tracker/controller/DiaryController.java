@@ -14,7 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -48,7 +51,7 @@ class DiaryController {
         return new FoodDTO();
     }
 
-    @RequestMapping("/food-diary")
+    @GetMapping("/food-diary")
     public String foodDiaryFragment(@RequestParam(name = "d", required = false) String date, Model model) {
         try {
             model.addAttribute("dailyCal", getDailyCalsNorm(sessionInfo.getUser().getUserProfile()));
@@ -92,14 +95,14 @@ class DiaryController {
         return "fragments/user-page/add-entries-and-create-food :: new-entries-list";
     }
 
-    @RequestMapping(value = "/save-new-entries")
+    @PostMapping(value = "/save-new-entries")
     public String saveNewEntriesList(NewEntriesContainerDTO newEntriesDTO) throws IOException {
         if (!newEntriesDTO.getEntries().isEmpty())
             dailyRecordService.saveNewEntries(newEntriesDTO);
         return ("redirect:/");
     }
 
-    @RequestMapping(value = "/save-new-food")
+    @PostMapping(value = "/save-new-food")
     public String saveCreatedFood(FoodDTO createdFood) {
         sessionInfo.getUser().getUserProfile().getUserFood().add(serviceUtils.mapFoodDTOToEntity(createdFood));
         userService.updateUserProfile(sessionInfo.getUser().getUserProfile());
