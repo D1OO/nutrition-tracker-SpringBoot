@@ -11,7 +11,6 @@ import net.shvdy.nutrition_tracker.entity.UserProfile;
 import net.shvdy.nutrition_tracker.repository.UserProfileRepository;
 import net.shvdy.nutrition_tracker.repository.UserRepository;
 import net.shvdy.nutrition_tracker.service.exception.AccountAlreadyExistsException;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,17 +33,17 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
-    private ModelMapper modelMapper;
+    private Mapper mapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
     public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository,
-                       ModelMapper modelMapper) {
+                       Mapper mapper) {
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
-        this.modelMapper = modelMapper;
+        this.mapper = mapper;
     }
 
     public void saveNewUser(UserDTO userDTO) throws AccountAlreadyExistsException {
@@ -61,7 +60,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveCreatedFood(UserProfile userProfile, FoodDTO foodDTO) {
-        userProfile.getUserFood().add(modelMapper.map(foodDTO, Food.class));
+        userProfile.getUserFood().add(mapper.getModelMapper().map(foodDTO, Food.class));
         updateUserProfile(userProfile);
     }
 
@@ -70,7 +69,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserDTO> getUsersList() {
-        return modelMapper.map(userRepository.findAll(), new TypeToken<ArrayList<UserDTO>>() {
+        return mapper.getModelMapper().map(userRepository.findAll(), new TypeToken<ArrayList<UserDTO>>() {
         }.getType());
     }
 
@@ -81,7 +80,7 @@ public class UserService implements UserDetailsService {
     }
 
     private User setUpNewUser(UserDTO userDTO) {
-        User newUser = modelMapper.map(userDTO, User.class);
+        User newUser = mapper.getModelMapper().map(userDTO, User.class);
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         newUser.setAuthorities(Collections.singleton(RoleType.ROLE_USER));
         newUser.getUserProfile().setUser(newUser);

@@ -1,9 +1,7 @@
 package net.shvdy.nutrition_tracker.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.entity.Food;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +18,26 @@ import java.util.stream.Collectors;
 @Service
 public class ServiceUtils {
 
-    private ObjectMapper jacksonMapper;
-    private ModelMapper modelMapper;
+    private Mapper mapper;
 
     @Autowired
-    public ServiceUtils(ObjectMapper jacksonMapper, ModelMapper modelMapper) {
-        this.jacksonMapper = jacksonMapper;
-        this.modelMapper = modelMapper;
+    public ServiceUtils(Mapper mapper) {
+        this.mapper = mapper;
     }
 
     public Food getFoodFromJSON(String foodDTOJSON) throws IOException {
-        return modelMapper.map(jacksonMapper.readValue(foodDTOJSON, FoodDTO.class), Food.class);
+        return mapper.getModelMapper().map(mapper.getJacksonMapper().readValue(foodDTOJSON, FoodDTO.class), Food.class);
     }
 
     public List<FoodDTO> FoodListEntityToDTO(List<Food> entities) {
         return entities
                 .stream()
-                .map(source -> modelMapper.map(source, FoodDTO.class))
+                .map(source -> mapper.getModelMapper().map(source, FoodDTO.class))
                 .collect(Collectors.toList());
     }
 
     public Food mapFoodDTOToEntity(FoodDTO foodDTO) {
-        return modelMapper.map(foodDTO, Food.class);
+        return mapper.getModelMapper().map(foodDTO, Food.class);
     }
 
 }

@@ -21,6 +21,7 @@ public class DailyRecordDTO {
     private Long recordId;
     private Long profileId;
     private String recordDate;
+    private int dailyCaloriesNorm;
     private List<DailyRecordEntryDTO> entries;
     private UserProfileDTO userProfile;
 

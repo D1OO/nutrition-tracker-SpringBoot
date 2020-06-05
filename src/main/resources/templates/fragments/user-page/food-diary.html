@@ -7,17 +7,17 @@
         <h2 th:text="#{food-diaty}">Nutrition Diary</h2>
     </div>
     <div class="tabs row d-flex ml-2 mb-3" style="width: 100%">
-        <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${data}"
+        <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${paginatedRecords}"
                 th:onclick="'tabClick(\'.dailyRecord' + ${stat.index} +'\')'"
                 th:text="${#temporals.day(rec.getRecordDateAsLD()) + ' ' + #temporals.format(rec.getRecordDateAsLD(),'EE', currentLocale)}"></button>
         <button class="pretty-button m4 ml-3 nextb" style="background: rgba(40,0,169,0.36)"
                 onclick="setContentContainerTo('/food-diary?d=' + this.getAttribute('lastdate'))"
-                th:lastdate="${data[#lists.size(data) - 1].recordDate}" th:text="#{diary.next}"> Next ➡
+                th:lastdate="${paginatedRecords[#lists.size(paginatedRecords) - 1].recordDate}" th:text="#{diary.next}">
         </button>
     </div>
     <div class="record-tabs container m2  flex-grow-1 " style="max-height: available"
          th:classappend="${'dailyRecord' + stat.index}"
-         th:each="rec,stat : ${data}"
+         th:each="rec,stat : ${paginatedRecords}"
          th:style="${stat.first ? 'display:block' : 'display:none'}">
         <div class="tab-container" th:if="${rec.getTotalCalories() != -1}">
             <div class="row ml-4 align-items-center">

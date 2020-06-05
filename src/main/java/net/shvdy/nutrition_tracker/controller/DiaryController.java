@@ -17,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Optional;
 
 /**
  * 21.03.2020
@@ -53,8 +55,10 @@ class DiaryController {
         } catch (NoValidProfileDataProvidedException e) {
             return "fragments/user-page/complete-profile-to-proceed :: content";
         }
-        model.addAttribute("data", dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
-                date, PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
+        model.addAttribute("paginatedRecords", dailyRecordService.getWeeklyRecords(
+                sessionInfo.getUser().getUserProfile(),
+                Optional.ofNullable(date).orElse(LocalDate.now().toString()),
+                PageRequest.of(0, 7, Sort.Direction.DESC, "recordDate")));
         return "fragments/user-page/food-diary :: content";
     }
 

@@ -41,6 +41,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<String> serverError(final Exception e) {
+        e.printStackTrace();
         final String message = Optional.of(e.getMessage()).orElse(e.getClass().getSimpleName());
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
