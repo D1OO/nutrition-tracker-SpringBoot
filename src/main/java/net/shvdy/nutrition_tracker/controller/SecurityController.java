@@ -3,7 +3,6 @@ package net.shvdy.nutrition_tracker.controller;
 import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
 import net.shvdy.nutrition_tracker.service.UserService;
-import net.shvdy.nutrition_tracker.service.exception.AccountAlreadyExistsException;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -56,8 +55,8 @@ public class SecurityController {
     public String createAccount(UserDTO userDto) {
         try {
             userService.saveNewUser(userDto);
-        } catch (AccountAlreadyExistsException e) {
-            log.warn("The account already exists for this email address");
+        } catch (Exception e) {
+            log.warn("The account already exists for email: " + userDto.getUsername());
             return "signup?error";
         }
         return "redirect:/login?signedup";

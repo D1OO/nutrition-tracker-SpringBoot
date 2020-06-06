@@ -12,7 +12,6 @@ import java.util.List;
  * @author Dmitriy Storozhenko
  * @version 1.0
  */
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -41,5 +40,4 @@ public class DailyRecord {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "dailyRecord", cascade = CascadeType.ALL)
     private List<DailyRecordEntry> entries;
-
 }

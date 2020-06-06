@@ -7,11 +7,15 @@
 <div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
-    <div class="maincontent d-flex flex-column flex-nowrap p-lg-3">
-        <h1 th:text=" ${code}"></h1><br>
+    <div class="maincontent d-flex flex-column justify-content-center align-items-center flex-grow-1 flex-nowrap p-lg-3"
+    style="height: 100%">
+        <div class="d-flex justify-content-center align-items-center mb-5">
+            <h1 class="mr-2" th:text=" ${code}"></h1><br>
+            <h1 th:text=" ${error}"></h1><br>
+        </div>
         <h2>Something went wrong!</h2>
         <h2>Our Engineers are on it</h2>
-        <a href="/">Home</a>
+        <a href="/">Main</a>
     </div>
 
 </div>

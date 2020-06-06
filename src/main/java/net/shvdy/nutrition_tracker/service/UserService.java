@@ -10,7 +10,6 @@ import net.shvdy.nutrition_tracker.entity.User;
 import net.shvdy.nutrition_tracker.entity.UserProfile;
 import net.shvdy.nutrition_tracker.repository.UserProfileRepository;
 import net.shvdy.nutrition_tracker.repository.UserRepository;
-import net.shvdy.nutrition_tracker.service.exception.AccountAlreadyExistsException;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,12 +45,8 @@ public class UserService implements UserDetailsService {
         this.mapper = mapper;
     }
 
-    public void saveNewUser(UserDTO userDTO) throws AccountAlreadyExistsException {
-        try {
-            userRepository.save(setUpNewUser(userDTO));
-        } catch (Exception e) {
-            throw new AccountAlreadyExistsException();
-        }
+    public void saveNewUser(UserDTO userDTO) {
+        userRepository.save(setUpNewUser(userDTO));
     }
 
     @Transactional

@@ -36,6 +36,7 @@
                                     <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
                                     <input th:field="${newEntriesDTO.profileId}" type="hidden"/>
                                     <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
+                                    <input th:field="${newEntriesDTO.dailyCaloriesNorm}" type="hidden"/>
                                     <tr align="center" class="row align-items-top m-1" id="fff"
                                         th:each="entry, stat : ${newEntriesDTO.entries}">
                                         <td class="foodlabel  row justify-content-end m-1"

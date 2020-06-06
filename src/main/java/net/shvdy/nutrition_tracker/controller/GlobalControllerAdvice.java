@@ -1,12 +1,15 @@
 package net.shvdy.nutrition_tracker.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -16,6 +19,7 @@ import java.util.Locale;
  * @version 1.0
  */
 @ControllerAdvice
+@Log4j2
 public class GlobalControllerAdvice {
 
     @ModelAttribute("currentDateLocalized")
@@ -30,10 +34,10 @@ public class GlobalControllerAdvice {
         return LocaleContextHolder.getLocale();
     }
 
-//    @ExceptionHandler
-//    public ResponseEntity<String> serverError(final Exception e) {
-//        e.printStackTrace();
-//        final String message = Optional.of(e.getMessage()).orElse(e.getClass().getSimpleName());
-//        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler
+    public String serverError(final Exception e) throws Exception {
+        log.error("Exception: " + e);
+        log.error("Exception: " + Arrays.toString(e.getStackTrace()));
+        throw e;
+    }
 }

@@ -15,8 +15,15 @@ $(document).ready(function () {
 });
 
 function setContentContainerTo(controllerEndpoint) {
-    $.get(controllerEndpoint, function (data) {
-        document.getElementById('content-container').innerHTML = data;
+    $.ajax({
+        type: "GET",
+        url: controllerEndpoint,
+        success: function(data) {
+            document.getElementById('content-container').innerHTML = data;
+        },
+        error: function(data){
+          replacePageWith(data.responseText);
+        }
     });
 }
 

@@ -9,10 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -55,22 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
-                .expiredUrl("/login?expired")
-                .sessionRegistry(sessionRegistry());
-    }
+                .expiredUrl("/login?expired");
 
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
-    }
-
-    @Bean
-    public PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bcryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

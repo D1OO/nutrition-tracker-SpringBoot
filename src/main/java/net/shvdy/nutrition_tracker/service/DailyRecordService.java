@@ -1,5 +1,6 @@
 package net.shvdy.nutrition_tracker.service;
 
+import net.shvdy.nutrition_tracker.config.FormulaConfigProperties;
 import net.shvdy.nutrition_tracker.dto.DailyRecordDTO;
 import net.shvdy.nutrition_tracker.dto.NewEntriesContainerDTO;
 import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
@@ -32,11 +33,13 @@ public class DailyRecordService {
     private Mapper mapper;
     @PersistenceContext
     private EntityManager entityManager;
+    private FormulaConfigProperties formulaConfigProperties;
 
     @Autowired
-    public DailyRecordService(DailyRecordRepository dailyRecordRepository, Mapper mapper) {
+    public DailyRecordService(DailyRecordRepository dailyRecordRepository, Mapper mapper, FormulaConfigProperties formulaConfigProperties) {
         this.dailyRecordRepository = dailyRecordRepository;
         this.mapper = mapper;
+        this.formulaConfigProperties = formulaConfigProperties;
     }
 
     public void saveNewEntries(NewEntriesContainerDTO newEntriesDTO) {
@@ -65,10 +68,19 @@ public class DailyRecordService {
                         .putIfAbsent(date, DailyRecordDTO.builder()
                                 .recordDate(date)
                                 .userProfile(mapper.getModelMapper().map(userProfile, UserProfileDTO.class))
+                                .dailyCaloriesNorm(getDailyCaloriesNorm(userProfile))
                                 .entries(new ArrayList<>()).build()));
 
         return new ArrayList<>(weeklyRecords.values()).stream()
                 .sorted(Comparator.comparing(DailyRecordDTO::getRecordDate).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public int getDailyCaloriesNorm(UserProfile userProfile) {
+        return (int)( formulaConfigProperties.coef1
+                + formulaConfigProperties.weightModifier * userProfile.getWeight()
+                + formulaConfigProperties.heightModifier * userProfile.getHeight()
+                - formulaConfigProperties.ageModifier * userProfile.getAge()
+                * userProfile.getLifestyle().getFactor());
     }
 }

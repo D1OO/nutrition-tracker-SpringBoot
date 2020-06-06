@@ -21,6 +21,7 @@ public class NewEntriesContainerDTO {
     private Long recordId;
     private Long profileId;
     private String recordDate;
+    private int dailyCaloriesNorm;
 //    private String newEntriesContainerJSON;
     private List<DailyRecordEntryDTO> entries;
 

@@ -19,12 +19,12 @@
          th:classappend="${'dailyRecord' + stat.index}"
          th:each="rec,stat : ${paginatedRecords}"
          th:style="${stat.first ? 'display:block' : 'display:none'}">
-        <div class="tab-container" th:if="${rec.getTotalCalories() != -1}">
+        <div class="tab-container" th:if="${rec.totalCalories > 0}">
             <div class="row ml-4 align-items-center">
                 <h4 class="mr-2" th:text="#{daily-cals-norm}">Your daily calories norm:</h4>
-                <h4 class="logged-in-as" th:text="${rec.getPercentage()} + '%'"></h4>
-                <h4 class="float-right" th:text="' (' + ${rec.getTotalCalories()} + '/' +
-                    ${dailyCal}"></h4><h4 class="font-rubick">)</h4>
+                <h4 class="logged-in-as" th:text="${rec.percentage} + '%'"></h4>
+                <h4 class="float-right" th:text="' (' + ${rec.totalCalories} + '/' +
+                    ${rec.dailyCaloriesNorm}"></h4><h4 class="font-rubick">)</h4>
             </div>
             <div>
                 <table class="col-8 table" style="width: 450px; font-size: 1.2em">
@@ -42,10 +42,10 @@
                     <tr>
                         <td th:text="#{diary.total}">TOTAL</td>
                         <td></td>
-                        <td th:text="${rec.getTotalFats()}"></td>
-                        <td th:text="${rec.getTotalProteins()}"></td>
-                        <td th:text="${rec.getTotalCarbs()}"></td>
-                        <td th:text="${rec.getTotalCalories()}"></td>
+                        <td th:text="${rec.totalFats}"></td>
+                        <td th:text="${rec.totalProteins}"></td>
+                        <td th:text="${rec.totalCarbs}"></td>
+                        <td th:text="${rec.totalCalories}"></td>
                     </tr>
                     <tr th:each="food: ${rec.entries}">
 
@@ -63,21 +63,19 @@
                 </table>
             </div>
         </div>
-        <div th:unless="${rec.getTotalCalories() != -1}">
-            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em" th:text="#{user.empy-list}">
-                Your eaten food
-                list for this day is empty...</p>
+        <div th:if="${rec.totalCalories == 0}">
+            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em" th:text="#{user.empy-list}"></p>
         </div>
         <div class="tabs container m2 mb-4">
             <form method="post" th:classappend="${'data-food-modal-window' + stat.index}">
-                <input id="profileId" name="profileId" th:value="${#authentication.getPrincipal().getId()}"
-                       type="hidden">
+                <input id="profileId" name="profileId" th:value="${@sessionInfo.user.id}" type="hidden">
                 <input id="recordId" name="recordId" th:value="${rec.recordId}" type="hidden">
                 <input id="recordDate" name="recordDate" th:value="${rec.recordDate}" type="hidden">
+                <input id="dailyCaloriesNorm" name="dailyCaloriesNorm" th:value="${rec.dailyCaloriesNorm}" type="hidden">
             </form>
             <button class="pretty-button" style="width: 12em; "
                     th:onclick="'openAddFoodModalWindow(\'.data-food-modal-window' + ${stat.index} +'\')'"
-                    th:text="#{add-new}">Add new
+                    th:text="#{add-new}">
             </button>
         </div>
     </div>
