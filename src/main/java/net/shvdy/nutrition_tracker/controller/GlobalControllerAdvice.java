@@ -36,6 +36,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler
     public String serverError(final Exception e) throws Exception {
+        e.printStackTrace();
         log.error("Exception: " + e);
         log.error("Exception: " + Arrays.toString(e.getStackTrace()));
         throw e;

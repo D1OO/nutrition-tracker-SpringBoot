@@ -10,7 +10,6 @@ import net.shvdy.nutrition_tracker.entity.User;
 import net.shvdy.nutrition_tracker.entity.UserProfile;
 import net.shvdy.nutrition_tracker.repository.UserProfileRepository;
 import net.shvdy.nutrition_tracker.repository.UserRepository;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,10 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,40 +28,13 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
-    private Mapper mapper;
-
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository,
-                       Mapper mapper) {
+    public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository) {
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
-        this.mapper = mapper;
-    }
-
-    public void saveNewUser(UserDTO userDTO) {
-        userRepository.save(setUpNewUser(userDTO));
-    }
-
-    @Transactional
-    public void updateUserProfile(UserProfile userProfile) {
-        entityManager.merge(userProfile);
-    }
-
-    public void saveCreatedFood(UserProfile userProfile, FoodDTO foodDTO) {
-        userProfile.getUserFood().add(mapper.getModelMapper().map(foodDTO, Food.class));
-        updateUserProfile(userProfile);
-    }
-
-    public Optional<UserProfile> findUserProfileById(Long userId) {
-        return userProfileRepository.findById(userId);
-    }
-
-    public List<UserDTO> getUsersList() {
-        return mapper.getModelMapper().map(userRepository.findAll(), new TypeToken<ArrayList<UserDTO>>() {
-        }.getType());
     }
 
     @Override
@@ -74,8 +43,27 @@ public class UserService implements UserDetailsService {
                 new UsernameNotFoundException("user " + email + " was not found!"));
     }
 
+    public void saveNewUser(UserDTO userDTO) {
+        userRepository.save(setUpNewUser(userDTO));
+    }
+
+    public UserProfile saveCreatedFood(UserProfile userProfile, FoodDTO foodDTO) {
+        userProfile.getUserFood().add(Mapper.MODEL.map(foodDTO, Food.class));
+        return userProfileRepository.save(userProfile);
+    }
+
+    @Transactional
+    public void updateUserProfile(UserProfile userProfile) {
+        entityManager.merge(userProfile);
+    }
+
+//    public List<UserDTO> getUsersList() {
+//        return Mapper.MODEL.map(userRepository.findAll(), new TypeToken<ArrayList<UserDTO>>() {
+//        }.getType());
+//    }
+
     private User setUpNewUser(UserDTO userDTO) {
-        User newUser = mapper.getModelMapper().map(userDTO, User.class);
+        User newUser = Mapper.MODEL.map(userDTO, User.class);
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         newUser.setAuthorities(Collections.singleton(RoleType.ROLE_USER));
         newUser.getUserProfile().setUser(newUser);

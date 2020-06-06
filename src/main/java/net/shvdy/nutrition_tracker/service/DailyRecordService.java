@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,32 +28,26 @@ import java.util.stream.IntStream;
 @Service
 public class DailyRecordService {
     private final DailyRecordRepository dailyRecordRepository;
-    private Mapper mapper;
-    @PersistenceContext
-    private EntityManager entityManager;
     private FormulaConfigProperties formulaConfigProperties;
 
     @Autowired
-    public DailyRecordService(DailyRecordRepository dailyRecordRepository, Mapper mapper, FormulaConfigProperties formulaConfigProperties) {
+    public DailyRecordService(DailyRecordRepository dailyRecordRepository, FormulaConfigProperties formulaConfigProperties) {
         this.dailyRecordRepository = dailyRecordRepository;
-        this.mapper = mapper;
         this.formulaConfigProperties = formulaConfigProperties;
     }
 
     public void saveNewEntries(NewEntriesContainerDTO newEntriesDTO) {
-        mapper.setEntityManager(entityManager);
-        dailyRecordRepository.save(mapper.getModelMapper().map(newEntriesDTO, DailyRecord.class));
+        dailyRecordRepository.save(Mapper.MODEL.map(newEntriesDTO, DailyRecord.class));
     }
 
-    public List<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String requestedDay, Pageable pageable) {
-        return insertBlankForAbsentDays(userProfile, requestedDay, pageable.getPageSize(),
+    public List<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String periodEndDate, Pageable pageable) {
+        return insertBlankForAbsentDays(userProfile, periodEndDate, pageable.getPageSize(),
                 dailyRecordRepository.findByUserProfileAndRecordDateBetween(
                         userProfile,
-                        LocalDate.parse(requestedDay).minusDays(pageable.getPageSize() - 1).toString(),
-                        requestedDay,
-                        pageable)
-                        .stream()
-                        .map(x -> mapper.getModelMapper().map(x, DailyRecordDTO.class))
+                        LocalDate.parse(periodEndDate).minusDays(pageable.getPageSize() - 1).toString(),
+                        periodEndDate,
+                        pageable).stream()
+                        .map(x -> Mapper.MODEL.map(x, DailyRecordDTO.class))
                         .collect(Collectors.toMap(DailyRecordDTO::getRecordDate, x -> x)));
     }
 
@@ -67,7 +59,7 @@ public class DailyRecordService {
                 .forEach(date -> weeklyRecords
                         .putIfAbsent(date, DailyRecordDTO.builder()
                                 .recordDate(date)
-                                .userProfile(mapper.getModelMapper().map(userProfile, UserProfileDTO.class))
+                                .userProfile(Mapper.MODEL.map(userProfile, UserProfileDTO.class))
                                 .dailyCaloriesNorm(getDailyCaloriesNorm(userProfile))
                                 .entries(new ArrayList<>()).build()));
 

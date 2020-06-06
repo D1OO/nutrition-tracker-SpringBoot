@@ -32,7 +32,7 @@ public class MainController {
 
     @RequestMapping("/admin")
     public String adminPage(Model model) {
-        model.addAttribute("users", userService.getUsersList());
+//        model.addAttribute("users", userService.getUsersList());
         return "admin";
     }
 

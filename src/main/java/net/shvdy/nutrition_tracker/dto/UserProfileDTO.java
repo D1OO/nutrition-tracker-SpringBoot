@@ -28,13 +28,5 @@ public class UserProfileDTO {
     UserDTO user;
     List<FoodDTO> userFood;
     List<DailyRecordDTO> dailyRecords;
-
-    public int getDailyCalsNorm() {
-        try {
-            return (int) ((66 + 13.75 * weight + 5 * height - 6.755 * age) * lifestyle.getFactor());
-        } catch (NullPointerException e) {
-            return -1;
-        }
-    }
 }
 
