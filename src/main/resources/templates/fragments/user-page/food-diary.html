@@ -11,7 +11,7 @@
                 th:onclick="'tabClick(\'.dailyRecord' + ${stat.index} +'\')'"
                 th:text="${rec.name()}"></button>
         <button class="pretty-button m4 ml-3 nextb" style="background: rgba(40,0,169,0.36)"
-                onclick="setContentContainerTo('/food-diary?d=' + this.getAttribute('lastdate'))"
+                onclick="loadFromServerIntoContentContainer('/food-diary?d=' + this.getAttribute('lastdate'))"
                 th:lastdate="${paginatedRecords[#lists.size(paginatedRecords) - 1].recordDate}" th:text="#{diary.next}">
         </button>
     </div>

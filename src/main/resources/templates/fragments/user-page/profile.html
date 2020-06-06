@@ -2,57 +2,55 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="content-container" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
-    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${@sessionInfo.user.username}">User</div>
-    <form class="form" method="post" style="width: 100%" th:action="@{/update-profile}" th:object="${userProfile}">
+    <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${@sessionInfo.user.username}"></div>
+    <form class="form" method="post" style="width: 100%" th:action="@{/profile/update}" th:object="${userProfile}">
         <input id="profileId" name="profileId" th:value="${@sessionInfo.user.userProfile.profileId}" type="hidden"/>
         <div class="row" style="width: 100%;">
             <div class="col-6">
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="firstName" th:text="#{login.first-name}">First name</label>
-                    <input class="form-control" th:field="*{firstName}"/>
+                    <label class="control-label" for="firstName" th:text="#{login.first-name}"></label>
+                    <input id="firstName" class="form-control" th:field="*{firstName}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="lastName" th:text="#{login.last-name}">Last name</label>
-                    <input class="form-control" th:field="*{lastName}"/>
+                    <label class="control-label" for="lastName" th:text="#{login.last-name}"></label>
+                    <input id="lastName" class="form-control" th:field="*{lastName}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="firstNameUa">First name UA</label>
-                    <p style="font-size: 0.9em;">(not required)</p>
-                    <input class="form-control" th:field="*{firstNameUa}"/>
+                    <label class="control-label" for="firstNameUa"></label>
+                    <input id="firstNameUa" class="form-control" th:field="*{firstNameUa}"/>
                     <div class="validate"></div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="weight">Weight</label>
-                    <input class="form-control" th:field="*{weight}"/>
+                    <label class="control-label" for="weight"></label>
+                    <input id="weight" class="form-control" th:field="*{weight}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="height">Height</label>
-                    <input class="form-control" th:field="*{height}"/>
+                    <input id="height" class="form-control" th:field="*{height}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="age">Age</label>
-                    <input class="form-control" th:field="*{age}"/>
+                    <input id="age" class="form-control" th:field="*{age}"/>
                     <div class="validate"></div>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="lifestyle">Lifestyle</label>
                     <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
                         <option value="*{lifestyle}"></option>
-                        <option th:each="colorOpt : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
-                                th:text="${colorOpt}" th:value="${colorOpt}"></option>
+                        <option th:each="val : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
+                                th:text="${val}" th:value="${val}"></option>
                     </select>
-                    <div class="validate"></div>
                 </div>
             </div>
         </div>
         <div class="container m2 mb-4">
-            <button class="pretty-button" id="myBtn">Save changes</button>
+            <button class="pretty-button">Save changes</button>
         </div>
     </form>
 </div>

@@ -1,7 +1,10 @@
 package net.shvdy.nutrition_tracker.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.entity.UserProfile;
+import net.shvdy.nutrition_tracker.service.Mapper;
 
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Log4j2
 public class UserProfileDTO {
     private String firstName;
     private String firstNameUa;
@@ -28,5 +32,15 @@ public class UserProfileDTO {
     UserDTO user;
     List<FoodDTO> userFood;
     List<DailyRecordDTO> dailyRecords;
+
+    @Override
+    public String toString() {
+        try {
+            return Mapper.JACKSON.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            log.error("JsonProcessingException: " + e);
+            return "";
+        }
+    }
 }
 

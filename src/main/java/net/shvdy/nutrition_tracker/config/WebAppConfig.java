@@ -1,5 +1,6 @@
 package net.shvdy.nutrition_tracker.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -14,6 +15,16 @@ import java.util.Locale;
 @EnableSpringDataWebSupport
 @Configuration
 public class WebAppConfig implements WebMvcConfigurer {
+
+    @Bean
+    public FilterRegistrationBean<SectionContainerRequestFilter> loggingFilter(){
+        FilterRegistrationBean<SectionContainerRequestFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new SectionContainerRequestFilter());
+        registrationBean.addUrlPatterns("/food-diary");
+        registrationBean.addUrlPatterns("/profile");
+        return registrationBean;
+    }
+
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();

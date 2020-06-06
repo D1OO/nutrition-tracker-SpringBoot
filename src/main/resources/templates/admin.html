@@ -30,6 +30,8 @@
 
 </div>
 <div th:replace="template :: footer"></div>
-<div th:replace="template :: scripts(null)"></div>  <!--(~{::script})-->
+<div th:replace="template :: scripts(~{::script})">
+    <script type="text/javascript" src="../static/js/food-dairy-modal.js"></script>
+</div>
 </body>
 </html>

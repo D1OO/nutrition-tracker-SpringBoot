@@ -1,8 +1,9 @@
 package net.shvdy.nutrition_tracker.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
+import net.shvdy.nutrition_tracker.service.Mapper;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -17,6 +18,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Log4j2
 public class FoodDTO {
     private Long food_id;
     @Length(min = 2)
@@ -28,10 +30,10 @@ public class FoodDTO {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(this);
+            return Mapper.JACKSON.writeValueAsString(this);
         } catch (JsonProcessingException e) {
+            log.error("JsonProcessingException: " + e);
             return "";
         }
     }

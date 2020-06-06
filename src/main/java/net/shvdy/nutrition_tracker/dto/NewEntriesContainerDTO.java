@@ -1,8 +1,9 @@
 package net.shvdy.nutrition_tracker.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
+import net.shvdy.nutrition_tracker.service.Mapper;
 
 import java.util.List;
 
@@ -17,25 +18,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Log4j2
 public class NewEntriesContainerDTO {
     private Long recordId;
     private Long profileId;
     private String recordDate;
     private int dailyCaloriesNorm;
-//    private String newEntriesContainerJSON;
     private List<DailyRecordEntryDTO> entries;
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(this);
+            return Mapper.JACKSON.writeValueAsString(this);
         } catch (JsonProcessingException e) {
+            log.error("JsonProcessingException: " + e);
             return "";
         }
     }
-
-//    private List<DailyRecordEntryDTO> getEntries(){
-//        setNewEntriesContainerJSON(this.toString());
-//    }
 }

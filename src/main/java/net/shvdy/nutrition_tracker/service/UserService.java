@@ -53,8 +53,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUserProfile(UserProfile userProfile) {
-        entityManager.merge(userProfile);
+    public UserProfile updateUserProfile(UserProfile userProfile) {
+        return entityManager.merge(userProfile);
     }
 
 //    public List<UserDTO> getUsersList() {

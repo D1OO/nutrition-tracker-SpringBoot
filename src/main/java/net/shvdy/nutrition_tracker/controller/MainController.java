@@ -41,10 +41,9 @@ public class MainController {
         return "fragments/user-page/profile :: content";
     }
 
-    @PostMapping("/update-profile")
+    @PostMapping("/profile/update")
     public String saveProfile(UserProfile userProfile) {
-        userService.updateUserProfile(userProfile);
-        sessionInfo.getUser().setUserProfile(userProfile);
+        sessionInfo.getUser().setUserProfile(userService.updateUserProfile(userProfile));
         return "redirect:/";
     }
 }
