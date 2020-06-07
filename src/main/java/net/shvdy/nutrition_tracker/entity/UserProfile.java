@@ -38,7 +38,7 @@ public class UserProfile {
 
     @Column(name = "first_name")
     @NotNull
-    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "Incorrect value")
+    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
     private String firstName;
 
     @Column(name = "first_name_ua")
