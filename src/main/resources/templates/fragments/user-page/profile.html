@@ -43,7 +43,7 @@
                     <label class="control-label" for="lifestyle">Lifestyle</label>
                     <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
                         <option value="*{lifestyle}"></option>
-                        <option th:each="val : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
+                        <option th:each="val : ${T(net.shvdy.nutrition_tracker.model.entity.UserProfile.Lifestyle).values()}"
                                 th:text="${val}" th:value="${val}"></option>
                     </select>
                 </div>

@@ -1,12 +1,12 @@
-package net.shvdy.nutrition_tracker.service;
+package net.shvdy.nutrition_tracker.model.service;
 
 import net.shvdy.nutrition_tracker.config.FormulaConfigProperties;
 import net.shvdy.nutrition_tracker.dto.DailyRecordDTO;
 import net.shvdy.nutrition_tracker.dto.NewEntriesContainerDTO;
 import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
-import net.shvdy.nutrition_tracker.entity.DailyRecord;
-import net.shvdy.nutrition_tracker.entity.UserProfile;
-import net.shvdy.nutrition_tracker.repository.DailyRecordRepository;
+import net.shvdy.nutrition_tracker.model.entity.DailyRecord;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
+import net.shvdy.nutrition_tracker.model.repository.DailyRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

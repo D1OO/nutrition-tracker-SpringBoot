@@ -1,15 +1,14 @@
-package net.shvdy.nutrition_tracker.service;
+package net.shvdy.nutrition_tracker.model.service;
 
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
-import net.shvdy.nutrition_tracker.entity.Food;
-import net.shvdy.nutrition_tracker.entity.RoleType;
-import net.shvdy.nutrition_tracker.entity.User;
-import net.shvdy.nutrition_tracker.entity.UserProfile;
-import net.shvdy.nutrition_tracker.repository.UserProfileRepository;
-import net.shvdy.nutrition_tracker.repository.UserRepository;
+import net.shvdy.nutrition_tracker.model.entity.Food;
+import net.shvdy.nutrition_tracker.model.entity.RoleType;
+import net.shvdy.nutrition_tracker.model.entity.User;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
+import net.shvdy.nutrition_tracker.model.repository.UserProfileRepository;
+import net.shvdy.nutrition_tracker.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +21,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Collections;
 
-@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 

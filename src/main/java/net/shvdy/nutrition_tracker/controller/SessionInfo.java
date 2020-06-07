@@ -1,6 +1,6 @@
 package net.shvdy.nutrition_tracker.controller;
 
-import net.shvdy.nutrition_tracker.entity.User;
+import net.shvdy.nutrition_tracker.model.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.context.SecurityContextHolder;

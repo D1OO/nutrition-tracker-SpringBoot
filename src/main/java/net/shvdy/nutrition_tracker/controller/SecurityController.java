@@ -2,7 +2,7 @@ package net.shvdy.nutrition_tracker.controller;
 
 import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
-import net.shvdy.nutrition_tracker.service.UserService;
+import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;

@@ -1,4 +1,4 @@
-package net.shvdy.nutrition_tracker.entity;
+package net.shvdy.nutrition_tracker.model.entity;
 
 import lombok.*;
 

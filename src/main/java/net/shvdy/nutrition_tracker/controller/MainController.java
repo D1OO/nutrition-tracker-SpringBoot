@@ -1,7 +1,7 @@
 package net.shvdy.nutrition_tracker.controller;
 
-import net.shvdy.nutrition_tracker.entity.UserProfile;
-import net.shvdy.nutrition_tracker.service.UserService;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
+import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

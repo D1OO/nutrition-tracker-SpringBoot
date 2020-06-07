@@ -1,4 +1,4 @@
-package net.shvdy.nutrition_tracker.service;
+package net.shvdy.nutrition_tracker.model.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -6,10 +6,10 @@ import net.shvdy.nutrition_tracker.dto.DailyRecordDTO;
 import net.shvdy.nutrition_tracker.dto.DailyRecordEntryDTO;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.NewEntriesContainerDTO;
-import net.shvdy.nutrition_tracker.entity.DailyRecord;
-import net.shvdy.nutrition_tracker.entity.DailyRecordEntry;
-import net.shvdy.nutrition_tracker.entity.Food;
-import net.shvdy.nutrition_tracker.entity.UserProfile;
+import net.shvdy.nutrition_tracker.model.entity.DailyRecord;
+import net.shvdy.nutrition_tracker.model.entity.DailyRecordEntry;
+import net.shvdy.nutrition_tracker.model.entity.Food;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
