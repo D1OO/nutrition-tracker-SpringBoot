@@ -233,6 +233,10 @@ table {
     /*padding-right: 15px;*/
 }
 
+.errorServerValidation {
+    color: #c10000;
+}
+
 .pagepic {
     height: 290px;
     width: auto;
