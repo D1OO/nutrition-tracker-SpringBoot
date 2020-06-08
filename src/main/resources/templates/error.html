@@ -8,7 +8,7 @@
 <div th:replace="template :: main(~{:: div.maincontent})">
 
     <div class="maincontent d-flex flex-column justify-content-center align-items-center flex-grow-1 flex-nowrap p-lg-3"
-    style="height: 100%">
+         style="height: 100%">
         <div class="d-flex justify-content-center align-items-center mb-5">
             <h1 class="mr-2" th:text=" ${code}"></h1><br>
             <h1 th:text=" ${error}"></h1><br>
@@ -20,6 +20,10 @@
 
 </div>
 <div th:replace="template :: footer"></div>
-<div th:replace="template :: scripts(null)"></div>  <!--(~{::script})-->
+<div th:replace="template :: scripts(~{:: .scripts})">
+    <div class="scripts">
+        <script type="text/javascript" src="/js/content-container.js"></script>
+    </div>
+</div>
 </body>
 </html>

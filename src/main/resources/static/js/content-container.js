@@ -18,7 +18,7 @@ function setContentContainerTo(controllerEndpoint) {
     $.ajax({
         type: "GET",
         url: controllerEndpoint,
-        data: {AJAXrequest: controllerEndpoint},
+        data: 'AJAXrequest',
         success: function(data) {
             document.getElementById('content-container').innerHTML = data;
         },
@@ -34,10 +34,10 @@ function replacePageWith(html) {
     newDoc.close();
 }
 
-function tabClick(tab) {
+function tabClick(date) {
     $('.recordTab').css("background", "#e2dbff");
     $(event.target).css("background", "linear-gradient(338deg, rgba(213, 95, 147, 0.62) 10%, rgba(233, 232, 148, 0.73) 100%)");
     $('.record-tabs').css("display", "none");
-    $(tab).css("display", "block");
+    $('#' + date).css("display", "block");
 }
 

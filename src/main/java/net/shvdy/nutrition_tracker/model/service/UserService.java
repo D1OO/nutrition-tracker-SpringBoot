@@ -5,7 +5,6 @@ import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
 import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
 import net.shvdy.nutrition_tracker.model.entity.Food;
-import net.shvdy.nutrition_tracker.model.entity.RoleType;
 import net.shvdy.nutrition_tracker.model.entity.User;
 import net.shvdy.nutrition_tracker.model.entity.UserProfile;
 import net.shvdy.nutrition_tracker.model.repository.UserProfileRepository;
@@ -20,7 +19,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.Collections;
+import java.util.Set;
+
+import static net.shvdy.nutrition_tracker.model.entity.RoleType.ROLE_USER;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -65,7 +66,7 @@ public class UserService implements UserDetailsService {
     private User setUpNewUser(UserDTO userDTO) {
         User newUser = Mapper.MODEL.map(userDTO, User.class);
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
-        newUser.setAuthorities(Collections.singleton(RoleType.ROLE_USER));
+        newUser.setAuthorities(Set.of(ROLE_USER));
         newUser.getUserProfile().setUser(newUser);
         newUser.setAccountNonLocked(true);
         newUser.setAccountNonExpired(true);

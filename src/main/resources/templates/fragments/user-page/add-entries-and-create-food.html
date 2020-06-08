@@ -33,8 +33,6 @@
                             <form id="new-entries-form" method="post" th:action="@{/save-new-entries}"
                                   th:object="${newEntriesDTO}">
                                 <table style="width: 80%">
-                                    <input th:field="${newEntriesDTO.recordId}" type="hidden"/>
-                                    <input th:field="${newEntriesDTO.profileId}" type="hidden"/>
                                     <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
                                     <input th:field="${newEntriesDTO.dailyCaloriesNorm}" type="hidden"/>
                                     <tr align="center" class="row align-items-top m-1" id="fff"
@@ -116,7 +114,9 @@
             <div class="sent-message">filler</div>
         </div>
         <div class="modal-footer d-flex justify-content-center">
-            <button class="pretty-button" onclick="saveNewEntries()" style="width: 40%" th:text="#{user.save}"></button>
+            <button class="pretty-button" onclick="saveNewEntries(this.getAttribute('current-record-date'))"
+                    th:current-record-date="${newEntriesDTO.recordDate}"
+                    style="width: 40%" th:text="#{user.save}"></button>
         </div>
     </div>
 </div>

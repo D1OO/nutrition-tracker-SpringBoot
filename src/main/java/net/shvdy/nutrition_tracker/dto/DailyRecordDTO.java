@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 21.03.2020
@@ -50,5 +51,18 @@ public class DailyRecordDTO {
             log.error("JsonProcessingException: " + e);
             return "";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DailyRecordDTO that = (DailyRecordDTO) o;
+        return getRecordDate().equals(that.getRecordDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRecordDate());
     }
 }

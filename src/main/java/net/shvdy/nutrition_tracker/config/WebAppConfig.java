@@ -24,6 +24,7 @@ public class WebAppConfig implements WebMvcConfigurer {
         FilterRegistrationBean<SectionContainerRequestFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new SectionContainerRequestFilter());
         registrationBean.addUrlPatterns("/food-diary");
+        registrationBean.addUrlPatterns("/food-diary/day");
         registrationBean.addUrlPatterns("/profile");
         return registrationBean;
     }

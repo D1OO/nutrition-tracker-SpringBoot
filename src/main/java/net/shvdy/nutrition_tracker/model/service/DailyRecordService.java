@@ -8,14 +8,10 @@ import net.shvdy.nutrition_tracker.model.entity.DailyRecord;
 import net.shvdy.nutrition_tracker.model.entity.UserProfile;
 import net.shvdy.nutrition_tracker.model.repository.DailyRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,22 +32,17 @@ public class DailyRecordService {
         this.formulaConfigProperties = formulaConfigProperties;
     }
 
-    public void saveNewEntries(NewEntriesContainerDTO newEntriesDTO) {
-        dailyRecordRepository.save(Mapper.MODEL.map(newEntriesDTO, DailyRecord.class));
-    }
-
-    public List<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String periodEndDate, Pageable pageable) {
-        return insertBlankForAbsentDays(userProfile, periodEndDate, pageable.getPageSize(),
+    public Set<DailyRecordDTO> getWeeklyRecords(UserProfile userProfile, String periodEndDate, int size) {
+        return insertBlankForAbsentDays(userProfile, periodEndDate, size,
                 dailyRecordRepository.findByUserProfileAndRecordDateBetween(
                         userProfile,
-                        LocalDate.parse(periodEndDate).minusDays(pageable.getPageSize() - 1).toString(),
-                        periodEndDate,
-                        pageable).stream()
+                        LocalDate.parse(periodEndDate).minusDays(size - 1).toString(),
+                        periodEndDate).stream()
                         .map(x -> Mapper.MODEL.map(x, DailyRecordDTO.class))
                         .collect(Collectors.toMap(DailyRecordDTO::getRecordDate, x -> x)));
     }
 
-    private List<DailyRecordDTO> insertBlankForAbsentDays
+    private Set<DailyRecordDTO> insertBlankForAbsentDays
             (UserProfile userProfile, String periodEndDate, int size, Map<String, DailyRecordDTO> weeklyRecords) {
 
         IntStream.range(0, size)
@@ -65,14 +56,28 @@ public class DailyRecordService {
 
         return new ArrayList<>(weeklyRecords.values()).stream()
                 .sorted(Comparator.comparing(DailyRecordDTO::getRecordDate).reversed())
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public int getDailyCaloriesNorm(UserProfile userProfile) {
-        return (int)( formulaConfigProperties.coef1
+        return (int) (formulaConfigProperties.coef1
                 + formulaConfigProperties.weightModifier * userProfile.getWeight()
                 + formulaConfigProperties.heightModifier * userProfile.getHeight()
                 - formulaConfigProperties.ageModifier * userProfile.getAge()
                 * userProfile.getLifestyle().getFactor());
+    }
+
+    public DailyRecord saveNewEntries(NewEntriesContainerDTO newEntriesDTO, UserProfile profile) {
+        Optional<DailyRecord> existing =  dailyRecordRepository
+                .findByRecordDateAndUserProfile(newEntriesDTO.getRecordDate(), profile);
+        if (existing.isPresent()){
+            DailyRecord existingRecord = existing.get();
+            newEntriesDTO.setRecordId(existingRecord.getRecordId());
+            existingRecord.getEntries().addAll(Mapper.MODEL.map(newEntriesDTO, DailyRecord.class).getEntries());
+            return existingRecord;
+        } else {
+            newEntriesDTO.setProfileId(profile.getProfileId());
+            return dailyRecordRepository.save(Mapper.MODEL.map(newEntriesDTO, DailyRecord.class));
+        }
     }
 }

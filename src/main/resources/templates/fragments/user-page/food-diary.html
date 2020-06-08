@@ -3,22 +3,25 @@
 <body>
 <div class="content-container flex-column d-flex food-diary-container" data-aos="fade-zoom-in" data-aos-offset="0"
      style="width: 100%" th:fragment="content">
+    <input id="show-day" th:value='${showday}' type="hidden">
+
     <div class=" mb-4 m-4 font-rubick " style="width: 100%;">
         <h2 th:text="#{food-diaty}">Nutrition Diary</h2>
     </div>
     <div class="tabs row d-flex ml-2 mb-3" style="width: 100%">
-        <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${paginatedRecords}"
-                th:onclick="'tabClick(\'.dailyRecord' + ${stat.index} +'\')'"
+        <button class="pretty-button m4 recordTab ml-3" th:each="rec,stat : ${session.weeklyRecords}"
+                th:date="${rec.recordDate}" onclick="tabClick(this.getAttribute('date'))"
                 th:text="${rec.name()}"></button>
         <button class="pretty-button m4 ml-3 nextb" style="background: rgba(40,0,169,0.36)"
-                onclick="loadFromServerIntoContentContainer('/food-diary?d=' + this.getAttribute('lastdate'))"
-                th:lastdate="${paginatedRecords[#lists.size(paginatedRecords) - 1].recordDate}" th:text="#{diary.next}">
+                onclick="loadFromServerIntoContentContainer('/food-diary?week=' + this.getAttribute('lastdate'))"
+                th:lastdate="${session.weeklyRecords[#lists.size(session.weeklyRecords) - 1].recordDate}"
+                th:text="#{diary.next}">
         </button>
     </div>
     <div class="record-tabs container m2  flex-grow-1 " style="max-height: available"
-         th:classappend="${'dailyRecord' + stat.index}"
-         th:each="rec,stat : ${paginatedRecords}"
-         th:style="${stat.first ? 'display:block' : 'display:none'}">
+         th:id="${rec.recordDate}"
+         th:each="rec,stat : ${session.weeklyRecords}"
+         th:style="${rec.recordDate == showday ? 'display:block' : 'display:none'}">
         <div class="tab-container" th:if="${rec.totalCalories > 0}">
             <div class="row ml-4 align-items-center">
                 <h4 class="mr-2" th:text="#{daily-cals-norm}">Your daily calories norm:</h4>
@@ -64,12 +67,11 @@
             </div>
         </div>
         <div th:if="${rec.totalCalories == 0}">
-            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em" th:text="#{user.empy-list}"></p>
+            <p class="m-4 " style="font-style: italic; color: #787a7a; font-size: 1.2em"
+               th:text="#{user.empy-list}"></p>
         </div>
         <div class="tabs container m2 mb-4">
             <form method="post" th:classappend="${'data-food-modal-window' + stat.index}">
-                <input id="profileId" name="profileId" th:value="${@sessionInfo.user.id}" type="hidden">
-                <input id="recordId" name="recordId" th:value="${rec.recordId}" type="hidden">
                 <input id="recordDate" name="recordDate" th:value="${rec.recordDate}" type="hidden">
                 <input id="dailyCaloriesNorm" name="dailyCaloriesNorm" th:value="${rec.dailyCaloriesNorm}" type="hidden">
             </form>
@@ -79,6 +81,20 @@
             </button>
         </div>
     </div>
+    <script type="text/javascript">
+
+        const dayToShow = $('#show-day').val();
+        if (dayToShow)
+            tabClick(dayToShow);
+
+        function tabClick(date) {
+            $('.recordTab').css("background", "#e2dbff");
+            $(event.target).css("background", "linear-gradient(338deg, rgba(213, 95, 147, 0.62) 10%, rgba(233, 232, 148, 0.73) 100%)");
+            $('.record-tabs').css("display", "none");
+            $('#' + date).css("display", "block");
+        }
+
+    </script>
 </div>
 </body>
 </html>

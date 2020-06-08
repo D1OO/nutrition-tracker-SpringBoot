@@ -19,14 +19,14 @@ import java.util.Optional;
 public class SectionContainerRequestFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
+    public void doFilter(ServletRequest servletRequest, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-
+        HttpServletRequest request = (HttpServletRequest)servletRequest;
         if (!Optional.ofNullable(request.getParameter("AJAXrequest")).isPresent() &&
-                ((HttpServletRequest)request).getMethod().equals("GET")) {
+                request.getMethod().equals("GET")) {
 
-            ((HttpServletRequest) request).getSession().setAttribute("sectionToFetchWithAJAX",
-                    ((HttpServletRequest) request).getRequestURI());
+            request.getSession().setAttribute("sectionToFetchWithAJAX",
+                    request.getRequestURI() + "?" + request.getQueryString());
 
             request.getRequestDispatcher("/" +
                     SecurityContextHolder.getContext().getAuthentication().getAuthorities()

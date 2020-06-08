@@ -19,9 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -43,16 +41,13 @@ public class Mapper {
     };
 
     private Converter<NewEntriesContainerDTO, DailyRecord> newEntriesConfig = context -> {
-        context.getDestination()
-                .setUserProfile((entityManager.getReference(UserProfile.class, context.getSource().getProfileId())));
-
-        List<DailyRecordEntry> entries = context.getSource().getEntries().stream()
-                .map(x -> MODEL.map(x, DailyRecordEntry.class)).collect(Collectors.toList());
-
-        entries.forEach(x -> x.setDailyRecord(Optional.ofNullable(context.getSource().getRecordId()).isPresent() ?
-                entityManager.getReference(DailyRecord.class, context.getSource().getRecordId()) : context.getDestination()));
-
-        context.getDestination().setEntries(entries);
+        if (Optional.ofNullable(context.getSource().getRecordId()).isPresent()) {
+            DailyRecord d = entityManager.getReference(DailyRecord.class, context.getSource().getRecordId());
+            context.getDestination().getEntries().forEach(x -> x.setDailyRecord(d));
+        } else {
+            context.getDestination().setUserProfile(entityManager
+                    .getReference(UserProfile.class, context.getSource().getProfileId()));
+        }
         return context.getDestination();
     };
 
@@ -84,8 +79,6 @@ public class Mapper {
         MODEL.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         MODEL.createTypeMap(DailyRecordEntryDTO.class, DailyRecordEntry.class).setPostConverter(dailyRecordEntryConfig);
         MODEL.createTypeMap(DailyRecord.class, DailyRecordDTO.class).setPostConverter(dailyRecordConfig);
-//        MODEL.typeMap(UserProfile.class, UserProfileDTO.class).addMappings(
-//                m -> m.map(src->MODEL.map(src.getUser(), UserDTO.class), UserProfileDTO::setUser));
     }
 
     @PostConstruct

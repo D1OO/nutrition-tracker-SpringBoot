@@ -32,7 +32,7 @@ function removedEntry(index) {
     });
 }
 
-function saveNewEntries() {
+function saveNewEntries(record) {
     clearErrorMessages();
     $.ajax({
         type: "POST",
@@ -48,8 +48,9 @@ function saveNewEntries() {
                 });
             }
         },
-        success: function (response) {
-            window.location.replace(response.url);
+        success: function () {
+            closeAddFoodModalWindow();
+            loadFromServerIntoContentContainer('/food-diary/day?d=' + record);
         }
     });
 }
