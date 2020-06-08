@@ -35,3 +35,4 @@ build/
 /src/main/resources/static/services.html
 /src/main/resources/static/work-single.html
 /src/main/resources/static/works.html
+app.log

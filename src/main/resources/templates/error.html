@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head(~{::title})">
+    <title>Something went wrong • Dreamfit</title>
 </head>
-<!DOCTYPE html>
 <body>
-<h1>Something went wrong! </h1>
-<h2>Our Engineers are on it</h2>
-<a href="/">Go Home</a>
+<div th:replace="template::top-bar"></div>
+<div th:replace="template :: main(~{:: div.maincontent})">
+
+    <div class="maincontent d-flex flex-column justify-content-center align-items-center flex-grow-1 flex-nowrap p-lg-3"
+    style="height: 100%">
+        <div class="d-flex justify-content-center align-items-center mb-5">
+            <h1 class="mr-2" th:text=" ${code}"></h1><br>
+            <h1 th:text=" ${error}"></h1><br>
+        </div>
+        <h2>Something went wrong!</h2>
+        <h2>Our Engineers are on it</h2>
+        <a href="/">Main</a>
+    </div>
+
+</div>
+<div th:replace="template :: footer"></div>
+<div th:replace="template :: scripts(null)"></div>  <!--(~{::script})-->
 </body>
 </html>

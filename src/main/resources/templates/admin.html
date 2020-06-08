@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="template :: head(~{::title} )">
-    <title>shvdy project - admin</title>
+    <title>Admin page • Dreamfit</title>
 </head>
 <body>
 <div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
     <div class="maincontent d-flex flex-nowrap p-lg-3" style="height:100%; background: #eeeeee">
-<!--        <img class="pagepic" th:src="@{/img/bg4.jpg}">-->
         <div class="mr-auto">
             <h1 class="mb-5">ADMIN PAGE</h1>
-            <!--            <h2>Coming soon...</h2>-->
             <div>
                 <table>
                     <thead>
@@ -20,25 +18,20 @@
                     <th class="ml-2">Last Name</th>
                     </thead>
                     <tr th:each="user: ${users}">
-
-                        <!--                        <td style="text-align: right;" th:text="${food.food.name}"></td>-->
                         <td style=" vertical-align: middle; text-align: left; color: #747478; font-size: 0.7em"
-                            th:text="${user.username} + 'g'"></td>
-                        <!--                            <td th:text="${#request.getParameter('lang') == 'ua'} ? ${user.firstNameUa} : ${user.firstName}"></td>-->
+                            th:text="${user.username}"></td>
                         <td th:text="${user.userProfile.firstName}"></td>
                         <td th:text="${user.userProfile.lastName}"></td>
-                        <!--            <td th:text="${food.food.proteins * food.quantity/100}"></td>-->
-                        <!--            <td style="background: #e2bfaf   ;font-weight: bold"-->
-                        <!--                th:text="${food.food.calories * food.quantity/100}"></td>-->
                     </tr>
                 </table>
             </div>
         </div>
     </div>
 
-
 </div>
 <div th:replace="template :: footer"></div>
-<div th:replace="template :: scripts(null)"></div>  <!--(~{::script})-->
+<div th:replace="template :: scripts(~{::script})">
+    <script type="text/javascript" src="../static/js/food-dairy-modal.js"></script>
+</div>
 </body>
 </html>
