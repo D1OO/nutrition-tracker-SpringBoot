@@ -3,6 +3,7 @@ package net.shvdy.nutrition_tracker.model.service;
 import lombok.NonNull;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
+import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
 import net.shvdy.nutrition_tracker.model.entity.Food;
 import net.shvdy.nutrition_tracker.model.entity.RoleType;
 import net.shvdy.nutrition_tracker.model.entity.User;
@@ -33,6 +34,7 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository) {
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
+
     }
 
     @Override
@@ -51,8 +53,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserProfile updateUserProfile(UserProfile userProfile) {
-        return entityManager.merge(userProfile);
+    public UserProfile updateUserProfile(UserProfileDTO userProfile) {
+        return entityManager.merge(Mapper.MODEL.map(userProfile, UserProfile.class));
     }
 
 //    public List<UserDTO> getUsersList() {

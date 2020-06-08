@@ -7,6 +7,10 @@ function openAddFoodModalWindow(recordtab) {
     });
 }
 
+function closeAddFoodModalWindow() {
+    $('#modal-window').css("display", "none");
+}
+
 function setModalContainerTo(name) {
     $('#modalbody > *').css("display", "none");
     document.getElementById(name).style.display = "block";
@@ -29,17 +33,53 @@ function removedEntry(index) {
 }
 
 function saveNewEntries() {
-    event.preventDefault();
-    var data = $('#new-entries-form').serialize();
-    $.post('/food-diary/modal-window/save-new-entries', data, replacePageWith);
+    clearErrorMessages();
+    $.ajax({
+        type: "POST",
+        url: '/food-diary/modal-window/save-new-entries',
+        data: $('#new-entries-form').serialize(),
+        statusCode: {
+            500: function () {
+                $("#foodSavingErrorBox").show(200);
+            },
+            400: function (response) {
+                $.each(response.responseJSON, function (errorKey) {
+                    $('input[id="' + errorKey + '"]').css("border", "1px solid red");
+                });
+            }
+        },
+        success: function (response) {
+            window.location.replace(response.url);
+        }
+    });
 }
+
 
 function saveCreatedFood() {
-    event.preventDefault();
-    var data = $('#createfoodform').serialize();
-    $.post('/food-diary/modal-window/save-new-food', data, replacePageWith);
+    clearErrorMessages();
+    $.ajax({
+        type: "POST",
+        url: '/food-diary/modal-window/save-new-food',
+        data: $('#createfoodform').serialize(),
+        statusCode: {
+            500: function () {
+                $("#foodSavingErrorBox").show(200);
+            },
+            400: function (response) {
+                $.each(response.responseJSON, function (errorKey, errorMessage) {
+                    $("#" + errorKey).text(errorMessage);
+                });
+            }
+        },
+        success: function () {
+            $("#foodSavedSuccessBox").show(200);
+        }
+    });
 }
 
-function closeAddFoodModalWindow() {
-    $('#modal-window').css("display", "none");
+function clearErrorMessages() {
+    $('.errorServerValidation').text("");
+    $("#foodSavingErrorBox").hide(100);
+    $("#articleSavingErrorBox").hide(100);
+    $("#foodSavedSuccessBox").hide(100);
 }

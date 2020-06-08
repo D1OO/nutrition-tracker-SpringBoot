@@ -3,7 +3,7 @@ package net.shvdy.nutrition_tracker.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,29 +38,20 @@ public class UserProfile {
 
     @Column(name = "first_name")
     @NotNull
-    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
     private String firstName;
 
     @Column(name = "first_name_ua")
-    @Pattern(regexp = "^[А-Я]((?![ .,'-]$)[а-я .,'-]){2,24}$|^$", message = "Incorrect value")
     private String firstNameUa;
 
     @Column(name = "last_name")
     @NotNull
-    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "Incorrect value")
     private String lastName;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
     List<DailyRecord> dailyRecord;
 
-    @Positive
-    @Max(120)
     private int age;
-    @Min(10)
-    @Max(255)
     private int height;
-    @Positive
-    @Max(255)
     private int weight;
 
     @Enumerated(EnumType.STRING)

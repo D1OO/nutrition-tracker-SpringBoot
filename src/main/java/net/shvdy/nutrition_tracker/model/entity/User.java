@@ -1,6 +1,7 @@
 package net.shvdy.nutrition_tracker.model.entity;
 
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "user")
+@Log4j2
 public class User implements UserDetails {
 
     @Id
@@ -55,5 +57,10 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(getUsername());
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

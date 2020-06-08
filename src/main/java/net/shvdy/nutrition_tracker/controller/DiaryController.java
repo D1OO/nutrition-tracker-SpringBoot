@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -92,17 +93,17 @@ class DiaryController {
     }
 
     @PostMapping(value = "/food-diary/modal-window/save-new-entries")
-    public String saveNewEntriesList(NewEntriesContainerDTO newEntriesDTO) {
+    public String saveNewEntriesList(@Valid NewEntriesContainerDTO newEntriesDTO) {
         if (!newEntriesDTO.getEntries().isEmpty())
             dailyRecordService.saveNewEntries(newEntriesDTO);
         return ("redirect:/");
     }
 
     @PostMapping(value = "/food-diary/modal-window/save-new-food")
-    public String saveCreatedFood(FoodDTO createdFood) {
+    public String saveCreatedFood(@Valid FoodDTO createdFood) {
         sessionInfo.getUser()
                 .setUserProfile(userService.saveCreatedFood(sessionInfo.getUser().getUserProfile(), createdFood));
-        return ("redirect:/user");
+        return ("/user");
     }
 
 }

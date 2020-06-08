@@ -7,24 +7,30 @@
 <div th:replace="template::top-bar"></div>
 <div th:replace="template :: main(~{:: div.maincontent})">
 
-    <div class="maincontent d-flex flex-nowrap p-lg-3" style="height:100%; background: #eeeeee">
-        <img class="pagepic" th:src="@{/img/loginpic.jpg}">
-        <div class="mr-auto">
+    <div class="maincontent d-flex flex-nowrap p-lg-3" style="height: 100%; width: 100%;
+     background-image: url('img/1189764.jpg'); background-size: cover; border: 1px solid #b8b8b8;
+     border-radius: 0.5rem;">
+        <div class="mr-auto  align-self-center" style="margin-left: 5rem;">
             <div class="row d-flex justify-content-start form">
                 <div class=" mb-5 mb-md-0">
-                    <div class="alert alert-info col-md-11 mb-3" role="alert" th:if="${logout}">
-                        You've been logged out successfully.
+                    <div class="col-md-11 mb-2" id="errorr" style="color: #a55444; font-size: 0.8em">
+                        <div class="alert alert-danger col-md-12 mb-3" role="alert"
+                             th:if="${error}">Invalid Username or Password!
+                        </div>
                     </div>
-                    <div class="alert alert-danger col-md-11 mb-3" role="alert" th:if="${error}">
-                        Invalid Username or Password!
+                    <div class="alert alert-info col-md-11 mb-3" role="alert" th:if="${param.logout}">
+                        You've been logged out successfully
                     </div>
-                    <div class="alert alert-success col-md-11 mb-3" role="alert" th:if="${signedup}">
-                        Signed up successfully!
+                    <div class="alert alert-danger col-md-11 mb-3" role="alert" th:if="${param.error}">
+                        Invalid credentials
+                    </div>
+                    <div class="alert alert-success col-md-11 mb-3" role="alert" th:if="${param.signedup}">
+                        Signed up successfully
                     </div>
                     <div class="col-md-11 mb-3" style="background: #eeeeee">
                         <div class="loading">Loading</div>
                         <div class="error-message"></div>
-                        <div class="sent-message">fifler</div>
+                        <div class="sent-message"></div>
                     </div>
                     <form class="form" method="post" th:action="@{/login}">
                         <div class="col-md-11 form-group">
@@ -50,11 +56,8 @@
                                    value="SIGN IN">
                         </div>
                         <div class="col-md-12 form-group">
-                            <span>Don't have an account? <a style="color:#34ce57"  th:href="@{/signup}">SIGN UP</a></span>
-                        </div>
-                        <div class="col-md-11 mb-2" style="color: #a55444; font-size: 0.8em">
-                            <div class="alert alert-danger col-md-12 mb-3" role="alert"
-                                 th:if="${error}">Invalid Username or Password!</div>
+                            <span>Don't have an account? <a style="color:#34ce57"
+                                                            th:href="@{/signup}">SIGN UP</a></span>
                         </div>
                     </form>
                 </div>

@@ -53,9 +53,7 @@ dl, ol, ul {
 #content-container {
     height: 100%;
     width: 100%;
-    background: rgba(192, 181, 218, 0.4);
-    background: linear-gradient(180deg, rgba(218, 216, 212, 0.4) 11%, rgba(224, 224, 224, 0.5) 49%, rgba(240, 255, 239, 0.5) 100%);
-    border: 1px solid black;
+    border: 1px solid #c0c0c0;
     margin-bottom: 10px;
 }
 
@@ -268,6 +266,7 @@ table {
     color: white;
     padding-left: 3px;
     padding-right: 3px;
+    border-radius: 5px;
 
 }
 
@@ -574,8 +573,8 @@ h6,
 }
 
 .form-control {
-    border-radius: 0;
-    background: #d9d9d9;
+    /*border-radius: 0;*/
+    background: #f0f0f0;
     border: 1px solid transparent;
     padding-top: 10px !important;
     padding-bottom: 10px !important;
@@ -628,15 +627,14 @@ h6,
     font-weight: 600;
 }
 
-.form .loading {
+.loading {
     display: none;
     background: #fff;
-    text-align: center;
+    /*text-align: center;*/
     padding: 15px;
 }
 
-.form .loading:before {
-
+.loading:before {
     content: "";
     display: inline-block;
     border-radius: 50%;
@@ -746,6 +744,11 @@ h6,
 
 .custom-navbar .navbar-brand {
     font-size: 1.7rem;
+}
+
+input::placeholder {
+    font-family: "Gotham Rounded Light";
+    font-size: 0.8rem;
 }
 
 /* Burger */

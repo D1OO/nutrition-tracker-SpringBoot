@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const section = document.getElementById('sectionToFetchWithAJAX').value;
-    setContentContainerTo(section ? section : '/food-diary');
+    setContentContainerTo(section ? section : 'food-diary');
     window.onpopstate = function (e) {
         if (e.state != null)
             setContentContainerTo(e.state.endpoint);

@@ -1,20 +1,16 @@
 package net.shvdy.nutrition_tracker.controller;
 
-import net.shvdy.nutrition_tracker.model.entity.UserProfile;
+import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
 import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -28,8 +24,8 @@ public class MainController {
     }
 
     @ModelAttribute("userProfile")
-    UserProfile editUserProfile() {
-        return sessionInfo.getUser().getUserProfile();
+    UserProfileDTO editUserProfile() {
+        return Mapper.MODEL.map(sessionInfo.getUser().getUserProfile(), UserProfileDTO.class);
     }
 
     @RequestMapping("/user")
@@ -49,15 +45,10 @@ public class MainController {
     }
 
     @PostMapping("/profile")
-    public String saveProfile(@Valid UserProfile userProfile) {
+    public String saveProfile(@Valid UserProfileDTO userProfile) {
+        System.out.println(userProfile.toString());
         sessionInfo.getUser().setUserProfile(userService.updateUserProfile(userProfile));
         return "redirect:/";
     }
 
-    @ExceptionHandler(BindException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(BindException ex) {
-        return new ResponseEntity<>(ex.getBindingResult().getAllErrors().stream()
-                .collect(Collectors.toMap(x -> ((FieldError) x).getField() + "Error",
-                        y -> Optional.ofNullable(y.getDefaultMessage()).orElse(""))), HttpStatus.BAD_REQUEST);
-    }
 }
