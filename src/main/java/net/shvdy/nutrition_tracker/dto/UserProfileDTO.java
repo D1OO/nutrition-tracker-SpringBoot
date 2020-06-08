@@ -3,9 +3,10 @@ package net.shvdy.nutrition_tracker.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
-import net.shvdy.nutrition_tracker.entity.UserProfile;
-import net.shvdy.nutrition_tracker.service.Mapper;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
 
+import javax.validation.constraints.*;
 import java.util.List;
 
 /**
@@ -21,12 +22,23 @@ import java.util.List;
 @Builder
 @Log4j2
 public class UserProfileDTO {
+    @NotNull
+    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
     private String firstName;
+    @Pattern(regexp = "^[А-Я]((?![ .,'-]$)[а-я .,'-]){2,24}$|^$", message = "Incorrect value")
     private String firstNameUa;
+    @NotNull
+    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "Incorrect value")
     private String lastName;
-    private int age;
-    private int height;
-    private int weight;
+    @Positive
+    @Max(120)
+    private Integer age;
+    @Min(10)
+    @Max(255)
+    private Integer height;
+    @Positive
+    @Max(255)
+    private Integer weight;
     private UserProfile.Lifestyle lifestyle;
 
     UserDTO user;

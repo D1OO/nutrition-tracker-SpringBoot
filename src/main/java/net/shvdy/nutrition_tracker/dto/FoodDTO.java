@@ -3,8 +3,12 @@ package net.shvdy.nutrition_tracker.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
-import net.shvdy.nutrition_tracker.service.Mapper;
-import org.hibernate.validator.constraints.Length;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * 21.03.2020
@@ -21,12 +25,25 @@ import org.hibernate.validator.constraints.Length;
 @Log4j2
 public class FoodDTO {
     private Long food_id;
-    @Length(min = 2)
+    @NotNull
+    @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
     private String name;
-    private int calories;
-    private int proteins;
-    private int fats;
-    private int carbohydrates;
+    @NotNull
+    @Min(1)
+    @Max(910)
+    private Integer calories;
+    @NotNull
+    @Min(1)
+    @Max(40)
+    private Integer proteins;
+    @NotNull
+    @Min(1)
+    @Max(100)
+    private Integer fats;
+    @NotNull
+    @Min(1)
+    @Max(100)
+    private Integer carbohydrates;
 
     @Override
     public String toString() {

@@ -1,6 +1,6 @@
-package net.shvdy.nutrition_tracker.repository;
+package net.shvdy.nutrition_tracker.model.repository;
 
-import net.shvdy.nutrition_tracker.entity.User;
+import net.shvdy.nutrition_tracker.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

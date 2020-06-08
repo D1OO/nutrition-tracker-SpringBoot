@@ -2,7 +2,7 @@ package net.shvdy.nutrition_tracker.controller;
 
 import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
-import net.shvdy.nutrition_tracker.service.UserService;
+import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
 
 /**
  * 23.03.2020
@@ -52,7 +54,7 @@ public class SecurityController {
     }
 
     @PostMapping("/signup")
-    public String createAccount(UserDTO userDto) {
+    public String createAccount(@Valid UserDTO userDto) {
         try {
             userService.saveNewUser(userDto);
         } catch (Exception e) {

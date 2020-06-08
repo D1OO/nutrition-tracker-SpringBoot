@@ -1,4 +1,4 @@
-package net.shvdy.nutrition_tracker.entity;
+package net.shvdy.nutrition_tracker.model.entity;
 
 import lombok.*;
 
@@ -33,9 +33,12 @@ public class UserProfile {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "profile_to_food",
             joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "food_id"))
     List<Food> userFood = new ArrayList<>();
+
+    @Column(name = "first_name")
+    @NotNull
+    private String firstName;
 
     @Column(name = "first_name_ua")
     private String firstNameUa;
@@ -43,14 +46,14 @@ public class UserProfile {
     @Column(name = "last_name")
     @NotNull
     private String lastName;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
     List<DailyRecord> dailyRecord;
+
     private int age;
     private int height;
     private int weight;
-    @Column(name = "first_name")
-    @NotNull
-    private String firstName;
+
     @Enumerated(EnumType.STRING)
     private Lifestyle lifestyle;
 

@@ -3,56 +3,56 @@
 <body>
 <div class="content-container" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
     <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${@sessionInfo.user.username}"></div>
-    <form class="form" method="post" style="width: 100%" th:action="@{/profile/update}" th:object="${userProfile}">
+    <form class="form" id="update-profile" method="post" style="width: 100%" th:object="${userProfile}">
         <input id="profileId" name="profileId" th:value="${@sessionInfo.user.userProfile.profileId}" type="hidden"/>
         <div class="row" style="width: 100%;">
             <div class="col-6">
                 <div class="form-group col-md-11">
                     <label class="control-label" for="firstName" th:text="#{login.first-name}"></label>
                     <input id="firstName" class="form-control" th:field="*{firstName}"/>
-                    <div class="validate"></div>
+                    <p id="firstNameError" class="errorServerValidation"></p>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="lastName" th:text="#{login.last-name}"></label>
                     <input id="lastName" class="form-control" th:field="*{lastName}"/>
-                    <div class="validate"></div>
+                    <p id="lastNameError" class="errorServerValidation"></p>
                 </div>
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="firstNameUa"></label>
+                    <label class="control-label" for="firstNameUa" th:text="#{login.first-name-ua}"></label>
                     <input id="firstNameUa" class="form-control" th:field="*{firstNameUa}"/>
-                    <div class="validate"></div>
+                    <p id="firstNameUaError" class="errorServerValidation"></p>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group col-md-11">
-                    <label class="control-label" for="weight"></label>
+                    <label class="control-label" for="weight"  th:text="#{profile.weight}"></label>
                     <input id="weight" class="form-control" th:field="*{weight}"/>
-                    <div class="validate"></div>
+                    <p id="weightError" class="errorServerValidation"></p>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="height">Height</label>
                     <input id="height" class="form-control" th:field="*{height}"/>
-                    <div class="validate"></div>
+                    <p id="heightError" class="errorServerValidation"></p>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="age">Age</label>
                     <input id="age" class="form-control" th:field="*{age}"/>
-                    <div class="validate"></div>
+                    <p id="ageError" class="errorServerValidation"></p>
                 </div>
                 <div class="form-group col-md-11">
                     <label class="control-label" for="lifestyle">Lifestyle</label>
                     <select class="form-control" th:field="*{lifestyle}" id="lifestyle">
                         <option value="*{lifestyle}"></option>
-                        <option th:each="val : ${T(net.shvdy.nutrition_tracker.entity.UserProfile.Lifestyle).values()}"
+                        <option th:each="val : ${T(net.shvdy.nutrition_tracker.model.entity.UserProfile.Lifestyle).values()}"
                                 th:text="${val}" th:value="${val}"></option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="container m2 mb-4">
-            <button class="pretty-button">Save changes</button>
-        </div>
     </form>
+    <div class="container m2 mb-4">
+        <button class="pretty-button" onclick="updateUserProfile()">Save changes</button>
+    </div>
 </div>
 </body>
 </html>

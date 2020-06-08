@@ -1,6 +1,6 @@
 package net.shvdy.nutrition_tracker.config;
 
-import net.shvdy.nutrition_tracker.service.UserService;
+import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;

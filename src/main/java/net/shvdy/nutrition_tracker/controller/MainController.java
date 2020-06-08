@@ -1,13 +1,16 @@
 package net.shvdy.nutrition_tracker.controller;
 
-import net.shvdy.nutrition_tracker.entity.UserProfile;
-import net.shvdy.nutrition_tracker.service.UserService;
+import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
+import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class MainController {
@@ -21,8 +24,8 @@ public class MainController {
     }
 
     @ModelAttribute("userProfile")
-    UserProfile editUserProfile() {
-        return sessionInfo.getUser().getUserProfile();
+    UserProfileDTO editUserProfile() {
+        return Mapper.MODEL.map(sessionInfo.getUser().getUserProfile(), UserProfileDTO.class);
     }
 
     @RequestMapping("/user")
@@ -41,9 +44,11 @@ public class MainController {
         return "fragments/user-page/profile :: content";
     }
 
-    @PostMapping("/profile/update")
-    public String saveProfile(UserProfile userProfile) {
+    @PostMapping("/profile")
+    public String saveProfile(@Valid UserProfileDTO userProfile) {
+        System.out.println(userProfile.toString());
         sessionInfo.getUser().setUserProfile(userService.updateUserProfile(userProfile));
         return "redirect:/";
     }
+
 }

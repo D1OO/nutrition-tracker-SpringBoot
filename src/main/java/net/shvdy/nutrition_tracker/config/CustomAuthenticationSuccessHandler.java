@@ -1,6 +1,6 @@
 package net.shvdy.nutrition_tracker.config;
 
-import net.shvdy.nutrition_tracker.entity.RoleType;
+import net.shvdy.nutrition_tracker.model.entity.RoleType;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;

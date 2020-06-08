@@ -3,7 +3,11 @@ package net.shvdy.nutrition_tracker.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
-import net.shvdy.nutrition_tracker.service.Mapper;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * 20.03.2020
@@ -20,7 +24,10 @@ import net.shvdy.nutrition_tracker.service.Mapper;
 public class DailyRecordEntryDTO {
     private String foodName;
     private String foodDTOJSON;
-    private int quantity;
+    @NotNull
+    @Min(1)
+    @Max(5000)
+    private Integer quantity;
     private FoodDTO food;
 
     @Override

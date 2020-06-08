@@ -22,7 +22,8 @@ public class SectionContainerRequestFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
-        if (!Optional.ofNullable(request.getParameter("AJAXrequest")).isPresent()) {
+        if (!Optional.ofNullable(request.getParameter("AJAXrequest")).isPresent() &&
+                ((HttpServletRequest)request).getMethod().equals("GET")) {
 
             ((HttpServletRequest) request).getSession().setAttribute("sectionToFetchWithAJAX",
                     ((HttpServletRequest) request).getRequestURI());
@@ -32,7 +33,8 @@ public class SectionContainerRequestFilter implements Filter {
                             .stream().findFirst().get().getAuthority().replace("ROLE_", "").toLowerCase())
                     .forward(request, response);
         }
-        chain.doFilter(request, response);
+        else
+            chain.doFilter(request, response);
     }
 
 }

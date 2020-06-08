@@ -3,8 +3,9 @@ package net.shvdy.nutrition_tracker.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
-import net.shvdy.nutrition_tracker.service.Mapper;
+import net.shvdy.nutrition_tracker.model.service.Mapper;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class NewEntriesContainerDTO {
     private Long profileId;
     private String recordDate;
     private int dailyCaloriesNorm;
+    @Valid
     private List<DailyRecordEntryDTO> entries;
 
     @Override
