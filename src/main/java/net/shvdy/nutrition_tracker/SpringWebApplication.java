@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties(FormulaConfigProperties.class)
-public class DreamfitWebApplication {
+public class SpringWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DreamfitWebApplication.class, args);
+        SpringApplication.run(SpringWebApplication.class, args);
     }
 }

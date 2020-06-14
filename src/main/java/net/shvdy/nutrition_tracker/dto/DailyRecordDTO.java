@@ -1,9 +1,6 @@
 package net.shvdy.nutrition_tracker.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
-import lombok.extern.log4j.Log4j2;
-import net.shvdy.nutrition_tracker.model.service.Mapper;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.LocalDate;
@@ -23,7 +20,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Log4j2
 public class DailyRecordDTO {
 
     private Long recordId;
@@ -41,16 +37,6 @@ public class DailyRecordDTO {
     public String name() {
         return LocalDate.parse(recordDate)
                 .format(DateTimeFormatter.ofPattern("d EE", LocaleContextHolder.getLocale()));
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return Mapper.JACKSON.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            log.error("JsonProcessingException: " + e);
-            return "";
-        }
     }
 
     @Override

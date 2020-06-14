@@ -21,9 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +68,9 @@ class DiaryController {
                 dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
                         dates, 7));
         model.addAttribute("showday", dates);
+        System.out.println(sessionInfo.getUser().toString());
+        System.out.println(new ArrayList<>(dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
+                dates, 7)).get(0));
         return "fragments/user-page/food-diary :: content";
     }
 

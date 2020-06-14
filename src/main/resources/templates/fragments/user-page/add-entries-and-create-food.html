@@ -35,21 +35,21 @@
                                 <table style="width: 80%">
                                     <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
                                     <input th:field="${newEntriesDTO.dailyCaloriesNorm}" type="hidden"/>
-                                    <tr align="center" class="row align-items-top m-1" id="fff"
+                                    <tr align="center" class="row align-items-center m-1" id="fff"
                                         th:each="entry, stat : ${newEntriesDTO.entries}">
                                         <td class="foodlabel  row justify-content-end m-1"
                                             style="width: 18%; justify-content: end">
                                             <p class="mr-2" style="text-align: right"
                                                th:text="${entry.foodName}"></p>
                                         </td>
-                                        <td class="d-inline-flex col-sm-auto align-items-top m-1">
+                                        <td class="d-inline-flex col-sm-auto align-items-center m-1">
                                             <input class="form-control mr-2" placeholder="quantity"
                                                    style="width: 50%" th:id="entries[__${stat.index}__].quantityError"
                                                    th:field="${newEntriesDTO.entries[__${stat.index}__].quantity}">
                                             <input class="form-control"
                                                    th:field="${newEntriesDTO.entries[__${stat.index}__].foodDTOJSON}"
                                                    type="hidden">
-                                            <label th:text="#{food.grams}">(g)</label>
+                                            <p th:text="#{food.grams}">(g)</p>
                                         </td>
                                         <td class="">
                                             <a class=" mt-2 removeButton"
@@ -107,11 +107,6 @@
                             th:text="#{user.back}"></button>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 mb-3" style="background: #eeeeee">
-            <div class="loading" style="background: #eeeeee">Processing...</div>
-            <div class="error-message"></div>
-            <div class="sent-message">filler</div>
         </div>
         <div class="modal-footer d-flex justify-content-center">
             <button class="pretty-button" onclick="saveNewEntries(this.getAttribute('current-record-date'))"

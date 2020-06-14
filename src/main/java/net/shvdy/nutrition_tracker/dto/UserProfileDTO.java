@@ -1,10 +1,7 @@
 package net.shvdy.nutrition_tracker.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.*;
-import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.model.entity.UserProfile;
-import net.shvdy.nutrition_tracker.model.service.Mapper;
 
 import javax.validation.constraints.*;
 import java.util.List;
@@ -20,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Log4j2
 public class UserProfileDTO {
     @NotNull
     @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
@@ -45,14 +41,5 @@ public class UserProfileDTO {
     List<FoodDTO> userFood;
     List<DailyRecordDTO> dailyRecords;
 
-    @Override
-    public String toString() {
-        try {
-            return Mapper.JACKSON.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            log.error("JsonProcessingException: " + e);
-            return "";
-        }
-    }
 }
 

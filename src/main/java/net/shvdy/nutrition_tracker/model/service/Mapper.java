@@ -40,17 +40,6 @@ public class Mapper {
         return context.getDestination();
     };
 
-    private Converter<NewEntriesContainerDTO, DailyRecord> newEntriesConfig = context -> {
-        if (Optional.ofNullable(context.getSource().getRecordId()).isPresent()) {
-            DailyRecord d = entityManager.getReference(DailyRecord.class, context.getSource().getRecordId());
-            context.getDestination().getEntries().forEach(x -> x.setDailyRecord(d));
-        } else {
-            context.getDestination().setUserProfile(entityManager
-                    .getReference(UserProfile.class, context.getSource().getProfileId()));
-        }
-        return context.getDestination();
-    };
-
     private static Converter<DailyRecord, DailyRecordDTO> dailyRecordConfig = context -> {
         context.getDestination()
                 .setTotalCalories(context.getDestination().getEntries()
@@ -80,6 +69,17 @@ public class Mapper {
         MODEL.createTypeMap(DailyRecordEntryDTO.class, DailyRecordEntry.class).setPostConverter(dailyRecordEntryConfig);
         MODEL.createTypeMap(DailyRecord.class, DailyRecordDTO.class).setPostConverter(dailyRecordConfig);
     }
+
+    private Converter<NewEntriesContainerDTO, DailyRecord> newEntriesConfig = context -> {
+        if (Optional.ofNullable(context.getSource().getRecordId()).isPresent()) {
+            DailyRecord d = entityManager.getReference(DailyRecord.class, context.getSource().getRecordId());
+            context.getDestination().getEntries().forEach(x -> x.setDailyRecord(d));
+        } else {
+            context.getDestination().setUserProfile(entityManager
+                    .getReference(UserProfile.class, context.getSource().getProfileId()));
+        }
+        return context.getDestination();
+    };
 
     @PostConstruct
     public void init() {

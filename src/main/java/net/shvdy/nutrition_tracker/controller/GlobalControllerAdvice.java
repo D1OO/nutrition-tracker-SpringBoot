@@ -31,8 +31,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("currentDateLocalized")
     public String localisedDate() {
-        return LocalDate.now()
-                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
+        return LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
                         .withLocale(LocaleContextHolder.getLocale()));
     }
 
