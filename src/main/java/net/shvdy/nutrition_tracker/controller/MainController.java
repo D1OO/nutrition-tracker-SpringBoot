@@ -1,11 +1,13 @@
 package net.shvdy.nutrition_tracker.controller;
 
 import net.shvdy.nutrition_tracker.dto.UserProfileDTO;
+import net.shvdy.nutrition_tracker.model.entity.UserProfile;
 import net.shvdy.nutrition_tracker.model.service.Mapper;
 import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +36,7 @@ public class MainController {
     }
 
     @RequestMapping("/admin")
-    public String adminPage(Model model) {
-//        model.addAttribute("users", userService.getUsersList());
+    public String adminPage() {
         return "admin";
     }
 
@@ -45,10 +46,12 @@ public class MainController {
     }
 
     @PostMapping("/profile")
-    public String saveProfile(@Valid UserProfileDTO userProfile) {
-        System.out.println(userProfile.toString());
-        sessionInfo.getUser().setUserProfile(userService.updateUserProfile(userProfile));
-        return "redirect:/";
+    public ResponseEntity<String> updateProfile(@Valid UserProfileDTO userProfile) {
+        UserProfile updatedProfile = Mapper.MODEL.map(userProfile, UserProfile.class);
+        updatedProfile.setProfileId(sessionInfo.getUser().getUserProfile().getProfileId());
+        sessionInfo.getUser().setUserProfile(userService.updateUserProfile(updatedProfile));
+
+        return new ResponseEntity<>("profile?saved", HttpStatus.FOUND);
     }
 
 }

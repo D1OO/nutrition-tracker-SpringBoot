@@ -55,7 +55,7 @@ public class UserProfile {
     private int weight;
 
     @Enumerated(EnumType.STRING)
-    private Lifestyle lifestyle;
+    private Lifestyle lifestyle = Lifestyle.MODERATELY_ACTIVE;
 
     public enum Lifestyle {
         SEDENTARY(1.2f),

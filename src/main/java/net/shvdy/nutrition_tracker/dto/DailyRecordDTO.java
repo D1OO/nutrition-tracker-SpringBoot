@@ -1,6 +1,7 @@
 package net.shvdy.nutrition_tracker.dto;
 
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.LocalDate;
@@ -19,8 +20,9 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Log4j2
 @Builder
-public class DailyRecordDTO {
+public class DailyRecordDTO implements Comparable<DailyRecordDTO> {
 
     private Long recordId;
     private Long profileId;
@@ -32,7 +34,6 @@ public class DailyRecordDTO {
     private int totalProteins;
     private int totalCarbs;
     private List<DailyRecordEntryDTO> entries = new ArrayList<>();
-    private UserProfileDTO userProfile;
 
     public String name() {
         return LocalDate.parse(recordDate)
@@ -44,11 +45,16 @@ public class DailyRecordDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DailyRecordDTO that = (DailyRecordDTO) o;
-        return getRecordDate().equals(that.getRecordDate());
+        return getRecordId().equals(that.getRecordId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRecordDate());
+        return Objects.hash(getRecordId());
+    }
+
+    @Override
+    public int compareTo(DailyRecordDTO o) {
+        return -recordDate.compareTo(o.getRecordDate());
     }
 }

@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="d-inline-flex flex-wrap" th:fragment="content">
+    <div class="mb-3" th:each="food : ${@sessionInfo.getUser().userProfile.getUserFood()}">
+        <div class="mb-1">
+            <div class="user_food m-2">
+                <a rel="group" title=""></a>
+                <div class="label">
+                    <div class="label-text">
+                        <button class="pretty-button foodlink"
+                                onclick="addedNewEntry(this.getAttribute('food'), this.getAttribute('food-name'))"
+                                th:food="${food}" th:food-name="${food.name}"
+                                th:text="${food.name}"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

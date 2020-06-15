@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 21.03.2020
@@ -49,41 +49,34 @@ class DiaryController {
     }
 
     @GetMapping("/food-diary/day")
-    public String showDay(@RequestParam(name = "d", required = false) String day,
-                          HttpServletRequest request, Model model) {
+    public String showDay(@RequestParam(name = "d", required = false) String day, Model model) {
         model.addAttribute("showday", day);
-        return recordsCache(request).stream().anyMatch(x -> x.getRecordDate().equals(day)) ?
-                "fragments/user-page/food-diary :: content" : showWeek(day, request, model);
+        return sessionInfo.getDiaryCache().stream().anyMatch(x -> x.getRecordDate().equals(day)) ?
+                "fragments/user-page/diary :: content" : showWeek(day, model);
     }
 
     @GetMapping("/food-diary")
-    public String showWeek(@RequestParam(name = "week", required = false) String date,
-                           HttpServletRequest request, Model model) {
-        int dailyNorm = dailyRecordService.getDailyCaloriesNorm(sessionInfo.getUser().getUserProfile());
-        if (dailyNorm <= 0)
+    public String showWeek(@RequestParam(name = "week", required = false) String date, Model model) {
+        if (List.of(sessionInfo.getUser().getUserProfile().getAge(),
+                sessionInfo.getUser().getUserProfile().getHeight(),
+                sessionInfo.getUser().getUserProfile().getWeight()).stream().anyMatch(n -> n == 0))
             return "fragments/user-page/complete-profile-to-proceed :: content";
-        model.addAttribute("dailyNorm", dailyNorm);
-        String dates = Optional.ofNullable(date).orElse(LocalDate.now().toString());
-        request.getSession().setAttribute("weeklyRecords",
-                dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
-                        dates, 7));
-        model.addAttribute("showday", dates);
-        System.out.println(sessionInfo.getUser().toString());
-        System.out.println(new ArrayList<>(dailyRecordService.getWeeklyRecords(sessionInfo.getUser().getUserProfile(),
-                dates, 7)).get(0));
-        return "fragments/user-page/food-diary :: content";
+
+        String periodLastDay = Optional.ofNullable(date).orElse(LocalDate.now().toString());
+        sessionInfo.setDiaryCache(dailyRecordService.findByDatePeriod(sessionInfo.getUser().getUserProfile(),
+                periodLastDay, 7));
+        model.addAttribute("showday", periodLastDay);
+        model.addAttribute("backDate", sessionInfo.getDiaryCache().first().getRecordDate()
+                .equals(LocalDate.now().toString()) ? null : LocalDate.parse(sessionInfo.getDiaryCache().first()
+                .getRecordDate()).plusDays(7).toString());
+        return "fragments/user-page/diary :: content";
     }
 
-    @GetMapping(value = "/food-diary/adding-entries-modal-window")
-    public String createAddingEntriesWindow(@RequestParam String recordDate,
-                                            @RequestParam int dailyCaloriesNorm, Model model) {
+    @GetMapping(value = "/food-diary/modal-window")
+    public String createAddingEntriesWindow(@RequestParam String recordDate, Model model) {
         model.addAttribute("newEntriesDTO", NewEntriesContainerDTO.builder()
-                .recordDate(recordDate)
-                .dailyCaloriesNorm(dailyCaloriesNorm)
-                .entries(Collections.emptyList()).build());
-        model.addAttribute("userFood", sessionInfo.getUser().getUserProfile().getUserFood()
-                .stream().map(source -> Mapper.MODEL.map(source, FoodDTO.class)).collect(Collectors.toList()));
-        return "fragments/user-page/add-entries-and-create-food :: content";
+                .recordDate(recordDate).entries(new ArrayList<>()).build());
+        return "fragments/user-page/diary-modal :: content";
     }
 
     @PostMapping(value = "/food-diary/modal-window/added-entry")
@@ -92,26 +85,23 @@ class DiaryController {
         NewEntriesContainerDTO newEntriesDTO = Mapper.JACKSON.readValue(newEntriesDTOJSON, NewEntriesContainerDTO.class);
         newEntriesDTO.getEntries().add(DailyRecordEntryDTO.builder().foodName(foodName).foodDTOJSON(foodDTOJSON).build());
         model.addAttribute("newEntriesDTO", newEntriesDTO);
-        return "fragments/user-page/add-entries-and-create-food :: new-entries-list";
+        return "fragments/user-page/diary-modal :: new-entries-list";
     }
 
     @PostMapping(value = "/food-diary/modal-window/removed-entry")
-    public String removedNewEntry(@RequestParam int index, @RequestParam String newEntriesDTOJSON,
-                                  Model model) throws IOException {
+    public String removedNewEntry(@RequestParam int index, @RequestParam String newEntriesDTOJSON, Model model) throws IOException {
         NewEntriesContainerDTO newEntriesDTO = Mapper.JACKSON.readValue(newEntriesDTOJSON, NewEntriesContainerDTO.class);
         newEntriesDTO.getEntries().remove(index);
         model.addAttribute("newEntriesDTO", newEntriesDTO);
-        return "fragments/user-page/add-entries-and-create-food :: new-entries-list";
+        return "fragments/user-page/diary-modal :: new-entries-list";
     }
 
     @PostMapping(value = "/food-diary/modal-window/save-new-entries")
-    public ResponseEntity<Void> saveNewEntriesList(@Valid NewEntriesContainerDTO newEntriesDTO, HttpServletRequest request) {
+    public ResponseEntity<Void> saveNewEntriesList(@Valid NewEntriesContainerDTO newEntriesDTO) {
         DailyRecordDTO updatedRecord = Mapper.MODEL.map(dailyRecordService
                 .saveNewEntries(newEntriesDTO, sessionInfo.getUser().getUserProfile()), DailyRecordDTO.class);
-        Set<DailyRecordDTO> recordsCache = (Set<DailyRecordDTO>) request.getSession().getAttribute("weeklyRecords");
-        recordsCache.remove(updatedRecord);
-        recordsCache.add(updatedRecord);
-        request.getSession().setAttribute("weeklyRecords", recordsCache);
+        if (sessionInfo.getDiaryCache().remove(updatedRecord))
+            sessionInfo.getDiaryCache().add(updatedRecord);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -122,8 +112,9 @@ class DiaryController {
         return ("/user");
     }
 
-    private Set<DailyRecordDTO> recordsCache(HttpServletRequest request) {
-        return (Set<DailyRecordDTO>) request.getSession().getAttribute("weeklyRecords");
+    @PostMapping(value = "/food-diary/modal-window/updated-food")
+    public String updatedFoodList() {
+        return "/fragments/user-page/food-list";
     }
 
 }

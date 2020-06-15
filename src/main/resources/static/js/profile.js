@@ -5,17 +5,17 @@ function updateUserProfile() {
         url: '/profile',
         data: $('#update-profile').serialize(),
         statusCode: {
-            500: function (response) {
+            500: function () {
                 $("#userSavingErrorBox").show(200);
             },
             400: function (response) {
                 $.each(response.responseJSON, function (errorKey, errorMessage) {
                     $("#" + errorKey).text(errorMessage);
                 });
+            },
+            302: function (response) {
+                window.location.replace(response.responseText);
             }
-        },
-        success: function (response) {
-            window.location.replace(response.url);
         }
     });
 }

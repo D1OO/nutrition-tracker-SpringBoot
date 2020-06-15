@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
+import static net.shvdy.nutrition_tracker.model.entity.RoleType.ROLE_USER;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,19 +32,19 @@ public class User implements UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
     @Enumerated(EnumType.STRING)
-    private Set<RoleType> authorities;
+    private Set<RoleType> authorities = Set.of(ROLE_USER);
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     UserProfile userProfile;
 
     @Column(name = "account_non_expired")
-    private boolean accountNonExpired;
+    private boolean accountNonExpired = true;
     @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
+    private boolean accountNonLocked = true;
     @Column(name = "credentials_non_expired")
-    private boolean credentialsNonExpired;
+    private boolean credentialsNonExpired = true;
     @Column(name = "enabled")
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Override
     public boolean equals(Object o) {

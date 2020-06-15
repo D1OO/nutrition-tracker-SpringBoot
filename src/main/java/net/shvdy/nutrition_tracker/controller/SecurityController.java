@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.dto.UserDTO;
 import net.shvdy.nutrition_tracker.model.service.UserService;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -54,14 +56,14 @@ public class SecurityController {
     }
 
     @PostMapping("/signup")
-    public String createAccount(@Valid UserDTO userDto) {
+    public ResponseEntity<String> createAccount(@Valid UserDTO userDto) {
         try {
             userService.saveNewUser(userDto);
+            return new ResponseEntity<>("login?signedup", HttpStatus.FOUND);
         } catch (Exception e) {
             log.warn("The account already exists for email: " + userDto.getUsername());
-            return "signup?error";
+            return new ResponseEntity<>("signup?error", HttpStatus.BAD_REQUEST);
         }
-        return "redirect:/login?signedup";
     }
 
 }

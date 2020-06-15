@@ -21,10 +21,7 @@ import java.util.List;
 @Builder
 @Log4j2
 public class NewEntriesContainerDTO {
-    private Long recordId;
-    private Long profileId;
     private String recordDate;
-    private int dailyCaloriesNorm;
     @Valid
     private List<DailyRecordEntryDTO> entries;
 

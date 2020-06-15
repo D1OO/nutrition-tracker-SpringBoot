@@ -8,23 +8,9 @@
             <span class="close mt-0" onclick="closeAddFoodModalWindow()">&times;</span>
         </div>
         <div class="modal-body container" id="modalbody">
-            <div class="m-2 tabs" id="addfoodcontainer" style="display: block">
-                <div class="d-inline-flex flex-wrap">
-                    <div class="mb-3" th:each="food : ${userFood}">
-                        <div class="mb-1">
-                            <div class="user_food m-2">
-                                <a rel="group" title=""></a>
-                                <div class="label">
-                                    <div class="label-text">
-                                        <button class="pretty-button foodlink"
-                                                onclick="addedNewEntry(this.getAttribute('food'), this.getAttribute('food-name'))"
-                                                th:food="${food}" th:food-name="${food.name}"
-                                                th:text="${food.name}"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="m-2 tabs" id="new-entries" style="display: block">
+                <div id="food-container">
+                    <div th:replace="/fragments/user-page/food-list :: content"></div>
                 </div>
                 <div>
                     <div id="new-entries-container">
@@ -34,7 +20,6 @@
                                   th:object="${newEntriesDTO}">
                                 <table style="width: 80%">
                                     <input th:field="${newEntriesDTO.recordDate}" type="hidden"/>
-                                    <input th:field="${newEntriesDTO.dailyCaloriesNorm}" type="hidden"/>
                                     <tr align="center" class="row align-items-center m-1" id="fff"
                                         th:each="entry, stat : ${newEntriesDTO.entries}">
                                         <td class="foodlabel  row justify-content-end m-1"
@@ -70,6 +55,9 @@
                 </button>
             </div>
             <div class="mt-4" id="createfoodcontainer" style="display: none">
+                <div id="foodSavedSuccessBox" class="alert alert-success col-md-11 mb-3" role="alert"
+                     style="display: none">Saved
+                </div>
                 <form class="form row" id="createfoodform" method="post" style="width: 100%" th:object="${newFoodDTO}">
                     <div class="col-3">
                         <div class="form-group col-md-11">
@@ -103,7 +91,7 @@
                 </form>
                 <div class="m-2 d-flex flex-column col-5 tabs">
                     <button class="pretty-button mt-2" onclick="saveCreatedFood()" th:text="#{user.save}"></button>
-                    <button class="pretty-button switch-content mt-2" onclick="setModalContainerTo('addfoodcontainer')"
+                    <button class="pretty-button switch-content mt-2" onclick="updateFoodList('new-entries')"
                             th:text="#{user.back}"></button>
                 </div>
             </div>

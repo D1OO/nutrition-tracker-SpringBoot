@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import net.shvdy.nutrition_tracker.dto.DailyRecordDTO;
 import net.shvdy.nutrition_tracker.dto.DailyRecordEntryDTO;
 import net.shvdy.nutrition_tracker.dto.FoodDTO;
-import net.shvdy.nutrition_tracker.dto.NewEntriesContainerDTO;
 import net.shvdy.nutrition_tracker.model.entity.DailyRecord;
 import net.shvdy.nutrition_tracker.model.entity.DailyRecordEntry;
 import net.shvdy.nutrition_tracker.model.entity.Food;
@@ -16,10 +15,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.IOException;
-import java.util.Optional;
 
 @Log4j2
 @Component
@@ -27,18 +23,6 @@ public class Mapper {
 
     public static final ModelMapper MODEL = new ModelMapper();
     public static final ObjectMapper JACKSON = new ObjectMapper();
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    private static Converter<DailyRecordEntryDTO, DailyRecordEntry> dailyRecordEntryConfig = context -> {
-        try {
-            context.getDestination().setFood(MODEL
-                    .map(JACKSON.readValue(context.getSource().getFoodDTOJSON(), FoodDTO.class), Food.class));
-        } catch (IOException e) {
-            log.error(e);
-        }
-        return context.getDestination();
-    };
 
     private static Converter<DailyRecord, DailyRecordDTO> dailyRecordConfig = context -> {
         context.getDestination()
@@ -64,26 +48,31 @@ public class Mapper {
         return context.getDestination();
     };
 
+    private static Converter<DailyRecordDTO, DailyRecord> dailyRecordConfig2 = context -> {
+        context.getDestination().setUserProfile(UserProfile.builder()
+                .profileId(context.getSource().getProfileId()).build());
+        return context.getDestination();
+    };
+
     static {
         MODEL.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        MODEL.createTypeMap(DailyRecordEntryDTO.class, DailyRecordEntry.class).setPostConverter(dailyRecordEntryConfig);
         MODEL.createTypeMap(DailyRecord.class, DailyRecordDTO.class).setPostConverter(dailyRecordConfig);
+        MODEL.createTypeMap(DailyRecordDTO.class, DailyRecord.class).setPostConverter(dailyRecordConfig2);
     }
 
-    private Converter<NewEntriesContainerDTO, DailyRecord> newEntriesConfig = context -> {
-        if (Optional.ofNullable(context.getSource().getRecordId()).isPresent()) {
-            DailyRecord d = entityManager.getReference(DailyRecord.class, context.getSource().getRecordId());
-            context.getDestination().getEntries().forEach(x -> x.setDailyRecord(d));
-        } else {
-            context.getDestination().setUserProfile(entityManager
-                    .getReference(UserProfile.class, context.getSource().getProfileId()));
+    private Converter<DailyRecordEntryDTO, DailyRecordEntry> dailyRecordEntryConfig = context -> {
+        try {
+            context.getDestination().setFood(MODEL
+                    .map(JACKSON.readValue(context.getSource().getFoodDTOJSON(), FoodDTO.class), Food.class));
+        } catch (IOException e) {
+            log.error(e);
         }
         return context.getDestination();
     };
 
     @PostConstruct
-    public void init() {
-        MODEL.createTypeMap(NewEntriesContainerDTO.class, DailyRecord.class).setPostConverter(newEntriesConfig);
+    private void init() {
+        MODEL.createTypeMap(DailyRecordEntryDTO.class, DailyRecordEntry.class).setPostConverter(dailyRecordEntryConfig);
     }
 
 }

@@ -15,12 +15,12 @@ function saveNewUser() {
                     $('p[id="' + errorKey + '"]').text(errorMessage);
                 });
                 $('.loading').slideUp(100);
+            },
+            302: function (response) {
+                window.location.replace(response.responseText);
+                $('.loading').slideUp(100);
             }
         },
-        success: function (response) {
-            window.location.replace(response.url);
-            $('.loading').slideUp(100);
-        }
     });
 }
 

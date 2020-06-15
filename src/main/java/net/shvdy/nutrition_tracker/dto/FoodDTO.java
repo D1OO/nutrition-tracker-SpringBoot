@@ -24,22 +24,28 @@ import javax.validation.constraints.Pattern;
 @Builder
 @Log4j2
 public class FoodDTO {
+
     private Long food_id;
+
     @NotNull
     @Pattern(regexp = "^[A-Z]((?![ .,'-]$)[a-z .,'-]){2,24}$", message = "{validation.incorrect}")
     private String name;
+
     @NotNull
     @Min(1)
     @Max(910)
     private Integer calories;
+
     @NotNull
     @Min(1)
     @Max(40)
     private Integer proteins;
+
     @NotNull
     @Min(1)
     @Max(100)
     private Integer fats;
+
     @NotNull
     @Min(1)
     @Max(100)

@@ -20,7 +20,7 @@ function setContentContainerTo(controllerEndpoint) {
         url: controllerEndpoint,
         data: 'AJAXrequest',
         success: function(data) {
-            document.getElementById('content-container').innerHTML = data;
+            $('#content-container').html(data);
         },
         error: function(data){
             replacePageWith(data.responseText);

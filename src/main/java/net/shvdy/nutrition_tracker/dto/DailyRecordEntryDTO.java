@@ -18,8 +18,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class DailyRecordEntryDTO {
+    private Long recordId;
     private String foodName;
     private String foodDTOJSON;
+
     @NotNull
     @Min(1)
     @Max(5000)

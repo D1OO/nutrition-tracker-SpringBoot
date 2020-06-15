@@ -61,6 +61,9 @@ dl, ol, ul {
     margin-bottom: 10px;
 }
 
+.alert {
+    border-radius: 4px;
+}
 
 .font-rubick {
     font-family: 'Clother Light','Gotham Rounded Bold', Serif;

@@ -2,6 +2,9 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="content-container" data-aos="fade-zoom-in" data-aos-offset="0" th:fragment="content">
+    <div class="alert alert-success col-md-11 mb-3" role="alert" th:if="${param.saved}">
+        Changes are saved
+    </div>
     <div class="h2 mb-4 m-4 font-rubick d-flex" th:text="${@sessionInfo.user.username}"></div>
     <form class="form" id="update-profile" method="post" style="width: 100%" th:object="${userProfile}">
         <input id="profileId" name="profileId" th:value="${@sessionInfo.user.userProfile.profileId}" type="hidden"/>

@@ -1,24 +1,28 @@
 function openAddFoodModalWindow(recordtab) {
-    event.preventDefault();
-    var data = $(recordtab).serialize();
-    $.get('/food-diary/adding-entries-modal-window', data, function (data) {
-        document.getElementById('modal-window').innerHTML = data;
-        $("#modal-window").css("display", "block");
+    $.get('/food-diary/modal-window', $(recordtab).serialize(), function (data) {
+        $('#modal-window').html(data);
+        $("#modal-window").show();
     });
 }
 
 function closeAddFoodModalWindow() {
-    $('#modal-window').css("display", "none");
+    $('#modal-window').hide();
 }
 
 function setModalContainerTo(name) {
-    $('#modalbody > *').css("display", "none");
-    document.getElementById(name).style.display = "block";
+    $('#modalbody > *').hide();
+    $('#' + name).show();
+}
+
+function updateFoodList(container) {
+    $.post('/food-diary/modal-window/updated-food', function (response) {
+        $('#food-container').html(response);
+    });
+    setModalContainerTo(container)
 }
 
 function addedNewEntry(foodDTO, foodName) {
-    // event.preventDefault();
-    var data = '&foodDTOJSON=' + foodDTO + '&foodName=' + foodName + '&newEntriesDTOJSON=' + $('#new-entries-list').val();
+    const data = '&foodDTOJSON=' + foodDTO + '&foodName=' + foodName + '&newEntriesDTOJSON=' + $('#new-entries-list').val();
     $.post('/food-diary/modal-window/added-entry', data, function (response) {
         $('#new-entries-container').html(response);
     });
@@ -26,7 +30,7 @@ function addedNewEntry(foodDTO, foodName) {
 
 function removedEntry(index) {
     $(this).closest('tr').remove();
-    data = 'index=' + index + '&newEntriesDTOJSON=' + $('#new-entries-list').val();
+    const data = 'index=' + index + '&newEntriesDTOJSON=' + $('#new-entries-list').val();
     $.post('/food-diary/modal-window/removed-entry', data, function (response) {
         $('#new-entries-container').html(response);
     });
@@ -54,7 +58,6 @@ function saveNewEntries(record) {
         }
     });
 }
-
 
 function saveCreatedFood() {
     clearErrorMessages();
